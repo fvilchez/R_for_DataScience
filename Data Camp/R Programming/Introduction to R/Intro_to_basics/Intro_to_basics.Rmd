@@ -1,0 +1,83 @@
+---
+title: "Intro to basics"
+output: html_notebook
+---
+## Arithmetic with R
+En su forma más básica R puede ser usado como una simple calculadora. Vamos a considerar los siguientes operadores:
+
+1. suma: +
+2. resta: -
+3. multiplicación: *
+4. división
+5. exponente: ^
+6. módulo:%%
+```{r}
+#Calculamos la suma de dos números
+5 + 5
+#Calculamos la resta de dos números
+7 - 5
+#Calculamos el producto de dos números
+12 * 6
+#Calculamos la división entre dos números
+15 / 3
+#Calculamos el exponente de dos números
+5 ^ 2
+#Calculamos el módulo al dividir dos números
+125 %% 6
+```
+
+## Variable assignment
+Una variable permite almacenar un valor o un objeto. Esto nos permite hacer uso de estos valores u objetos de una forma más sencilla, sin más que llamar a dicha variable por su nombre. Para asignar un valor a una variable en R se hace uso de var_name <- var_value.
+```{r}
+#Le asignamos el valor 8 a la variable x
+x <- 8
+#MOstramos el valor de esta variable
+x
+```
+## Variable assignment (II)
+Supongamos que tenemos una cesta de fruta con 5 manzanas. Como analista de datos deseamos almacenar este valor en una variable denominada my_apples.
+```{r}
+#Nos creamos las variable my_apples
+my_apples <- 5
+#Mostramos el valor que contiene la variable
+my_apples
+```
+
+## Variable assignment (III)
+Ahora resulta que a nuestra cesta de fruta, le añadimos 6 naranjas, de forma que almacenamos este valor en la variable my_oranges. También deseamos conocer el número de piezas de fruta que tiene nuestra cesta. Para esto, decidimos almacenar el resultado en la variable my_fruit
+```{r}
+#Nos creamos la variable my_oranges
+my_oranges <- 6
+my_apples <- 5
+#Nos creamos la variable my_fruit
+my_fruit <- my_apples + my_oranges
+#Mostramos el resultado
+my_fruit
+```
+La primcipal ventaja de trabajar con variables es su posibilidad de reutilización.
+
+## Basic data types in R
+R puede trabajar con una gran variedad de tipos de datos. Lo más básicos para empezar a tomar contacto son:
+
+1. Los números decimales, por ejemplo 4.5, también conocido como numéricos.
+2. Los números naturales, por ejemplo 5, también conocidos como enteros. Los valores enteros también son numéricos.
+3. Booleanos (TRUE, FALSE), llamados lógicos.
+4. Texto(strings), llamados caracteeres.
+```{r}
+#Nos creamos un valor numérico
+my_numeric <- 45.5
+#Nos creamos una variable lógica
+my_logic <- TRUE
+#Nos creamos una varible de tipo string o texto
+my_text <- "Hello world"
+```
+
+## What's that data type?
+A la hora de saber una variable de que tipo de dato es, podemos hacer uso de la función class().
+```{r}
+#Nos creamos una variable 
+var1 <- TRUE
+#Vemos el tipo
+class(var1)
+```
+

@@ -1,0 +1,226 @@
+---
+title: "Functions"
+output: html_notebook
+---
+
+## Function Documentation
+Antes de comenzar a usar una función en R, deberíamos conocer los argumentos de los que esta dispone. Todo este tipo de información puede ser encontrada en la documentación. Para consultar la documentación de una función podemos hacer uso de los comandos **help()**
+o **?**. También podemos inspeccionar los argumentos de una función haciendo uso de la función **args**.
+```{r}
+#Miramos la documentación de la función mean
+help(mean)
+```
+
+```{r}
+#Observamos los argumentos de la función mean
+args(mean)
+```
+
+
+## Use a function
+La documentación respecto a esta función nos da información:
+
+* La función **mean()** computa la media aritmética
+
+* Toma múltiples argumentos
+
+* El argumento **x** debe ser un vector que contenga valores numéricos, lógicos o objetos que indiquen un intervalo de tiempo.
+
+Los argumentos pueden pasarse o bien por posición o por nombre, incluso hacer un mix.
+
+```{r}
+#Nos creamos dos vectores
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+facebook <- c(17, 7, 5, 16, 8, 13, 14)
+
+#Aplicamos la función mean al vector linkedin
+avg_li <- mean(linkedin, na.rm = TRUE)
+avg_fb <- mean(facebook)
+
+#Vemos los resultados obtenidos
+avg_li
+avg_fb
+```
+
+## Use a function (2)
+Hemos visto como la función **mean()** además del parámetro **na.rm** también dispone del parámetro **trim**. Este parámetro nos permite eliminar una porción de nuestro vector, y va entre 0 y 1 su valor.
+```{r}
+#Calculamos la media sin trim 
+avg_sum <- mean(linkedin + facebook)
+avg_sum
+#Calculamos la media con trim 
+avg_sum_trim <- mean(linkedin + facebook, trim = 0.2)
+avg_sum_trim
+```
+
+##  Use a function (3)
+El parámetro de **na.rm** toma por defecto el valor de **FALSE**. Este parámetro nos permite indicar si queremos que tenga en cuenta o no los valores perdidos en caso de que estos existan. Por defecto los valores perdidos en caso de existir son tomados en cuenta por lo que la función mean retornaría como resultado el valor de NA, pero si ponemos este valor a **TRUE** no se tienen en cuenta y retorna la media del vector eliminando estos valores perdidos.
+```{r}
+#Nos definimos dos vectores con valores perdidos
+linkedin <- c(16, 9, 13, 5, NA, 17, 14)
+facebook <- c(17, NA, 5, 16, 8, 13, 14)
+
+#Calculamos la media de facebook con el valor na.rm = FALSE
+avg_fb <- mean(facebook)
+avg_fb
+
+#Calculamos la media de linkedin 
+avg_li <- mean(linkedin, na.rm = TRUE)
+avg_li
+
+```
+
+## Functions inside functions
+Ya hemos visto como la funciones en R retornan objetos que estos pueden ser usados para otro fin, de forma que resulta factible hacer uso de funciones dentro de otras funciones.
+```{r}
+#Nos creamos dos vectores
+linkedin <- c(16, 9, 13, 5, NA, 17, 14)
+facebook <- c(17, NA, 5, 16, 8, 13, 14)
+
+#Calculamos la media del valor absoluto de la diferencia de los dos vectores
+avg_dif <- mean(abs(linkedin - facebook), na.rm = TRUE)
+avg_dif
+```
+
+
+## Write your own function
+R dispone de una gran cantidad de funciones por defecto. Sin embargo, existirán situaciones en las cuales desearemos resolver un problema el cual no puede ser resuelto con las funciones por defecto de R. Ante estas situaciones no nos queda otro remedio que crear nuestras propias funciones. R dispone de la sentencia **function()** que nos permite generar nuestras propias funciones, el cuerpo de forma general de una función es el siguiente
+```{r, eval = FALSE}
+my_func <- function(arg1, arg2){
+  body
+}
+```
+A continuación vamos a proceder a realizar algún ejemplo
+```{r}
+#Nos creamos la función pow_two que dado un número lo eleva al cuadrado
+pow_two <- function(number){
+  number^2
+}
+#Hacemos uso de la función
+pow_two(12)
+```
+
+```{r}
+#Nos creamos la función sum_abs, que dados dos números nos suma sus valores en valor absoluto
+sum_abs <- function(number1, number2){
+  return(sum(abs(number1), abs(number2)))
+}
+#Hacemos uso de la función 
+sum_abs(-2, 3)
+```
+
+## Write your own function (II)
+Existen algunas situaciones en las cuales tu función no requiere de ningún tipo de input.
+```{r}
+#Creamos la función hello(), que tras ejecutarla lo que hace es mostrar por pantalla la palabra hello
+hello <- function(){
+  print('hello!!')
+}
+#Hacemos uso de la función 
+hello()
+```
+
+## Write your own function (III)
+Ya vimos como las funciones por defecto de R disponían de parámetros/argumentos que tenían valores por defecto, es decir, valores que no eran necesarios especificarlos en caso de que no queramos modificar el valor por defecto. A la hora de escribir nuestras propias funciones también podemos hacer uso de esto.
+```{r}
+#Nos creamos la función pow_two que eleva un número al cuadrado y muestra el resultado por pantalla en caso de que el parámetro print_info tome el valor TRUE, por defecto este parámetro toma el valor de TRUE
+
+pow_two <- function(number, print_info = TRUE){
+  result <- number ^ 2
+  if(print_info){
+    print(paste(number, 'al cuadrado es igual a', result))
+  }
+  return(result)
+}
+#Hacemos uso de la función 
+pow_two(12)
+```
+```{r}
+#Hacemos uso de la función el parámetro print_info iguala FALSE
+ r <- pow_two(12, print_info = FALSE)
+```
+
+## Function scoping
+Las funciones que se generan en el interior de una función solo son accesible en esta función, es decir, estas variables no son accesibles fuera de la función.
+```{r}
+add_val <- function(){
+  x <- 5
+  y <- 6
+  return(sum(x,y))
+}
+```
+En este caso, las variables x e y, no son accesibles desde fuera de la función sum. Esta también aplica sobre los argumentos que le pasamos a un función.
+
+## R passes arguments by value
+Esto significa que R no puede cambiar el valor de una variables que le pasamos como argumento. Veamos un ejemplo para ver que significa esto
+```{r}
+#Generamos la función triple() que múltiplica por tres un número que le pasamos como parámetro
+triple <- function(number){
+  number <- number * 3
+  number
+}
+#Hacemos uso de la función
+number <- 10
+triple(number)
+number
+```
+Aquí podemos ver como dentro de la función **triple()** el argumneto **number** es sobrescrito por su valor multiplicado por tres. Después este nuevo valor es devuelto. Si nosotros hacemos la llamada a la función **triple()** con el valor de **number** igual a 10, esta nos retorna el valor de 30, sin embargo el valor de **number** no se ve modificado. Si le hubiesemos pasado el valor por referencia este valor si se habría visto propagado fuera de la función, pero como R pasa por valor sus argumentos, estos no se ven afectados fuera de la función, a no ser que se realice una asignación explícita.
+
+## R functional?
+A continuación vamos a proceder a realizar funciones más complejas.
+```{r}
+#Nos creamos los vectores linkedin y facebook 
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+facebook <- c(17, 7, 5, 16, 8, 13, 14)
+
+#Nos creamos la función interpret que en función del número de visitas nos mostrará un mensaje
+interpret <- function(num_views){
+  if(num_views > 15){
+    print('You are popular!')
+    return(num_views)
+  }else{
+    print('Try to be more visible!')
+    return(0)
+  }
+}
+#Probamos la función 
+interpret(linkedin[1])
+interpret(facebook[2])
+```
+
+## R you functional? (II)
+Es posible crear funciones que usen como cuerpò otras funciones
+```{r}
+#Nos creamos una función que lo que hace es aplicar la función interpret a todas y cada uno de los elementos de linkedin y facebook #además retorna la suma de las visitas populares siempre y cuando el parámetro return_sum sea TRUE
+interpret_all <- function(views, return_sum = TRUE) {
+  count <- 0
+  for (v in views){
+    count <- count + interpret(v)
+  }
+  if (return_sum){
+    return(count)
+  }else{
+    return(NULL)
+  }
+}
+#Probamos la función
+interpret_all(facebook)
+```
+
+## Load and R Package
+Existen dos funciones principales a la hora de instalarnos nuevos paquetes en R
+
+* **install packages()**: que nos permite instalar un paquete dado.
+
+* **library()**: nos permite cargar paquetes que ya fueron instalados.
+
+Para ver los paquete que tenemos adjuntos podemos ejecutar el comando **search()**
+
+## Different ways to load a package
+A la hora de cargar paquetes podemos hacer uso de dos funciones; **library()** y **require()**. Ambas librerías nos permiten actualizar la lista de paquetes adjuntos en nuestra sesión de R, la principal diferencia entre estas dos funciones son:
+
+* **library()**: retonrna un mensaje de error si el paquete requerido no existe.
+
+* **require()**: diseñada para ser usada dentro de funciones, esta función retorna un mensaje de tipo warning además de un valor lógico, que toma el valor de FALSE si el paquete no es encontrado y el valor de TRUE en caso de que el paquete se cargue.
+
+En general es mejor hacer uso de **library()** ya que nos lanza un mensaje de error en caso de que el paquete no sea encontrado en el momento de carga.

@@ -1,0 +1,109 @@
+---
+title: "Matrices"
+output: html_notebook
+---
+
+## What's a matrix
+En R, una matriz es una colección de elementos del mismo tipo (numéricos, strings, booleanos) agrupados en un número fijo de filas y columnas. Puesto que solo trabajo con filas y columnas, una matriz se trata de un elemento bidimensional. En R podemos hacer uso de la función matrix() para construir una matriz.
+
+```{r}
+matrix(1:9, byrow = TRUE, nrow = 3)
+```
+
+* El primer argument de la función es un conjunto de elementos que R puede agrupar en filas y columnas.
+* El argumento byrow puede tomar dos valores posibles: TRUE y FALSE. Si toma el valor TRUE indica que la matriz es rellena por filas, mientras que si tomar el valor de FALSE nos indica que la matriz es rellena por columnas.
+* El tercer argumento nrow indicamos el número de filas que queremos que tenga la matriz.
+
+## Analyzing matrices, you shall
+A continuación vamos a proceder a realizar un análisis en taquilla de las películas de la saga la Guerra de las Galaxias. Para ello vamos a proceder a crearnos tres vectores que indican lo que recaudaron cada una de las películas. Estos vectores tendrán dos componentes que indicarán la recaudación en taquilla de las películas en USA y fuera de USA.
+
+```{r}
+#Nos creamos los vectores
+new_hope <- c(460.998, 314.4)
+empire_strikes <- c(290.475, 247.900)
+return_jedi <- c(309.306, 165.8)
+#Nos creamos el vector box_office que uno los otro tres en un solo vector
+box_office <- c(new_hope, empire_strikes, return_jedi)
+#Nos creamos una matriz de 3 filas donde cada fila representa una película
+starwars_matrix <- matrix(box_office, byrow = TRUE, nrow = 3)
+starwars_matrix
+```
+
+## Naming the matrix
+Con el fin de tener una idea más clara de lo que almacena nuestra matriz decidimos nombrar cada una de las filas con las películas que corresponden y también cada columna con su significado. Similar a los vectores en R contamos con las funciones rownames() y colnames() que nos permiten nombrar tanto las filas como las columnas.
+```{r}
+#Nombramos las filas y las columnas de nuestra matriz
+rownames(starwars_matrix) <- c('new_hope', 'empire_strikes', 'return_jedi')
+colnames(starwars_matrix) <- c('US', 'non-US')
+starwars_matrix
+```
+
+## Calculating the worldwide box office
+Para calcular el ingreso total para las tres películas, debemos sumar las dos columnas (US, non-US). En R contamos con la función rowSums(), que nos permite obtener para cada fila el total. Esta función retorna un nuevo vector donde cada elemento es la suma de cada fila de nuestra matriz.
+```{r}
+#Obtenemos las ganancias totales por película
+worldwide_vector <- rowSums(starwars_matrix)
+worldwide_vector
+```
+
+## Adding a column for the Worldwide box office
+Si ahora deseamos agregar este resultado como una nueva columna de nuestra matriz, en R contamos con la función cbind(), la cual mergea matrices y/o vectores juntos por columna.
+```{r}
+#Añadimos una nueva columna
+starwars_matrix_aux <- cbind(starwars_matrix, worldwide_vector)
+starwars_matrix_aux
+```
+
+## Adding a row
+R también dispone de la función rbind(), esta función lo que nos permite es añadir una nueva fila a nuestra matriz. Por ejemplo podemos crearnos una segunda matriz denominada starwars_matrix2 que incluye otras tres películas y su recaudación, y fusionar estas dos matrices en una sola
+```{r}
+#Nos creamos la matriz starwars_matrix2
+box_office2 <- c(474.5, 552.5, 310.7, 338.7, 380.3, 468.5)
+vector_row_names <- c('The Phantom Menace', 'Attack of the Clones', 'Revenge of the Sith')
+vector_col_names <- c('US', 'non-US')
+starwars_matrix2 <- matrix(box_office2, byrow = TRUE, nrow = 3, dimnames = list(vector_row_names, vector_col_names))
+#Nos creamos nuestra nueva matriz haciendo uso de rbind()
+all_wars_matrix <- rbind(starwars_matrix, starwars_matrix2)
+all_wars_matrix
+```
+
+## The total boxoffice revenue for the entire saga
+R también dispone de la función colSums() que nos permite obtener la suma total por columnas. Así si por ejemplo deseamos conocer la recaudación total de la saga completa tanto en US como en non-US, bastará con hacer uso de esta función
+```{r}
+#Obtenemos la recaudación total en US y en non_US
+total_revenue_vector <- colSums(all_wars_matrix)
+total_revenue_vector
+```
+
+## Selection of matrix elements
+Similar a los vectores podemos hacer uso de los corchetes, para seleccionar elementos de una matriz. A diferencia de un vector que tiene una sola dimensión una matriz tiene dos dimensiones. Por lo tanto podemos hacer uso de la coma para indicar la fila y la columna en la cula se encuentra el elemento que deseamos seleccionar.
+```{r}
+#Seleccionamos de la matriz all_wars_matrix la recaudación en US de la película new_hope
+all_wars_matrix[1,1]
+```
+También podemos hacer uso de la notación :
+```{r}
+#Seleccionamos las ganancias en non-US de las películas new_hope y empire_strikes
+all_wars_matrix[1:2, 1:2]
+```
+
+Si queremos seleccionar todos los elementos de una determinada fila o de una determinada columna podemos hacer uso de la siguiente notación
+```{r}
+#Seleccionamos las ganancias de la pelicula new_hope
+all_wars_matrix[1,]
+
+```
+```{r}
+#Selexccionamos todas las ganancias en US
+all_wars_matrix[,1]
+```
+
+## A little arithmetic with matrix
+Similar a los vectores , tenemos los operadores estándar (+, -, *, /) para las matrices. Supongamos que en promedio la entrada para cada una de las pelis cuesta 7 dolares. Deseamos conocer el número de personas que vieron cada una de las películas
+```{r}
+visitors <- all_wars_matrix/7
+visitors
+```
+
+## A little arithmetic with matrix (II)
+Si bien la operación 2\*matrix lo que hace es multiplicar cada uno de los elementos de nuestra matriz por 2, el producto matrix1\*matrix2 lo que hace es multiplicar entre sí los elementos de una matriz. Para realizar el producto estándar entre matrices debemos hacer uso del operador %*%.

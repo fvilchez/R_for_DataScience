@@ -1,0 +1,130 @@
+---
+title: "Vectors"
+output: html_notebook
+---
+
+## Create a vector
+Los vectores son arrays de una sola dimensión, que pueden contener datos numéricos, caracteres o lógicos. En otras palabras un vector es una herramienta para almacenar datos. En R podemos crear un vector haciendo uso de la función c(). Debemos poner los elementos del vector separados por comas.
+```{r}
+#Nos creamos un vector numérico
+numeric_vector <- c(1, 2, 3, 4)
+#Nos creamos un vector de caracteres
+char_vector <- c("a", "b", "c")
+#Nos creamos un vector de tipo lógico
+logic_vector <- c(TRUE, TRUE, FALSE, TRUE)
+```
+
+## Create a vector (II)
+Supongamos que tenemos dos vectores que indican las ganancias o perdidas jugando al poker y a la ruleta tras llevar cinco días en Las Vegas
+```{r}
+#Vector de perdidas/ganancias de lunes a viernes en el poker
+poker_vector <- c(140, -50, 20, -120, 240)
+#Vector de perdidas/ganancias de lunes a viernes en la ruleta
+roulette_vector <- c(-24, -50, 100, -350, 10)
+```
+
+##Naming a vector
+Como analista de datos es importante tener una visión clara de los datos que se están usando. En el apartado anterior hemos creado dos vectores que indican perdidas y ganancias de distintos días de la semana, pero así a simple vista es complicado saber a que días corresponde cada posición. Para solucionar este problema dispones de la función names().
+```{r}
+#Nos creamos los vectores
+poker_vector <- c(140, -50, 20, -120, 240)
+roulette_vector <- c(-24, -50, 100, -350, 10)
+#Nombramos a los vectores
+names(poker_vector) <- c("Monday", "Tuesday", "Thursday", "Wednesday", "Friday")
+names(roulette_vector) <- c("Monday", "Tuesday", "Thursday", "Wednesday", "Friday")
+```
+
+## Naming a vector (II)
+Anteriormente hemos tenido que escribir los nombres de los días de la semana dos veces, esto podría solucionarse guardando esto en una variable.
+```{r}
+#Nos creamos los vectores
+poker_vector <- c(140, -50, 20, -120, 240)
+roulette_vector <- c(-24, -50, 100, -350, 10)
+#Nos creamos el vector con los días de la semana
+week_days <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+#Nombramos a los vectores
+names(poker_vector) <- week_days
+names(roulette_vector) <- week_days
+```
+
+## Calculating total winnings
+A continuación estamos interesados en saber que día nos fue más rentable. Para ello bastará con sumar los dos vectores, ya que R sobre vectores las operaciones aritméticas las aplica sobre cada una de las componentes.
+```{r}
+#Obtenemos las ganancias para cada unos de los días
+total_daily <- poker_vector + roulette_vector
+```
+
+##Calculating total winnings (II)
+Ahora supongamos que estamos interesados en conocer las ganancias o perdidas totales, para realizar esto disponemos de la función sum(). Esta función lo que hace es realizar la suma total del vector.
+```{r}
+#Obtenemos la suma total en el poker
+total_poker = sum(poker_vector)
+#Obtenemos la suma total de la ruleta
+total_roulette <- sum(roulette_vector)
+#Obtenemos la suma total de ganancias/perdidas
+total_result <- total_poker + total_roulette
+total_result
+```
+Este resultado nos muestra que estamos perdiendo dinero. Ahora vamos a proceder a investigar de donde estamos realizando una peor estrategia, en el poker o en la ruleta. Para ello vamos a comprobar cual de las dos nos dan mas ganancias, para esto vamos a proceder a hacer uso del operador >.
+```{r}
+#Comprobamos si el poker está siendo más rentable que la ruleta
+total_poker > total_roulette
+```
+
+## Vector selection: the good times
+Otra posible vía para intentar dar explicación a que es lo que está pasando, es comprobar los resultados al principio de la semana y al final de la misma.  Es decir, nuestro objetivo es seleccionar un elemento específico de nuestro vector. Para poder seleccionar elementos de un vector podemos hacer uso de los corchetes ([]). Entre los corchetes indicamos el elemento que deseamos seleccionar, por ejemplo, para seleccionar el primer elemento de nuestro vector de poker deberíamos de hacer uso de poker_vecotr[1]. Debemos hacer notar que el primer elemento de nuestro vector es el índice 1 y no el índice 0 como ocurre en otros lenguaje de programación como por ejemplo Python.
+```{r}
+#Seleccionamos el resultado obtenido en el vector de poker para el martes
+poker_Tuesday <- poker_vector[2]
+```
+
+##Vector selection: good times (II)
+Si queremos seleccionar múltiples elementos de un vector, podemos hacerlo poniendo entre los corchetes otro vector que indica a los elementos que queremos acceder.
+```{r}
+#Seleccionamos los resultados del poker para el martes, miercoles y jueves
+poker_midweek <- poker_vector[c(2,3,4)]
+```
+
+##Vector selection: good times (III)
+En el ejercicio anteriro vimos una forma de seleccionar múltiples elementos de un vector, sin embargo esta no es la forma más común a la hora de seleccionar elementos consecutivos en un vector. Es más común hacer uso del operador ':', de forma que si hacemos uso de la expresión poker_vector[2:4] estamos seleccionando los elementos 2,3,4.
+```{r}
+#Seleccionamos del vector ruleta el resultado de martes a viernes
+result <- roulette_vector[2:5]
+```
+
+##Vector selection: good times (IV)
+Otra forma de seleccionar elementos de un vector cuando cada uno de sus elementos ha sido nombrado, haciendo uso de la función names(), es usando estos nombres.
+```{r}
+#Seleccionamos el resultado obtenido para el lunes del vector poker
+poker_vector["Monday"]
+```
+
+También podemos seleccionar múltiples días y aplicarle alguna función matemática, por ejemplo la media, para ello hacemos uso de la función mean().
+```{r}
+#Seleccinamos los resultados del lunes, martes y miércoles en el poker
+select_days <- poker_vector[c("Monday", "Tuesday", "Wednesday")]
+mean(select_days)
+```
+
+## Select by comparison - Step 1
+Los comparadores lógicos conocidos en R son:
+
+1. <: menor que
+2. >: mayor que
+3. <=: menor o igual que
+4. >=: mayor o igual que
+5. !=: distinto que
+6. ==: igual que
+
+Estos operadores retornan TRUE en caso de que se cumpla el operador y FALSE en caso contrario, esto podría ser usado por ejemplo para ver que días en el poker hemos tenido ganancias
+```{r}
+#Vemos que días se cumplen que el resultado es mayor que cero
+result <- poker_vector > 0
+result
+```
+
+## Select by comparison - Step 2
+Una vez sabemos que días son los que hemos tenido ganancias positivas, vamos a proceder a seleccionar estas ganancias. Cuando a un vector le pasamos un vector lógico, se seleccionan aquellas posiciones que toman el valor TRUE.
+```{r}
+poker_vector[result]
+```

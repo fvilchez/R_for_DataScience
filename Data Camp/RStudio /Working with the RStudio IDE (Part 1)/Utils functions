@@ -1,0 +1,5 @@
+View(): esta función recibe como parámetro un dataframe y nos permite visualizar dicho dataframe en forma de tabla. Una vez tenemos el Dataframe visualizado 
+clicar en 'show new window' y esto nos permitirá modificar el dataframe, por ejemplo, podemos ordenar las columnas de orden ascendente o descendente, o filtrar
+las columnas por determinados valores.
+
+

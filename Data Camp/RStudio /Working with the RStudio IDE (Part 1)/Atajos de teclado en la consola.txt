@@ -1,0 +1,8 @@
+Ctrl + L: limpia la consola
+
+Ctrl + up(flecha hacia arriba): nos abre un panel con los últimos comandos usados
+
+tabulador: sirve para autocompletar. Si por ejemplo presionamos el tabulador dentro de una función este nos saca un listado 
+de los distintos parámetros de la función. También nos permite autocompletar dataframes, de forma que si abrimos corchetes y 
+pulsamos el tabulador nos muestra un listado de filas y luego de columnas.
+

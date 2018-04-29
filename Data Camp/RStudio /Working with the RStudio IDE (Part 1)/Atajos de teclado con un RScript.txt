@@ -1,0 +1,7 @@
+Ctrl + Enter: si sombreamos el código y pulsamos esta combinación se ejecuta el código sombreado.
+
+Ctrl + Shift  + S: ejecuta el código completo de un script sin necesidad de ser sombreado (sin echo).
+
+Ctrl + Shift + Enter: ejecuta el código completo de un script sin necesidad de ser sombreado (con echo).
+
+

@@ -1,0 +1,84 @@
+---
+title: "Factors"
+output: html_notebook
+---
+## What's a factor and why would you use it?
+El término factor hace referencia a un tipo de dato estadístico usado para almacenar variables categóricas. La diferencia entre una variable categórica y una variable continua, es que la variable categórica puede tomar un número finito de valores, mientras que la variable continua puede tomar un número infinito de valores. Por ejemplo, un buen ejemplo de variable categórica sería el sexo: Hombre o Mujer.
+
+## What's a factor and why would you use it? (II)
+A la hora de crear factores en R, podemos hacer uso de la función factor().
+```{r}
+#Nos creamos el vector de sexo
+sex_vector <- c('Male', 'Female', 'Female', 'Male', 'Male')
+#Nos creamos el factor
+factor_sex_vector <- factor(sex_vector)
+factor_sex_vector
+```
+
+## What's a factor and why would you use it? (III)
+Existen dos tipos de variables categóricas: nominales y ordinales. Una variable ordinal se trata de una variable categórica sin orden. Esto significa que resulta imposible indicar que un valor valga más que el otro, un claro ejemplo es el sexo. En contraste las variables categóricas ordinales, se tratan de variables donde el orden es importante, un ejemplo podría ser una variable que tomase los valores: lento, moderado y rapido haciendo referencia a la velocidad de un coche, para indicar que el orden es importante disponemos del parámetro order que puede tomar el valor TRUE o FALSE. Por otro lado, el parámetro levels le indicamos el orden de prioridad.
+```{r}
+#Ejemplo de factor nominal
+animals_vector <- c("Elephant", "Giraffe", "Donkey", "Horse")
+factor_animals_vector <- factor(animals_vector)
+factor_animals_vector
+```
+```{r}
+#Ejemplo de factor ordinal
+temperature_vector <- c("High", "Low", "High","Low", "Medium")
+factor_temperature_vector <- factor(temperature_vector, order = TRUE, levels = c('Low', 'Medium', 'High'))
+factor_temperature_vector
+```
+
+## Factor levels
+Existen ocasiones en las cuales por algún motivo deseamos cambiar el nombre de los factores, R nos permite hacer esto haciendo uso de la función levels. Se debe tener mucho cuidado ya que el orden en el cual se mapea el factor es muy importante, si ejecutamos la función levels() podemos ver el orden en el cual se debe mapear, en caso de que no asignemos el orden de esta forma, R asigna los nombre por orden alfabético.
+```{r}
+#Nos creamos el factor
+survey_vector <- c("M", "F", "F", "M", "M")
+factor_survey_vector <- factor(survey_vector)
+#Vemos el orden en el cual se debe mapear
+levels(factor_survey_vector)
+```
+```{r}
+#Mapeamos el vector 
+levels(factor_survey_vector) <- c('Female', 'Male')
+factor_survey_vector
+```
+#Summarizing a factor
+Si nuestra variable a analizar es un factor y por ejemplo deseamos saber el número de elementos que tenemos de cada categoría podemos hacer uso de la función summary().
+```{r}
+#Nos creamos el resumen de la variable factor_survey_vector
+summary(factor_survey_vector)
+```
+
+## Battle of sexes
+Cuando intentamos comparar elementos de un factor, por defecto R retonar el valor de NA cuando se intenta comparar valores en un factor, ya que esta idea no tiene mucho sentido. Para poder realizar comparativias más significativas necesitamos hacer uso de las factores ordenados.
+```{r}
+male <- factor_survey_vector[1]
+female <- factor_survey_vector[2]
+male > female
+```
+
+## Ordered factors
+En el caso anterior R lo que hace es asignar un valor igual para todos los factores. Sin embargo, es posible que en determinadas situaciones deseemos que los factores tengo un determinado orden entre categorías. Supongamos que deseamos analizar las diferentes velocidades a las que circula un coche en un circuito y tomamos la siguiente muestra
+```{r}
+#Nos creamos el vector speed_vector
+speed_vector <- c("fast", "slow", "slow", "fast", "insane")
+```
+
+## Ordered factors (II)
+El siguiente paso es convertir el vector speed_vector a un factor ordinal, en las que sus categorías tengan un determinado orden. Para esto ya vimos que podemos hacer uso de la función factor
+```{r}
+#Nos un factor ordenado a partir del vector speed_vector
+factor_speed_vector <- factor(speed_vector, ordered = TRUE, levels = c('slow', 'fast', 'insane'))
+factor_speed_vector
+summary(factor_speed_vector)
+```
+
+## Comparing ordered vector
+Una vez tenemos nuestro factor ordenado, es posible realizar la comparación
+```{r}
+#Comparamos si la velocidad en el tramo 5 fue menor a la del tramo 2
+factor_speed_vector[2] > factor_speed_vector[5]
+```
+

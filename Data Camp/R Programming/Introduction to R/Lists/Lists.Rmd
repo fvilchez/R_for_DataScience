@@ -1,0 +1,67 @@
+---
+title: "Lists"
+output: html_notebook
+---
+
+## Lists, why would you need them?
+En R una lista permite almacenar una gran variedad de objetos bajo un único nombre(el nombre de la lista). Estos objetos pueden ser vectores, matrices, data frames, incluso otras listas. No es necesario que estos objetos esten relacionados entre sí. 
+
+## Creating a list
+R dispone de la función list() que nos permite crear una lista. El principal argumento de esta función son los elementos que componen nuestra lista.
+```{r}
+#Nos creamos un vector que contiene los números del 1 al 10 
+my_vector <- 1:10
+#Nos creamos una matriz que contiene los números del 1 al 9
+my_matrix <- matrix(1:9, byrow = TRUE, nrow = 3)
+#Almacenamos el dataframe mtcars en la variable df
+df <- mtcars
+#Nos creamos nuestra lista
+my_list <- list(my_vector, my_matrix, df)
+```
+
+## Creating a named list
+Con el fin de no olvidar que representa cada uno de los elementos de nuestra lista podemos nombrar todos y cada uno de los elementos. Para ello al igual que en los vectores disponemos de la función names(). 
+```{r}
+#Nombramos cada uno de los elementos de nuestra lista
+names(my_list) <- c('vector', 'matrix', 'data frame')
+```
+Otra forma que tenemos de nombrar los elementos de una lista en el momento de agregar los elementos a nuestra lista.
+```{r}
+#Nos creamos un vector con los numeros del 1 al 20
+my_vector <- 1:20
+#Nos creamos una matriz con los números del 1 al 25
+my_matrix <- matrix(1:25, ncol = 5)
+#Generamos nuestra lista identificada con los nombres
+my_list2 <- list(vector = my_vector, matrix = my_matrix)
+```
+
+## Selecting elements from a list
+Una forma sencilla de seleccionar elementos de una lista es extraer el elemento a partir de su posición haciendo uso de los corchetes. Debemos tener cuidado en este caso, con el corchete simple [] accedemos a la posición, con el doble corchete accedemos al elemento. Podemos evitar hacer uso de doble corchete usando el símbolo $.
+```{r}
+#Accedemos al elemento que contiene al vector que contiene los números del 1 al 20
+my_list2[1]
+```
+
+A la hora de acceder al propio vector tenemos dos formas
+```{r}
+#Haciendo uso de los dobles corchetes
+my_list2[[1]]
+```
+```{r}
+#Haciendo uso del símbolo $
+my_list2$vector
+```
+
+Una vez hemos accedido al elemento en si, podemos acceder a todos y cada uno de los elementos de dicho elemento.
+```{r}
+#Accedemos a los 10 primeros elementos del vector
+my_list2$vector[1:10]
+```
+
+## Adding information in a list
+```{r}
+my_list2_full <- c(my_list2, df = mtcars)
+str(my_list2_full)
+```
+
+

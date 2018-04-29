@@ -1,0 +1,107 @@
+---
+title: "Data frame"
+output: html_notebook
+---
+
+## What's a data frame?
+Ya hemos visto como los elementos de una matriz debían de ser todos del mismo tipo. Pero es posible que deseemos almacenar información de distinta índole. Un data frame no es más que un tipo de dato que permita almacenar información en forma de filas y columnas, pero que permite que los tipos de datos almacenados sean de distinto tipo.
+```{r}
+#Mostramos información sobre el dataframe mtcars
+mtcars
+```
+
+## Quick, have a look at your data set
+Trabajar con grandes conjuntos de datos es bastante común en el campo del análisis de datos.  Cuando se trabajar con grandes conjuntos datos, la primera tarea como analista de datos, no es otra que comprender estos datos. Un primer paso para lograr estos, es mostrar una pequeña  proporción de nuestro dataset.
+Para esto R cuenta con la función head() que nos permite mostrar las primeras observaciones de nuestro conjunto de datos y la función tail() que nos permite mostrar las últimas observaciones de nuestro conjunto de datos. Por defecto ambas funciones muestran las 6 primeras (en el caso de head) y las 6 últimas (en el caso de tail) observaciones de nuestro conjunto de datos. Esto podemos modificarlo ya que ambas funciones cuentan con el parámetro n, donde indicamos el número de observaciones que queremos mostrar.
+```{r}
+#Mostramos las 6 primeras observaciones de nuestro conjunto de datos
+head(mtcars)
+```
+
+```{r}
+#Mostramos las 3 últimas observaciones de nuestro conjunto de datos
+tail(mtcars, n= 3)
+```
+
+## Have a look at the structure
+Otra de las funciones muy usadas para tener un primer vistazo de la estructura de nuestro conjunto de datos es str(). Esta función nos muestra la estructura de nuestro conjunto de datos y nos proporciona la siguiente información:
+
+* Número total de observaciones.
+* Número total de variables.
+* Una lista con el nombre de todas las variables.
+* El tipo de dato para cada variable
+* Las primeras observaciones
+
+Aplicar esta función es probablemente una de las primeras cosas que debes de hacer cuando nos proporcionan un dataset por primera vez.
+```{r}
+str(mtcars)
+```
+
+## Creating a data frame
+Además de trabajar con data sets ya construidos, R nos permite crear nuestros propios datasets. Para ello R dispone de la función data.frame(). Como argumentos le pasamos en primer lugar tantos vectores como columna deseemos tener, por lo tanto, todos los vectores deben de tener la misma longitud.
+```{r}
+#Nos creamos los vectore necesarios para crear nuestro data frame
+name <- c("Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune")
+type <- c("Terrestrial planet", "Terrestrial planet", "Terrestrial planet", 
+          "Terrestrial planet", "Gas giant", "Gas giant", "Gas giant", "Gas giant")
+diameter <- c(0.382, 0.949, 1, 0.532, 11.209, 9.449, 4.007, 3.883)
+rotation <- c(58.64, -243.02, 1, 1.03, 0.41, 0.43, -0.72, 0.67)
+rings <- c(FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE)
+#Nos creamos nuestro data frame a partir de los vectores
+planets_df = data.frame(name, type, diameter, rotation, rings)
+head(planets_df)
+```
+
+## Creating a data frame (II)
+Aplicamos la función str para ver como es la estructura de nuestro data frame
+```{r}
+#Vemos la estructura de nuestro data frame
+str(planets_df)
+```
+
+## Selection of data frame elements
+Similar a los vectores y matrices, podemos seleccionar elementos de un data frame haciendo uso de los corchetes. Para ello indicamos en primer lugar la fila que deseamos seleccionar y separada por una coma indicamos la columna que deseamos seleccionar.
+```{r}
+#Mostramos el diametro de mercurio
+planets_df[1,3]
+```
+
+```{r}
+#Mostramos toda la información respecto a Marte
+planets_df[4,]
+```
+
+## Selection of data frame elements (II)
+En lugar de hacer uso de valores numéricos para seleccionar elementos de un data frame, podemos hacer uso del nombre de la columna para seleccionar elementos de dicha columna.
+```{r}
+#Seleccionamos el diámetro de los 5 primeros planetas
+planets_df[1:5, 'diameter']
+```
+
+## Only planets with rings
+Existen situaciones donde queremos seleccionar los elementos de una determinada columna que además cumplen una determinada restricción en otra columna. Por ejemplo, podemos queres seleccionar el diámetro de aquellos plantes que tienen anillos. Esto lo podemos hacer, para ello podemos hacer uso del símbolo $ que nos permite acceder a determinadas columnas de forma más rápida.
+```{r}
+#Seleccionamos unicamente los planetas que tienen anillos
+rings_vector <- planets_df$rings == TRUE
+rings_vector
+```
+```{r}
+#Seleccinamos el diametro de los planetas que solo tienen anillos
+planets_df[rings_vector, 'diameter']
+```
+
+## Only planets with rings but shorter
+R dispone de la función subset(), esta función nos permite seleccionar elementos de un data frame que cumplen una determinada condición. Como primer argumento le pasamos el data set sobre el cual queremos trabajar, y como segundo elemento le pasamos la condición que queremos que cumpla.
+```{r}
+#Seleccionamos aquellos planetas que tienen un diametro inferior a 1
+subset(planets_df, subset = diameter < 1)
+```
+
+## Sorting
+R dispone de la función order() que nos permite ordenar un conjunto de datos en base a una determinada variable. Esta función, lo que hace es retornar un vector con los índices de los elementos ordenados de menor a mayor (orden ascendente).
+```{r}
+#Obtenemos los índices de los planetas con el diametro de menor a mayor
+positions <- order(planets_df$diameter)
+planets_df[positions,]
+```
+

@@ -1,0 +1,172 @@
+---
+title: "Conditionals and Control Flow"
+output: html_notebook
+---
+
+## Equality (==)
+
+La forma más básica de comparar es la igualdad. Debemos tener en cuenta que a la hora de hacer una comparación R se trata de un lenguaje de programación case sensitive.
+```{r}
+#Comparación lógica 
+TRUE == TRUE
+```
+```{r}
+#Comparación numérica
+6*3 == 6*2
+```
+```{r}
+#Comparación de caracteres o strings
+'users' == 'Users'
+```
+```{r}
+#Comparación de valor lógica y numérico
+TRUE == 1
+```
+
+## Greater and less then
+Además del signo de igualdad, R nos permite hacer uso de los signos > y <. Si queremos añadir además los operadores mayor igual o menor igual deberemos acompañar estos signos con el símbolo de igualdad.
+```{r}
+6 > 3
+```
+```{r}
+5 < 4
+```
+
+```{r}
+7 <= 7
+```
+También podemos hacer uso de estos operadores para comparar strings. Debemos tener en cuenta que R a la hora de comparar strings hace uso del orden alfabético. Es decir, una palabra que empieza por A será menor que una palabra que empiece por B y esta a su vez menor que una que empiece por C etc.
+```{r}
+'Hola' > 'Adios'
+```
+
+```{r}
+'America' > 'Antartida'
+```
+Finalmente también podemos hacer uso de estos operadores para comparar booleanos, teniendo en cuenta que el valor TRUE tiene asociado internamente el valor númerico 1 y el valor FALSE tiene asociado el valor numérico 0.
+```{r}
+TRUE > FALSE
+```
+
+## Compare vectors
+R nos permite comparar vectores de igual dimensión. Esta comparación se hace elemento a elemento, de forma que nos retornará un vector booleano donde nos indicará para cada posición si se cumple la condición. Supongamos que tenemos dos vectores que nos indican el número de visitas a nuestro perfil durante la última semana en facebook y linkedin
+```{r}
+#Nos creamos los dos vectores
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+facebook <- c(17, 7, 5, 16, 8, 13, 14)
+```
+```{r}
+#Vemos que dias hemos tenido más de 15 visitas a nuestro perfil de linkedin 
+linkedin > 15
+```
+```{r}
+#Vemos que días de la semana hemos tenido más visitas en nuestro perfil de facebook que en nuestro perfil de linkedin 
+facebook > linkedin
+```
+
+## Compare matrices
+R también nos permite comparar matrices, esta comparación se aplicará a cada uno de los elementos, de forma que se retornará una matriz booleana con igual dimensión que la original donde cada elemento tendrá un valor de TRUE o FALSE en función de si cumple o no la condición impuesta.
+```{r}
+#Nos montamos nuestra matriz con los valores anteriores
+views <- matrix(c(facebook, linkedin), byrow = TRUE, nrow = 2)
+rownames(views) <- c('Facebook', 'Linkedin')
+colnames(views) <- c('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
+views
+```
+
+```{r}
+#Vemos los días y en que medio hemos tenido más de 10 visitas
+views > 10 
+```
+
+## & and |
+A continuación vamos a proceder a hablar sobre los operadores lógicos &(and) y |(or). El operador AND retorna el valor de TRUE cuando todas las comparaciones que se realizan son TRUE.
+```{r}
+#Nos creamos el vector linkedin
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+#Seleccinamos el último valor del vector linkedin 
+last <- tail(linkedin, 1)
+```
+```{r}
+#Aplicamos el operador and sobre el valor last
+last >= 10 & last  <= 15
+```
+Puesto que ambas operaciones son TRUE retorna TRUE, sin embargo, si algunas de las operaciones el FALSE se retorna FALSE
+```{r}
+#Aplicamos el operador and sobre el valor last
+last > 5 & last > 20
+```
+
+En este caso la segunda sentencia es FALSE por lo que retorna FALSE. El operador OR por su parte retorna TRUE siempre que su cumpla al menos una de las sentencias, por lo que solo retornará FALSE si todas son FALSE.
+```{r}
+#Aplicamos el operador OR a la variable last
+last > 10 | last > 20
+```
+Pese a que la segunda sentencia es FALSE nos retorna TRUE ya que la primera sentencia es TRUE.
+```{r}
+last < 1  | last > 20
+```
+En este caso como las dos sentencias son FALSE nos retorna FALSE.
+
+## & and | (II)
+Al igual que los operadores relacionales podían ser usados con vectores los operadores lógicos también pueden ser usados para este fin. Para poder realizar esta comparación ambos vectores deben tener igual dimensión. Esta comparación se realizará elemento a elemento.
+```{r}
+#Aplicamos el operador AND a nuestros vectores. En este caso, queremos ver los días en lo que se cumple #que el número de visitas en facebook y linkedin son superiores a 10.
+linkedin > 10 & facebook > 10
+```
+
+```{r}
+#Ahora estamos interesados en conocer cuando tuvimos más de diez visitas o bien en linkedin o bien en #facebook
+linkedin > 10 | facebook > 10 
+```
+
+## Reverse the result: !
+El operador NOT(!) nos permite revertir un resultado. Es decir, un resultado que era TRUE conventirlo en FALSE y viceversa.
+```{r}
+!(last > 20)
+```
+
+## The if statement
+A continuación vamos a proceder a presentar al primer controlador de flujo de R, el condicional if. Este condicional trabaja de la siguiente forma: if(condition){expr}, es decir, si la condición introducida se evalua como verdadera se ejecuta el código en expr.
+```{r}
+#Nos creamos dos variables
+medium <- 'LinkedIn'
+num_views <- 14
+```
+```{r}
+#Ejecutamos el condicional if
+if(medium == 'LinkedIn'){
+  print("Showing LinkedIn information")
+}
+```
+Puesto que la condición del if es TRUE se ejecuta el print.
+```{r}
+#Ejecutamos el condicional if
+if(num_views > 15){
+  print("You're a very popular person")
+}
+```
+En este caso, como la condición impuesta en el if es FALSE, no se ejecuta el print
+
+## Add an else
+Podemos añadir al condicional if el operador else, de forma que si la condición evaluada en el if se evalua como FALSE se ejecuta lo que exista dentro del else
+```{r}
+if(num_views > 15){
+  print("You're a very popular person")
+}else{
+  print("You need improve your profile")
+}
+```
+
+## Customize further: else if
+En determinadas ocasiones es posibles que queramos comparar más de una condición de forma que dependiendo de que condición se cumpla podamos ejecutar una acción u otra, para esto contamos con el operador else if.
+```{r}
+if(num_views > 15){
+  print("You're a popular person")
+}else if(num_views <= 15 | num_views > 13){
+  print("Maybe you are interested in improve your profile")
+}else{
+  print("You need improve your profile")
+}
+```
+Debemos tener en cuenta que una vez se cumpla alguna de las condiciones el resto son obviadas.

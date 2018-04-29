@@ -1,0 +1,191 @@
+---
+title: "Loops"
+output: html_notebook
+---
+
+## Write a while loop
+
+Un bucle while se trata de un bucle que se ejecutará siempre y cuando se cumpla la condición. Es muy importante controlar la condición ya que en caso de que la condición nunca deje de cumplirse estaremos creando un bucle infinito.
+```{r}
+#Le asignamos un valor inicial a la variable speed
+speed <- 64
+
+#Nos creamos nuestro buchle while
+while(speed > 30){
+  print('Slow Down!')
+  speed <- speed - 7
+}
+```
+
+## Throw in more conditionals
+También podemos hacer uso de sentencias **if** o **else if** dentro de un bucle while
+```{r}
+#Inicializamos la variable
+speed <- 64
+
+#Nos creamos bucle while con setencias if
+while(speed > 30){
+  print(paste('Your speed is', speed))
+  if(speed > 48){
+    print('Slow Down big time!')
+    speed
+    speed <- speed - 11
+  }else{
+    print('Slow Down!')
+    speed
+    speed <- speed - 6
+  }
+}
+```
+
+## Stop the while loop: break
+La sentencia break provoca la salida del bucle cuando aparece esta sentencia, es decir, se trata de una sentencia que nos permite abandonar un bucle bajo ciertas condiciones.
+
+```{r}
+#Inicializamos varibable 
+speed <- 88
+
+#Nos generamos bucle while con sentencia break
+while(speed > 30){
+  print(paste('Your speed is', speed))
+  if(speed > 80){
+    break
+  }
+  if(speed > 48){
+    print('Slow down big time!')
+    speed <- speed - 11
+  }else{
+    print('Slow down!')
+    speed <- speed - 6
+  }
+}
+```
+
+## Build a while loop from scratch
+```{r}
+#Inicializamos la variable i
+i <- 1
+
+#Nos creamos el buchle while con break 
+while(i <= 10){
+  print(3*i)
+  if(3*i %% 8 == 0){
+    print(3*i)
+    break
+  }
+  i <- i + 1
+}
+```
+
+## Loop over a vector
+El bucle for nos permite recorrer las distintas estructuras de datos de las que disponemos en R. 
+```{r}
+#Nos creamos un vector 
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+
+#A continuación vamos a proceder a hacer uso del bucle for para recorrer este vector
+for(value in linkedin){
+  print(value)
+}
+```
+Otra forma de recorrer nuestro vector linkedin es la siguiente
+```{r}
+for(i in 1:length(linkedin)){
+  print(linkedin[i])
+}
+```
+
+## Loop over a list
+También podemos hacer uso de bucles para recorrer listas.
+```{r}
+#Nos creamos una lista
+nyc <- list(pop = 8405837, 
+            boroughs = c("Manhattan", "Bronx", "Brooklyn", "Queens", "Staten Island"), 
+            capital = FALSE)
+
+#Hacemos uso del bucle para for para recorrer la lista
+for(value in nyc){
+  print(value)
+}
+```
+También podemos hacer uso de la forma alternativa vista con vectores, solo que en este caso debemos tener claro que debemos de hacer uso de los corchetes dobles para acceder al elemento a partir de la posición
+```{r}
+for(i in 1:length(nyc)){
+  print(nyc[[i]])
+}
+```
+
+## Loop over a matrix
+A la hora de recorrer una matriz, debemos de hacer uso de un bucle for doble, una para recorrer filas y otra para recorrer columnas.
+```{r}
+#Nos creamos nuestra matriz
+M <- matrix(1:9, byrow = TRUE, nrow = 3)
+
+#Recorremos nuestra matriz
+for(i in 1:nrow(M)){
+  for(j in 1:ncol(M)){
+    print(paste('En la fila', i, 'y en la columna', j, 'se encuentra el valor', M[i,j]))
+  }
+}
+```
+
+## Mix it up with control flow
+En el siguiente ejercicio vamos a proceder a hacer uso tanto de bucles como de los sistemas de control de flujo vistos hasta ahora.
+```{r}
+#Nos creamos nuestro vector
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+
+#Aplicamos sentencia de control de flujo en nuestro bucle
+for(i in linkedin){
+  if(i > 10){
+    print('You are popular')
+  }else{
+    print('Be more visible')
+  }
+  print(i)
+}
+```
+
+##Next, you break it
+Al igual que hemos visto en el bluchel while, el bucle for también dispone de la sentencia break, provocando la misma causa que en el bucle while, es decir, cuando esta sentencia es ejecutado nos salimos del bucle. Además de esta sentencia el bucle for dispone de la sentencia **next** a diferencia del break, cuando el flujo del programa se encuentra con esta sentencia se procede a saltar a la siguiente iteración del bucle, pero sin salirse de este.
+```{r}
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+
+#Procedemos a hacer uso de las sentencias next y break 
+for(i in linkedin){
+  if(i > 10){
+    print('You are popular')
+  }else{
+    print('Be more visible')
+  }
+  if(i > 16){
+    print('This is ridiculous, I am outta here')
+    break
+  }
+  if(i < 5){
+    print('This is too embarrassing')
+    next
+  }
+  print(i)
+}
+```
+
+## Build a for loop from scratch
+```{r}
+#Variables predefinidas
+rquote <- "r's internals are irrefutably intriguing"
+chars <- strsplit(rquote, split = "")[[1]]
+#Inicializamos rcount a 0
+rcount <- 0 
+
+#Nos creamos el bucle
+for(char in chars){
+  if(char == 'r'){
+    rcount <- rcount + 1
+  }else if(char == 'u'){
+    break
+  }
+}
+print(rcount)
+```
+
