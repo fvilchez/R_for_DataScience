@@ -1,0 +1,147 @@
+---
+title: "The apply family"
+output: html_notebook
+---
+
+## Use lapply with a built-in R function
+La función **lapply()** toma como argumento principal un vector o lista **X**, y cada uno de estos elementos le aplica la función **FUN** que le pasamos como segundo parámetro. Si la función **FUN** necesita de algún argumento adicional se le pasa después de **FUN** separados por comas. La salida de la función **lapply()** es una lista, de la misma longitud que **X**, donde cada elemento es el resultado de aplicar la función **FUN** a cada uno de los elementos.
+
+```{r}
+#Nos creamos un vector
+pioneers <- c('GAUSS:1777', 'BAYES:1702', 'PASCAL:1623', 'PEARSON:1857')
+
+#Separamos el vector
+split_math <- strsplit(pioneers, split = ':')
+
+split_math
+```
+
+```{r}
+#Ahora haciendo uso de lapply convertimos a minúscula
+split_low <- lapply(split_math, tolower)
+#Vemos la estructura de split_low
+str(split_low)
+```
+
+## Use lapply with your own function
+La función lapply también puede ser usado por nuestras propias funciones. Ahora supongamos que lo queremos separar el nombre y el año de nacimiento en dos listas por separado
+
+```{r}
+#Nos creamos las función que selecciona el nombre
+select_name <- function(x){
+  x[1]
+}
+
+#Aplicamos la función a cada uno de los elementos de la lista con lapply
+names <- lapply(split_low, select_name)
+str(names)
+```
+
+```{r}
+#Nos creamos la función que selecciona el año de nacimiento
+select_year <- function(x){
+  x[2]
+}
+
+#Aplicamos la función a cada uno de los elementos de la lsita con lapply
+years <- lapply(split_low, select_year)
+str(years)
+```
+
+## lapply and anonymous functions
+A la hora de aplicar una función esta puede ser definida dentro de la función **lapply()**. Cuando definimos una función dentro de una función **lapply()**, esta es conocida como función anonima.
+```{r}
+#Aplicamos la función select_name como anónima
+names <- lapply(split_low, function(x) x[1])
+str(names)
+```
+```{r}
+#Seleccionamos la función select_year como anónima
+years <- lapply(split_low, function(x) x[2])
+str(years)
+```
+
+## Use lapply with additional arguments
+A la función **lapply()** le podemos aplicar funciones que tengan argumentos adicionales
+
+```{r}
+#Nos creamos una función que nos permite seleccionar distintos elementos de una lista
+select_index <- function(x, index){
+  x[index]
+}
+
+#Aplicamos esta función mediante la función lapply
+names <- lapply(split_low, select_index, index = 1)
+str(names)
+years <- lapply(split_low, select_index, index = 2)
+str(years)
+```
+
+## How to use sapply
+Podemos hacer uso de **sapply()** de forma similar a como hemos usado **lappy()**. El primer argumento de **sapply()** es una lista o vector **X** al cual le queremos aplicar una función **FUN**. La principal ventaja de **sapply()** respecto a **lappy()** es que en caso de que sea posible nos simplifica el resultado.
+
+```{r}
+#Nos creamos la lista temp que recoger temperatura a lo largo de una semana
+temp <- list(c(3,7,9,6,-1), c(6,9,12,13,5), c(4,8,3,-1,-3), c(1,4,7,2,-2), c(5,7,9,4,2),
+             c(-3,5,8,9,4), c(3,6,9,4,1))
+#A continuación obtenemos la temperatura mínima para cada uno de los días usando lapply
+temp_min <- lapply(temp, min)
+str(temp_min)
+```
+Podemos ver como el resultado es una lista de valores, sin embargo, sería más adecuado que nuestro resultado fuese un vector de valores, para esto podemos hacer uso de **sapply()**
+```{r}
+#Calculamos el mínimo aplicando la función sapply
+temp_min <- sapply(temp, min)
+str(temp_min)
+```
+
+##sapply with your own function
+Al igual que con **lapply()** podemos hacer uso de nuestras propias funciones con **sapply()**.
+
+```{r}
+#Nos creamos una función que nos permite sumar las temperaturas máxima y mínima y #dividirlas entre dos
+extremes_avg <- function(x){
+  (min(x) + max(x))/2
+  
+}
+#Aplicamos la función mediante sapply
+sapply(temp, extremes_avg)
+```
+
+## sapply with function returning vector
+Cuando la función que le aplicamos retorna un vector de una dimensión mayor que 1, la función sapply nos simplifica el resultado en una matriz
+```{r}
+#Nos creamos una función que nos permite seleccionar la temperatura máxima y mínima
+extremes <- function(x){
+  c(min = min(x), max = max(x))
+}
+
+#Ahora aplicamos la función extremes mediante sapply
+sapply(temp, extremes)
+```
+
+##sapply can't simplify, now what?
+Ya hemos visto que la función **sapply()** nos permite simplificar, pero existen situaciones en las cuales la simplificación no es posible. 
+```{r}
+#Función que nos permite seleccionar temperaturas bajo cero
+below_zero <- function(x)
+  return(x[x < 0])
+
+#Aplicamos esta función mediante la función sapply
+sapply(temp, below_zero)
+```
+En este caso podemos ver como nos retorna también una lista, ya que devolvemos distintos tipos de datos. 
+
+## Use vapply
+La función **vapply()** nos permite con un argumento adicional que tipo de elemento retornar, de forma que si le indicamos por error un valor erroneo esta nos saltará un error.
+
+```{r}
+#Nos creamos una función que nos retorna el máximo, mínimo y la media de temperaturas
+basics <- function(x){
+  c(min = min(x), mean = mean(x), max = max(x))
+}
+#Hacemos uso de la función vapply
+vapply(temp, basics, numeric(3))
+```
+
+La función **vapply()** puede ser considerada una función mucho más robusta que la función **sapply()**, ya que podemos fijar el dato de salida.
