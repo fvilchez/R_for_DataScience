@@ -1,0 +1,268 @@
+---
+title: "Utilities"
+output: html_notebook
+---
+
+## Mathematical Utilities
+Algunas de las funciones matemáticas más útiles que R nos proporciona por defecto son:
+
+ * **mean()**: calcula la media aritmética
+ 
+ * **abs()**: calcula el valor absoluto
+ 
+ * **sum()**: calcula la suma de todos los valores de una estructura de datos
+ 
+ * **round()**: redondeo al decimal 0 más cercano por defecto.
+ 
+```{r}
+#Nos creamos un vector 
+errors <- c(1.9, -2.6, 4.0, -9.5, -3.4, 7.3)
+
+#Hacemos la suma del valor absoluto de los valores redondeados
+sum(round(abs(errors)))
+```
+ 
+## Find the error
+La función **rev()** nos permite invertir el orden de una estructura de datos.
+
+```{r}
+#Nos creamos un vector 
+vector1 <- c(1.5, 2.5, 8.4, 3.7, 6.3)
+
+#Invertimos el vector
+vector2 <- rev(vector1)
+
+#Calculamos la media del valor absoluto de ambos vectores
+mean(c(abs(vector1), abs(vector2)))
+```
+
+## Data Utilities
+Existe una gran cantidad de funciones que R nos proporciona para manipular estructuras de datos
+
+* **seq**: función que genera secuencias de números especificando los parámetros **from** (desde que número empieza la secuencia), **to** (en que número termina la secuencia) y **by** nos indica el incremento de la secuencia.
+
+* **rep**: replica elementos de vectores y listas.
+
+* **sort()**: ordena un vector de manera ascendente por defecto, aunque esto puede ser modificado dándole el valor **TRUE** al parámetro **decreasing**. Funciona con valores numéricos, lógicos y strings.
+
+* **rev()**: invierte el orden de los elementos de una estructura de datos.
+
+* **str()**: muestra la estructura de cualquier objeto de R.
+
+* **append()**: une dos vectores o listas.
+
+* **is.()**: chequea la clase de un objeto en R.
+
+* **as.()**: convierte un objeto R a otro tipo.
+
+* **unlist()**: transforma listas en vectores.
+
+```{r}
+#Nos creamos dos listas
+linkedin <- list(16, 9, 13, 5, 2, 17, 14)
+facebook <- list(17, 7, 5, 16, 8, 13, 14)
+
+#Pasamos ambas listas a tipo vector
+linkedin_vector <- unlist(linkedin)
+facebook_vector <- unlist(facebook)
+
+#Nos creamos un vector social_vector que es la unión de linkedin_vector y facebook_vector
+#Opción 1
+social_vec1 <- c(linkedin_vector, facebook_vector)
+#Opción2
+social_vec2 <- append(linkedin_vector, facebook_vector)
+
+#Ordenamos social vec de manera descendente
+sort(social_vec1, decreasing = TRUE)
+
+```
+
+## Find the error (2)
+```{r}
+#Nos creamos una secuencia y repetimos la secuencia 3 veces
+rep(seq(1, 7, by = 2), times = 3)
+```
+```{r}
+#Ahora lo que hacemos es repetir cada uno de los elementos de la secuencia tres veces
+rep(seq(1, 7, by = 2), each = 3)
+```
+
+## grepl & grep
+En su forma más simple, las expresiones regulares pueden ser usadas para ver si algún patrón existe dentro de un string o en un vector de strings. Para este propósito podemos hacer uso de:
+
+* **grepl()**: que retorna **TRUE** cuando el patrón es encontrado en el string correspondiente.
+
+* **grep()**: nos retorna los índices en los que se encuentran los string que cumplen el patrón buscado.
+
+Ambas funciones necesitan los argumentos **pattern** y **x**, donde **pattern** es la expresión regular que queremos buscar, mientras que **x** es el objeto en el cual queremos buscar el patrón.
+
+```{r}
+#Nos creamos un vector de emails
+emails <- c("john.doe@ivyleague.edu", "education@world.gov", "dalai.lama@peace.org",
+            "invalid.edu", "quant@bigdatacollege.edu", "cookie.monster@sesame.tv")
+
+#Hacemos uso de la función grepl para encontrar la palabra edu
+grepl('edu', emails)
+
+#Ahora hacemos uso de la función grep() para encontrar los índices en los que aparece edu
+hits <- grep('edu', emails)
+
+#Seleccionamos los emails en los que aparece la palabra edu
+emails[hits]
+```
+
+## grepl & grep (2)
+Podemos hacer uso del signo de intercalación **(^)** y del signo del dollar **($)** para machear un patrón al inicio y al final de un string. Podemos querer por ejemplo detectar si un email está bien escrito para ello vamos a proceder a comprobar lo siguiente:
+
+* El email debe contener el signo **@**.
+
+* Tras el signo arroba puede contener cualquier carácter
+
+* Debe finalizar en .edu
+
+```{r}
+#Nos creamos una expresión regular más compacta
+grepl('@.*\\.edu$', emails)
+#Hacemos uso de grep para encontrar los índices
+hits <- grep('@.*\\.edu$', emails)
+#Seleccinamos los emails 
+emails[hits]
+```
+
+## sub & gsub
+Mientras que **grep()** y **grepl()** nos permiten comprobar si un patrón se da o no, las funciones **sub()** y **gsub()** van un paso más allá, ya que nos permiten reemplazar por otro valor donde se cumpla dicha expresión. Por ejemplo, supongamos que en los emails anteriores queremos cambiar **@string.edu** por **@gmail.com**
+
+```{r}
+sub('@.*\\.edu', '@gmail.com', emails)
+```
+
+Podemos ver como sub solo ha actuado sobre la primera coincidencia, si queremos actuar sobre todas las coincidencias debemos de hacer uso de la función gsub()
+
+```{r}
+gsub('@.*\\.edu', '@gmail.com', emails)
+```
+
+## Right here, right now
+En R las fechas están representadas por objetos de tipo **Date** , mientras que las fechas de tipo tiempo se representan mediante objetos de tipo **POSIXct**. Sin embargo, en el fondo estas fechas y tiempos simplemente son valores numéricos. Los objetos tipo **Date** lo que hacen es almacenar el número de días desde el 1 de enero de 1970. Por otro lado, los obejtos de tipo POSIXct almacenan el número de segundos desde el 1 de enero de 1970.
+
+El 1 de enero de 1970 es una fecha ampliamente utilizada en muchos lenguajes de programación como fecha de origen. No existe una razón particular para esto, es por simple convención. Es posible generar fechas anteriores al 1 de enero de 1970, en este caso los valores numéricos que se le asignaran serán negativos.
+
+```{r}
+#Obtenemos la fecha actual
+today <- Sys.Date()
+print(today)
+
+#Vemos como interpreta R esta fecha
+unclass(today)
+
+#Obtenemos la fecha y la hora actual
+time <- Sys.time()
+
+#Vemos como interpreta esto R
+unclass(time)
+```
+
+## Create and format dates
+Podemos crear objetos tipo **Date** a partir de un simple string, para ello podemos hacer uso de la función **as.Date()**- El string tiene que seguir un formato que puede ser definido con una serie de símbolos
+
+* **%Y**: año con 4 dígitos (1982)
+
+* **%y**: año con 2 dígitos (82)
+
+* **%m**: mes en formato de dos dígitos (06)
+
+* **%d**: día en formato de dos dígitos (25)
+
+* **%A**: día de la semana (Wednesday)
+
+* **%a**: día de la semana abreviado (Wed)
+
+* **%B**: mes (January)
+
+* **%b**: mes abreviado (Jan)
+
+Por defecto la función **as.Date()** toma como formato **%Y-%m-%d** o **%Y/%m/%d**, por lo que en caso de que usemos este formato no es necesario proporcionárselo a la función.
+
+Además de crear fechas, también podemos convertir fechas a tipo carácter que usan una notación diferente. Para esto podemos hacer uso de la función **format()**
+
+```{r}
+#Definimos tres strings que representan fechas
+str1 <- "May 23, '96"
+str2 <- "2012-03-15"
+str3 <- "30/Enero/2006"
+
+#Las pasamos a tipo Data
+date1 <- as.Date(str1, format = "%b %d, '%y")
+date2 <- as.Date(str2)
+date3 <- as.Date(str3, format = "%d/%B/%Y")
+```
+```{r}
+#Nos definimos la fecha de hoy en un formato que nos interese
+format(Sys.Date(), format = "%d %B, %Y")
+```
+
+La función **format()** también nos permite extraer información útil de determinadas fechas, por ejemplo, el año, el mes o el día de la semana, etc.
+
+```{r}
+#Extraemos el día de la semana
+format(date1, "%A")
+#Extraemos el mes
+format(date2, "%B")
+#Extraemos el año
+format(date3, "%y")
+```
+
+## Create and format times
+Similar a como hemos trabajado trabajo con el formato tipo **Date**, podemos hacer uso de la función **as.POSIXct()** para convertir un string a formato **POSIXct** y format para convertir del formato **POSIXct** a tipo string. Volvemos a tener una amplia variedad de símbolos
+
+* **%H**: horas como número decimal (00-23)
+
+* **%I**: horas como número decimal (01-12)
+
+* **%M**: minutos como número decimal 
+
+* **%S**: segundos como número decimal 
+
+* **%T**: notación corta para referirnos al formato (%H:%M:%S)
+
+* **%p**: indicador AM/PM
+
+Para ver la lista completa de símbolos podemos hacer uso de **?strptime**. Por defecto la función **as.POSIXct()** hace uso del formato **%Y-%m-%d %H:%M:%S**.
+
+```{r}
+#Nos creamos dos strings
+str1 <- "Mayo 23, '96 hours:23 minutes:01 seconds:45"
+str2 <- "2012-3-12 14:23:08"
+
+#Convertimos a tipo POSIXct cada una de las fechas anteriores
+time1 <- as.POSIXct(str1, format = "%B %d, '%y hours:%H minutes:%M seconds:%S")
+time2 <- as.POSIXct(str2, " %Y-%M-%y %T")
+
+#Convertimos a tipo string las fechas
+format(time1, "%M")
+format(time2, "%T %p")
+```
+
+## Calculations with Dates
+Como ya hemos indicado los objetos tipo **Date** y **POSIXct** representan simples valores numéricos. Esto hace que el cálculo co los objetos tipo fecha y hora sea muy sencillo: R hace uso de los valores subyacentes para realizar los cálculos y convierte el resultado en un formato legible.
+
+```{r}
+#Nos creamos un vector de strings que representan fechas
+days <- c("2018-04-17", "2018-04-19", "2018-04-24", "2018-04-30", "2018-05-05")
+
+#Ahora aplicamos la función as.Date a cada uno de los elementos del vector
+dates <- as.Date(days)
+
+#Hacemos uso de la función diff para calcular la diferencia entre elementos consecutivos
+diff(dates)
+```
+
+## Calculations with Times
+Igual que hemos realizado calculos con las variables tipo **Date** podemos realizar operaciones con las variables de tipo **POSIXct**. Debemos tener en cuenta que la suma será agregada en segundos.
+```{r}
+#Nos creamos la variable now
+now <- Sys.time()
+now
+#Ahora vamos a proceder a sumar 1h a la variable now
+now + 3600
+```
