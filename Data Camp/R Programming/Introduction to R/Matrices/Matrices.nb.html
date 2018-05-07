@@ -178,8 +178,9 @@ $(document).ready(function () {
 <p>En R, una matriz es una colección de elementos del mismo tipo (numéricos, strings, booleanos) agrupados en un número fijo de filas y columnas. Puesto que solo trabajo con filas y columnas, una matriz se trata de un elemento bidimensional. En R podemos hacer uso de la función matrix() para construir una matriz.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWF0cml4KDE6OSwgYnlyb3cgPSBUUlVFLCBucm93ID0gMylcbmBgYCJ9 -->
-<pre class="r"><code>matrix(1:9, byrow = TRUE, nrow = 3)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxubWF0cml4KDE6OSwgYnlyb3cgPSBUUlVFLCBucm93ID0gMylcbmBgYFxuYGBgIn0= -->
+<p><code>r</code>r matrix(1:9, byrow = TRUE, nrow = 3)</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICBbLDFdIFssMl0gWywzXVxuWzEsXSAgICAxICAgIDIgICAgM1xuWzIsXSAgICA0ICAgIDUgICAgNlxuWzMsXSAgICA3ICAgIDggICAgOVxuIn0= -->
 <pre><code>     [,1] [,2] [,3]
@@ -190,7 +191,7 @@ $(document).ready(function () {
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <ul>
-<li>El primer argument de la función es un conjunto de elementos que R puede agrupar en filas y columnas.</li>
+<li>El primer argumento de la función es un conjunto de elementos que R puede agrupar en filas y columnas.</li>
 <li>El argumento byrow puede tomar dos valores posibles: TRUE y FALSE. Si toma el valor TRUE indica que la matriz es rellena por filas, mientras que si tomar el valor de FALSE nos indica que la matriz es rellena por columnas.</li>
 <li>El tercer argumento nrow indicamos el número de filas que queremos que tenga la matriz.</li>
 </ul>
@@ -200,16 +201,9 @@ $(document).ready(function () {
 <p>A continuación vamos a proceder a realizar un análisis en taquilla de las películas de la saga la Guerra de las Galaxias. Para ello vamos a proceder a crearnos tres vectores que indican lo que recaudaron cada una de las películas. Estos vectores tendrán dos componentes que indicarán la recaudación en taquilla de las películas en USA y fuera de USA.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI05vcyBjcmVhbW9zIGxvcyB2ZWN0b3Jlc1xubmV3X2hvcGUgPC0gYyg0NjAuOTk4LCAzMTQuNClcbmVtcGlyZV9zdHJpa2VzIDwtIGMoMjkwLjQ3NSwgMjQ3LjkwMClcbnJldHVybl9qZWRpIDwtIGMoMzA5LjMwNiwgMTY1LjgpXG4jTm9zIGNyZWFtb3MgZWwgdmVjdG9yIGJveF9vZmZpY2UgcXVlIHVubyBsb3Mgb3RybyB0cmVzIGVuIHVuIHNvbG8gdmVjdG9yXG5ib3hfb2ZmaWNlIDwtIGMobmV3X2hvcGUsIGVtcGlyZV9zdHJpa2VzLCByZXR1cm5famVkaSlcbiNOb3MgY3JlYW1vcyB1bmEgbWF0cml6IGRlIDMgZmlsYXMgZG9uZGUgY2FkYSBmaWxhIHJlcHJlc2VudGEgdW5hIHBlbMOtY3VsYVxuc3RhcndhcnNfbWF0cml4IDwtIG1hdHJpeChib3hfb2ZmaWNlLCBieXJvdyA9IFRSVUUsIG5yb3cgPSAzKVxuc3RhcndhcnNfbWF0cml4XG5gYGAifQ== -->
-<pre class="r"><code>#Nos creamos los vectores
-new_hope &lt;- c(460.998, 314.4)
-empire_strikes &lt;- c(290.475, 247.900)
-return_jedi &lt;- c(309.306, 165.8)
-#Nos creamos el vector box_office que uno los otro tres en un solo vector
-box_office &lt;- c(new_hope, empire_strikes, return_jedi)
-#Nos creamos una matriz de 3 filas donde cada fila representa una película
-starwars_matrix &lt;- matrix(box_office, byrow = TRUE, nrow = 3)
-starwars_matrix</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuI05vcyBjcmVhbW9zIGxvcyB2ZWN0b3Jlc1xubmV3X2hvcGUgPC0gYyg0NjAuOTk4LCAzMTQuNClcbmVtcGlyZV9zdHJpa2VzIDwtIGMoMjkwLjQ3NSwgMjQ3LjkwMClcbnJldHVybl9qZWRpIDwtIGMoMzA5LjMwNiwgMTY1LjgpXG4jTm9zIGNyZWFtb3MgZWwgdmVjdG9yIGJveF9vZmZpY2UgcXVlIHVubyBsb3Mgb3RybyB0cmVzIGVuIHVuIHNvbG8gdmVjdG9yXG5ib3hfb2ZmaWNlIDwtIGMobmV3X2hvcGUsIGVtcGlyZV9zdHJpa2VzLCByZXR1cm5famVkaSlcbiNOb3MgY3JlYW1vcyB1bmEgbWF0cml6IGRlIDMgZmlsYXMgZG9uZGUgY2FkYSBmaWxhIHJlcHJlc2VudGEgdW5hIHBlbMOtY3VsYVxuc3RhcndhcnNfbWF0cml4IDwtIG1hdHJpeChib3hfb2ZmaWNlLCBieXJvdyA9IFRSVUUsIG5yb3cgPSAzKVxuc3RhcndhcnNfbWF0cml4XG5gYGBcbmBgYCJ9 -->
+<p><code>r</code>r #Nos creamos los vectores new_hope &lt;- c(460.998, 314.4) empire_strikes &lt;- c(290.475, 247.900) return_jedi &lt;- c(309.306, 165.8) #Nos creamos el vector box_office que uno los otro tres en un solo vector box_office &lt;- c(new_hope, empire_strikes, return_jedi) #Nos creamos una matriz de 3 filas donde cada fila representa una película starwars_matrix &lt;- matrix(box_office, byrow = TRUE, nrow = 3) starwars_matrix</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICBbLDFdICBbLDJdXG5bMSxdIDQ2MC45OTggMzE0LjRcblsyLF0gMjkwLjQ3NSAyNDcuOVxuWzMsXSAzMDkuMzA2IDE2NS44XG4ifQ== -->
 <pre><code>        [,1]  [,2]
@@ -225,11 +219,9 @@ starwars_matrix</code></pre>
 <p>Con el fin de tener una idea más clara de lo que almacena nuestra matriz decidimos nombrar cada una de las filas con las películas que corresponden y también cada columna con su significado. Similar a los vectores en R contamos con las funciones rownames() y colnames() que nos permiten nombrar tanto las filas como las columnas.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI05vbWJyYW1vcyBsYXMgZmlsYXMgeSBsYXMgY29sdW1uYXMgZGUgbnVlc3RyYSBtYXRyaXpcbnJvd25hbWVzKHN0YXJ3YXJzX21hdHJpeCkgPC0gYygnbmV3X2hvcGUnLCAnZW1waXJlX3N0cmlrZXMnLCAncmV0dXJuX2plZGknKVxuY29sbmFtZXMoc3RhcndhcnNfbWF0cml4KSA8LSBjKCdVUycsICdub24tVVMnKVxuc3RhcndhcnNfbWF0cml4XG5gYGAifQ== -->
-<pre class="r"><code>#Nombramos las filas y las columnas de nuestra matriz
-rownames(starwars_matrix) &lt;- c('new_hope', 'empire_strikes', 'return_jedi')
-colnames(starwars_matrix) &lt;- c('US', 'non-US')
-starwars_matrix</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuI05vbWJyYW1vcyBsYXMgZmlsYXMgeSBsYXMgY29sdW1uYXMgZGUgbnVlc3RyYSBtYXRyaXpcbnJvd25hbWVzKHN0YXJ3YXJzX21hdHJpeCkgPC0gYygnbmV3X2hvcGUnLCAnZW1waXJlX3N0cmlrZXMnLCAncmV0dXJuX2plZGknKVxuY29sbmFtZXMoc3RhcndhcnNfbWF0cml4KSA8LSBjKCdVUycsICdub24tVVMnKVxuc3RhcndhcnNfbWF0cml4XG5gYGBcbmBgYCJ9 -->
+<p><code>r</code>r #Nombramos las filas y las columnas de nuestra matriz rownames(starwars_matrix) &lt;- c(‘new_hope’, ‘empire_strikes’, ‘return_jedi’) colnames(starwars_matrix) &lt;- c(‘US’, ‘non-US’) starwars_matrix</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICAgICAgICAgICAgICBVUyBub24tVVNcbm5ld19ob3BlICAgICAgIDQ2MC45OTggIDMxNC40XG5lbXBpcmVfc3RyaWtlcyAyOTAuNDc1ICAyNDcuOVxucmV0dXJuX2plZGkgICAgMzA5LjMwNiAgMTY1LjhcbiJ9 -->
 <pre><code>                    US non-US
@@ -245,10 +237,9 @@ return_jedi    309.306  165.8</code></pre>
 <p>Para calcular el ingreso total para las tres películas, debemos sumar las dos columnas (US, non-US). En R contamos con la función rowSums(), que nos permite obtener para cada fila el total. Esta función retorna un nuevo vector donde cada elemento es la suma de cada fila de nuestra matriz.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI09idGVuZW1vcyBsYXMgZ2FuYW5jaWFzIHRvdGFsZXMgcG9yIHBlbMOtY3VsYVxud29ybGR3aWRlX3ZlY3RvciA8LSByb3dTdW1zKHN0YXJ3YXJzX21hdHJpeClcbndvcmxkd2lkZV92ZWN0b3JcbmBgYCJ9 -->
-<pre class="r"><code>#Obtenemos las ganancias totales por película
-worldwide_vector &lt;- rowSums(starwars_matrix)
-worldwide_vector</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuI09idGVuZW1vcyBsYXMgZ2FuYW5jaWFzIHRvdGFsZXMgcG9yIHBlbMOtY3VsYVxud29ybGR3aWRlX3ZlY3RvciA8LSByb3dTdW1zKHN0YXJ3YXJzX21hdHJpeClcbndvcmxkd2lkZV92ZWN0b3JcbmBgYFxuYGBgIn0= -->
+<p><code>r</code>r #Obtenemos las ganancias totales por película worldwide_vector &lt;- rowSums(starwars_matrix) worldwide_vector</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICAgbmV3X2hvcGUgZW1waXJlX3N0cmlrZXMgICAgcmV0dXJuX2plZGkgXG4gICAgICAgNzc1LjM5OCAgICAgICAgNTM4LjM3NSAgICAgICAgNDc1LjEwNiBcbiJ9 -->
 <pre><code>      new_hope empire_strikes    return_jedi 
@@ -262,9 +253,9 @@ worldwide_vector</code></pre>
 <p>Si ahora deseamos agregar este resultado como una nueva columna de nuestra matriz, en R contamos con la función cbind(), la cual mergea matrices y/o vectores juntos por columna.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RhcndhcnNfbWF0cml4X2F1eCA8LSBjYmluZChzdGFyd2Fyc19tYXRyaXgsIHdvcmxkd2lkZV92ZWN0b3IpXG5zdGFyd2Fyc19tYXRyaXhfYXV4XG5gYGAifQ== -->
-<pre class="r"><code>starwars_matrix_aux &lt;- cbind(starwars_matrix, worldwide_vector)
-starwars_matrix_aux</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuc3RhcndhcnNfbWF0cml4X2F1eCA8LSBjYmluZChzdGFyd2Fyc19tYXRyaXgsIHdvcmxkd2lkZV92ZWN0b3IpXG5zdGFyd2Fyc19tYXRyaXhfYXV4XG5gYGBcbmBgYCJ9 -->
+<p><code>r</code>r starwars_matrix_aux &lt;- cbind(starwars_matrix, worldwide_vector) starwars_matrix_aux</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICAgICAgICAgICAgICBVUyBub24tVVMgd29ybGR3aWRlX3ZlY3RvclxubmV3X2hvcGUgICAgICAgNDYwLjk5OCAgMzE0LjQgICAgICAgICAgNzc1LjM5OFxuZW1waXJlX3N0cmlrZXMgMjkwLjQ3NSAgMjQ3LjkgICAgICAgICAgNTM4LjM3NVxucmV0dXJuX2plZGkgICAgMzA5LjMwNiAgMTY1LjggICAgICAgICAgNDc1LjEwNlxuIn0= -->
 <pre><code>                    US non-US worldwide_vector
@@ -280,15 +271,9 @@ return_jedi    309.306  165.8          475.106</code></pre>
 <p>R también dispone de la función rbind(), esta función lo que nos permite es añadir una nueva fila a nuestra matriz. Por ejemplo podemos crearnos una segunda matriz denominada starwars_matrix2 que incluye otras tres películas y su recaudación, y fusionar estas dos matrices en una sola</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI05vcyBjcmVhbW9zIGxhIG1hdHJpeiBzdGFyd2Fyc19tYXRyaXgyXG5ib3hfb2ZmaWNlMiA8LSBjKDQ3NC41LCA1NTIuNSwgMzEwLjcsIDMzOC43LCAzODAuMywgNDY4LjUpXG52ZWN0b3Jfcm93X25hbWVzIDwtIGMoJ1RoZSBQaGFudG9tIE1lbmFjZScsICdBdHRhY2sgb2YgdGhlIENsb25lcycsICdSZXZlbmdlIG9mIHRoZSBTaXRoJylcbnZlY3Rvcl9jb2xfbmFtZXMgPC0gYygnVVMnLCAnbm9uLVVTJylcbnN0YXJ3YXJzX21hdHJpeDIgPC0gbWF0cml4KGJveF9vZmZpY2UyLCBieXJvdyA9IFRSVUUsIG5yb3cgPSAzLCBkaW1uYW1lcyA9IGxpc3QodmVjdG9yX3Jvd19uYW1lcywgdmVjdG9yX2NvbF9uYW1lcykpXG4jTm9zIGNyZWFtb3MgbnVlc3RyYSBudWV2YSBtYXRyaXogaGFjaWVuZG8gdXNvIGRlIHJiaW5kKClcbmFsbF93YXJzX21hdHJpeCA8LSByYmluZChzdGFyd2Fyc19tYXRyaXgsIHN0YXJ3YXJzX21hdHJpeDIpXG5hbGxfd2Fyc19tYXRyaXhcbmBgYCJ9 -->
-<pre class="r"><code>#Nos creamos la matriz starwars_matrix2
-box_office2 &lt;- c(474.5, 552.5, 310.7, 338.7, 380.3, 468.5)
-vector_row_names &lt;- c('The Phantom Menace', 'Attack of the Clones', 'Revenge of the Sith')
-vector_col_names &lt;- c('US', 'non-US')
-starwars_matrix2 &lt;- matrix(box_office2, byrow = TRUE, nrow = 3, dimnames = list(vector_row_names, vector_col_names))
-#Nos creamos nuestra nueva matriz haciendo uso de rbind()
-all_wars_matrix &lt;- rbind(starwars_matrix, starwars_matrix2)
-all_wars_matrix</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuI05vcyBjcmVhbW9zIGxhIG1hdHJpeiBzdGFyd2Fyc19tYXRyaXgyXG5ib3hfb2ZmaWNlMiA8LSBjKDQ3NC41LCA1NTIuNSwgMzEwLjcsIDMzOC43LCAzODAuMywgNDY4LjUpXG52ZWN0b3Jfcm93X25hbWVzIDwtIGMoJ1RoZSBQaGFudG9tIE1lbmFjZScsICdBdHRhY2sgb2YgdGhlIENsb25lcycsICdSZXZlbmdlIG9mIHRoZSBTaXRoJylcbnZlY3Rvcl9jb2xfbmFtZXMgPC0gYygnVVMnLCAnbm9uLVVTJylcbnN0YXJ3YXJzX21hdHJpeDIgPC0gbWF0cml4KGJveF9vZmZpY2UyLCBieXJvdyA9IFRSVUUsIG5yb3cgPSAzLCBkaW1uYW1lcyA9IGxpc3QodmVjdG9yX3Jvd19uYW1lcywgdmVjdG9yX2NvbF9uYW1lcykpXG4jTm9zIGNyZWFtb3MgbnVlc3RyYSBudWV2YSBtYXRyaXogaGFjaWVuZG8gdXNvIGRlIHJiaW5kKClcbmFsbF93YXJzX21hdHJpeCA8LSByYmluZChzdGFyd2Fyc19tYXRyaXgsIHN0YXJ3YXJzX21hdHJpeDIpXG5hbGxfd2Fyc19tYXRyaXhcbmBgYFxuYGBgIn0= -->
+<p><code>r</code>r #Nos creamos la matriz starwars_matrix2 box_office2 &lt;- c(474.5, 552.5, 310.7, 338.7, 380.3, 468.5) vector_row_names &lt;- c(‘The Phantom Menace’, ‘Attack of the Clones’, ‘Revenge of the Sith’) vector_col_names &lt;- c(‘US’, ‘non-US’) starwars_matrix2 &lt;- matrix(box_office2, byrow = TRUE, nrow = 3, dimnames = list(vector_row_names, vector_col_names)) #Nos creamos nuestra nueva matriz haciendo uso de rbind() all_wars_matrix &lt;- rbind(starwars_matrix, starwars_matrix2) all_wars_matrix</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICAgICAgICAgICAgICAgICAgICBVUyBub24tVVNcbm5ld19ob3BlICAgICAgICAgICAgIDQ2MC45OTggIDMxNC40XG5lbXBpcmVfc3RyaWtlcyAgICAgICAyOTAuNDc1ICAyNDcuOVxucmV0dXJuX2plZGkgICAgICAgICAgMzA5LjMwNiAgMTY1LjhcblRoZSBQaGFudG9tIE1lbmFjZSAgIDQ3NC41MDAgIDU1Mi41XG5BdHRhY2sgb2YgdGhlIENsb25lcyAzMTAuNzAwICAzMzguN1xuUmV2ZW5nZSBvZiB0aGUgU2l0aCAgMzgwLjMwMCAgNDY4LjVcbiJ9 -->
 <pre><code>                          US non-US
@@ -307,10 +292,9 @@ Revenge of the Sith  380.300  468.5</code></pre>
 <p>R también dispone de la función colSums() que nos permite obtener la suma total por columnas. Así si por ejemplo deseamos conocer la recaudación total de la saga completa tanto en US como en non-US, bastará con hacer uso de esta función</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI09idGVuZW1vcyBsYSByZWNhdWRhY2nDs24gdG90YWwgZW4gVVMgeSBlbiBub25fVVNcbnRvdGFsX3JldmVudWVfdmVjdG9yIDwtIGNvbFN1bXMoYWxsX3dhcnNfbWF0cml4KVxudG90YWxfcmV2ZW51ZV92ZWN0b3JcbmBgYCJ9 -->
-<pre class="r"><code>#Obtenemos la recaudación total en US y en non_US
-total_revenue_vector &lt;- colSums(all_wars_matrix)
-total_revenue_vector</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuI09idGVuZW1vcyBsYSByZWNhdWRhY2nDs24gdG90YWwgZW4gVVMgeSBlbiBub25fVVNcbnRvdGFsX3JldmVudWVfdmVjdG9yIDwtIGNvbFN1bXMoYWxsX3dhcnNfbWF0cml4KVxudG90YWxfcmV2ZW51ZV92ZWN0b3JcbmBgYFxuYGBgIn0= -->
+<p><code>r</code>r #Obtenemos la recaudación total en US y en non_US total_revenue_vector &lt;- colSums(all_wars_matrix) total_revenue_vector</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICAgVVMgICBub24tVVMgXG4yMjI2LjI3OSAyMDg3LjgwMCBcbiJ9 -->
 <pre><code>      US   non-US 
@@ -324,9 +308,9 @@ total_revenue_vector</code></pre>
 <p>Similar a los vectores podemos hacer uso de los corchetes, para seleccionar elementos de una matriz. A diferencia de un vector que tiene una sola dimensión una matriz tiene dos dimensiones. Por lo tanto podemos hacer uso de la coma para indicar la fila y la columna en la cula se encuentra el elemento que deseamos seleccionar.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1NlbGVjY2lvbmFtb3MgZGUgbGEgbWF0cml6IGFsbF93YXJzX21hdHJpeCBsYSByZWNhdWRhY2nDs24gZW4gVVMgZGUgbGEgcGVsw61jdWxhIG5ld19ob3BlXG5hbGxfd2Fyc19tYXRyaXhbMSwxXVxuYGBgIn0= -->
-<pre class="r"><code>#Seleccionamos de la matriz all_wars_matrix la recaudación en US de la película new_hope
-all_wars_matrix[1,1]</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuI1NlbGVjY2lvbmFtb3MgZGUgbGEgbWF0cml6IGFsbF93YXJzX21hdHJpeCBsYSByZWNhdWRhY2nDs24gZW4gVVMgZGUgbGEgcGVsw61jdWxhIG5ld19ob3BlXG5hbGxfd2Fyc19tYXRyaXhbMSwxXVxuYGBgXG5gYGAifQ== -->
+<p><code>r</code>r #Seleccionamos de la matriz all_wars_matrix la recaudación en US de la película new_hope all_wars_matrix[1,1]</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIDQ2MC45OThcbiJ9 -->
 <pre><code>[1] 460.998</code></pre>
@@ -336,9 +320,9 @@ all_wars_matrix[1,1]</code></pre>
 <p>También podemos hacer uso de la notación :</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1NlbGVjY2lvbmFtb3MgbGFzIGdhbmFuY2lhcyBlbiBub24tVVMgZGUgbGFzIHBlbMOtY3VsYXMgbmV3X2hvcGUgeSBlbXBpcmVfc3RyaWtlc1xuYWxsX3dhcnNfbWF0cml4WzE6MiwgMToyXVxuYGBgIn0= -->
-<pre class="r"><code>#Seleccionamos las ganancias en non-US de las películas new_hope y empire_strikes
-all_wars_matrix[1:2, 1:2]</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuI1NlbGVjY2lvbmFtb3MgbGFzIGdhbmFuY2lhcyBlbiBub24tVVMgZGUgbGFzIHBlbMOtY3VsYXMgbmV3X2hvcGUgeSBlbXBpcmVfc3RyaWtlc1xuYWxsX3dhcnNfbWF0cml4WzE6MiwgMToyXVxuYGBgXG5gYGAifQ== -->
+<p><code>r</code>r #Seleccionamos las ganancias en non-US de las películas new_hope y empire_strikes all_wars_matrix[1:2, 1:2]</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICAgICAgICAgICAgICBVUyBub24tVVNcbm5ld19ob3BlICAgICAgIDQ2MC45OTggIDMxNC40XG5lbXBpcmVfc3RyaWtlcyAyOTAuNDc1ICAyNDcuOVxuIn0= -->
 <pre><code>                    US non-US
@@ -350,17 +334,17 @@ empire_strikes 290.475  247.9</code></pre>
 <p>Si queremos seleccionar todos los elementos de una determinada fila o de una determinada columna podemos hacer uso de la siguiente notación</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1NlbGVjY2lvbmFtb3MgbGFzIGdhbmFuY2lhcyBkZSBsYSBwZWxpY3VsYSBuZXdfaG9wZVxuYWxsX3dhcnNfbWF0cml4WzEsXVxuYGBgIn0= -->
-<pre class="r"><code>#Seleccionamos las ganancias de la pelicula new_hope
-all_wars_matrix[1,]</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuI1NlbGVjY2lvbmFtb3MgbGFzIGdhbmFuY2lhcyBkZSBsYSBwZWxpY3VsYSBuZXdfaG9wZVxuYWxsX3dhcnNfbWF0cml4WzEsXVxuYGBgXG5gYGAifQ== -->
+<p><code>r</code>r #Seleccionamos las ganancias de la pelicula new_hope all_wars_matrix[1,]</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICBVUyAgbm9uLVVTIFxuNDYwLjk5OCAzMTQuNDAwIFxuIn0= -->
 <pre><code>     US  non-US 
 460.998 314.400 </code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1NlbGV4Y2Npb25hbW9zIHRvZGFzIGxhcyBnYW5hbmNpYXMgZW4gVVNcbmFsbF93YXJzX21hdHJpeFssMV1cbmBgYCJ9 -->
-<pre class="r"><code>#Selexccionamos todas las ganancias en US
-all_wars_matrix[,1]</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuI1NlbGV4Y2Npb25hbW9zIHRvZGFzIGxhcyBnYW5hbmNpYXMgZW4gVVNcbmFsbF93YXJzX21hdHJpeFssMV1cbmBgYFxuYGBgIn0= -->
+<p><code>r</code>r #Selexccionamos todas las ganancias en US all_wars_matrix[,1]</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICAgICAgbmV3X2hvcGUgICAgICAgZW1waXJlX3N0cmlrZXMgICAgICAgICAgcmV0dXJuX2plZGkgICBUaGUgUGhhbnRvbSBNZW5hY2UgXG4gICAgICAgICAgICAgNDYwLjk5OCAgICAgICAgICAgICAgMjkwLjQ3NSAgICAgICAgICAgICAgMzA5LjMwNiAgICAgICAgICAgICAgNDc0LjUwMCBcbkF0dGFjayBvZiB0aGUgQ2xvbmVzICBSZXZlbmdlIG9mIHRoZSBTaXRoIFxuICAgICAgICAgICAgIDMxMC43MDAgICAgICAgICAgICAgIDM4MC4zMDAgXG4ifQ== -->
 <pre><code>            new_hope       empire_strikes          return_jedi   The Phantom Menace 
@@ -370,9 +354,9 @@ Attack of the Clones  Revenge of the Sith
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1NlbGV4Y2Npb25hbW9zIHRvZGFzIGxhcyBnYW5hbmNpYXMgZW4gVVNcbmFsbF93YXJzX21hdHJpeFssMV1cbmBgYCJ9 -->
-<pre class="r"><code>#Selexccionamos todas las ganancias en US
-all_wars_matrix[,1]</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuI1NlbGV4Y2Npb25hbW9zIHRvZGFzIGxhcyBnYW5hbmNpYXMgZW4gVVNcbmFsbF93YXJzX21hdHJpeFssMV1cbmBgYFxuYGBgIn0= -->
+<p><code>r</code>r #Selexccionamos todas las ganancias en US all_wars_matrix[,1]</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICAgICAgbmV3X2hvcGUgICAgICAgZW1waXJlX3N0cmlrZXMgICAgICAgICAgcmV0dXJuX2plZGkgICBUaGUgUGhhbnRvbSBNZW5hY2UgXG4gICAgICAgICAgICAgNDYwLjk5OCAgICAgICAgICAgICAgMjkwLjQ3NSAgICAgICAgICAgICAgMzA5LjMwNiAgICAgICAgICAgICAgNDc0LjUwMCBcbkF0dGFjayBvZiB0aGUgQ2xvbmVzICBSZXZlbmdlIG9mIHRoZSBTaXRoIFxuICAgICAgICAgICAgIDMxMC43MDAgICAgICAgICAgICAgIDM4MC4zMDAgXG4ifQ== -->
 <pre><code>            new_hope       empire_strikes          return_jedi   The Phantom Menace 
@@ -388,9 +372,9 @@ Attack of the Clones  Revenge of the Sith
 <p>Similar a los vectores , tenemos los operadores estándar (+, -, *, /) para las matrices. Supongamos que en promedio la entrada para cada una de las pelis cuesta 7 dolares. Deseamos conocer el número de personas que vieron cada una de las películas</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudmlzaXRvcnMgPC0gYWxsX3dhcnNfbWF0cml4LzdcbnZpc2l0b3JzXG5gYGAifQ== -->
-<pre class="r"><code>visitors &lt;- all_wars_matrix/7
-visitors</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxudmlzaXRvcnMgPC0gYWxsX3dhcnNfbWF0cml4LzdcbnZpc2l0b3JzXG5gYGBcbmBgYCJ9 -->
+<p><code>r</code>r visitors &lt;- all_wars_matrix/7 visitors</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICAgICAgICAgICAgICAgICAgICAgVVMgICBub24tVVNcbm5ld19ob3BlICAgICAgICAgICAgIDY1Ljg1Njg2IDQ0LjkxNDI5XG5lbXBpcmVfc3RyaWtlcyAgICAgICA0MS40OTY0MyAzNS40MTQyOVxucmV0dXJuX2plZGkgICAgICAgICAgNDQuMTg2NTcgMjMuNjg1NzFcblRoZSBQaGFudG9tIE1lbmFjZSAgIDY3Ljc4NTcxIDc4LjkyODU3XG5BdHRhY2sgb2YgdGhlIENsb25lcyA0NC4zODU3MSA0OC4zODU3MVxuUmV2ZW5nZSBvZiB0aGUgU2l0aCAgNTQuMzI4NTcgNjYuOTI4NTdcbiJ9 -->
 <pre><code>                           US   non-US
@@ -410,7 +394,7 @@ Revenge of the Sith  54.32857 66.92857</code></pre>
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiTWF0cmljZXMiCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KCiMjIFdoYXQncyBhIG1hdHJpeApFbiBSLCB1bmEgbWF0cml6IGVzIHVuYSBjb2xlY2Npw7NuIGRlIGVsZW1lbnRvcyBkZWwgbWlzbW8gdGlwbyAobnVtw6lyaWNvcywgc3RyaW5ncywgYm9vbGVhbm9zKSBhZ3J1cGFkb3MgZW4gdW4gbsO6bWVybyBmaWpvIGRlIGZpbGFzIHkgY29sdW1uYXMuIFB1ZXN0byBxdWUgc29sbyB0cmFiYWpvIGNvbiBmaWxhcyB5IGNvbHVtbmFzLCB1bmEgbWF0cml6IHNlIHRyYXRhIGRlIHVuIGVsZW1lbnRvIGJpZGltZW5zaW9uYWwuIEVuIFIgcG9kZW1vcyBoYWNlciB1c28gZGUgbGEgZnVuY2nDs24gbWF0cml4KCkgcGFyYSBjb25zdHJ1aXIgdW5hIG1hdHJpei4KCmBgYHtyfQptYXRyaXgoMTo5LCBieXJvdyA9IFRSVUUsIG5yb3cgPSAzKQpgYGAKCiogRWwgcHJpbWVyIGFyZ3VtZW50IGRlIGxhIGZ1bmNpw7NuIGVzIHVuIGNvbmp1bnRvIGRlIGVsZW1lbnRvcyBxdWUgUiBwdWVkZSBhZ3J1cGFyIGVuIGZpbGFzIHkgY29sdW1uYXMuCiogRWwgYXJndW1lbnRvIGJ5cm93IHB1ZWRlIHRvbWFyIGRvcyB2YWxvcmVzIHBvc2libGVzOiBUUlVFIHkgRkFMU0UuIFNpIHRvbWEgZWwgdmFsb3IgVFJVRSBpbmRpY2EgcXVlIGxhIG1hdHJpeiBlcyByZWxsZW5hIHBvciBmaWxhcywgbWllbnRyYXMgcXVlIHNpIHRvbWFyIGVsIHZhbG9yIGRlIEZBTFNFIG5vcyBpbmRpY2EgcXVlIGxhIG1hdHJpeiBlcyByZWxsZW5hIHBvciBjb2x1bW5hcy4KKiBFbCB0ZXJjZXIgYXJndW1lbnRvIG5yb3cgaW5kaWNhbW9zIGVsIG7Dum1lcm8gZGUgZmlsYXMgcXVlIHF1ZXJlbW9zIHF1ZSB0ZW5nYSBsYSBtYXRyaXouCgojIyBBbmFseXppbmcgbWF0cmljZXMsIHlvdSBzaGFsbApBIGNvbnRpbnVhY2nDs24gdmFtb3MgYSBwcm9jZWRlciBhIHJlYWxpemFyIHVuIGFuw6FsaXNpcyBlbiB0YXF1aWxsYSBkZSBsYXMgcGVsw61jdWxhcyBkZSBsYSBzYWdhIGxhIEd1ZXJyYSBkZSBsYXMgR2FsYXhpYXMuIFBhcmEgZWxsbyB2YW1vcyBhIHByb2NlZGVyIGEgY3JlYXJub3MgdHJlcyB2ZWN0b3JlcyBxdWUgaW5kaWNhbiBsbyBxdWUgcmVjYXVkYXJvbiBjYWRhIHVuYSBkZSBsYXMgcGVsw61jdWxhcy4gRXN0b3MgdmVjdG9yZXMgdGVuZHLDoW4gZG9zIGNvbXBvbmVudGVzIHF1ZSBpbmRpY2Fyw6FuIGxhIHJlY2F1ZGFjacOzbiBlbiB0YXF1aWxsYSBkZSBsYXMgcGVsw61jdWxhcyBlbiBVU0EgeSBmdWVyYSBkZSBVU0EuCgpgYGB7cn0KI05vcyBjcmVhbW9zIGxvcyB2ZWN0b3JlcwpuZXdfaG9wZSA8LSBjKDQ2MC45OTgsIDMxNC40KQplbXBpcmVfc3RyaWtlcyA8LSBjKDI5MC40NzUsIDI0Ny45MDApCnJldHVybl9qZWRpIDwtIGMoMzA5LjMwNiwgMTY1LjgpCiNOb3MgY3JlYW1vcyBlbCB2ZWN0b3IgYm94X29mZmljZSBxdWUgdW5vIGxvcyBvdHJvIHRyZXMgZW4gdW4gc29sbyB2ZWN0b3IKYm94X29mZmljZSA8LSBjKG5ld19ob3BlLCBlbXBpcmVfc3RyaWtlcywgcmV0dXJuX2plZGkpCiNOb3MgY3JlYW1vcyB1bmEgbWF0cml6IGRlIDMgZmlsYXMgZG9uZGUgY2FkYSBmaWxhIHJlcHJlc2VudGEgdW5hIHBlbMOtY3VsYQpzdGFyd2Fyc19tYXRyaXggPC0gbWF0cml4KGJveF9vZmZpY2UsIGJ5cm93ID0gVFJVRSwgbnJvdyA9IDMpCnN0YXJ3YXJzX21hdHJpeApgYGAKCiMjIE5hbWluZyB0aGUgbWF0cml4CkNvbiBlbCBmaW4gZGUgdGVuZXIgdW5hIGlkZWEgbcOhcyBjbGFyYSBkZSBsbyBxdWUgYWxtYWNlbmEgbnVlc3RyYSBtYXRyaXogZGVjaWRpbW9zIG5vbWJyYXIgY2FkYSB1bmEgZGUgbGFzIGZpbGFzIGNvbiBsYXMgcGVsw61jdWxhcyBxdWUgY29ycmVzcG9uZGVuIHkgdGFtYmnDqW4gY2FkYSBjb2x1bW5hIGNvbiBzdSBzaWduaWZpY2Fkby4gU2ltaWxhciBhIGxvcyB2ZWN0b3JlcyBlbiBSIGNvbnRhbW9zIGNvbiBsYXMgZnVuY2lvbmVzIHJvd25hbWVzKCkgeSBjb2xuYW1lcygpIHF1ZSBub3MgcGVybWl0ZW4gbm9tYnJhciB0YW50byBsYXMgZmlsYXMgY29tbyBsYXMgY29sdW1uYXMuCmBgYHtyfQojTm9tYnJhbW9zIGxhcyBmaWxhcyB5IGxhcyBjb2x1bW5hcyBkZSBudWVzdHJhIG1hdHJpegpyb3duYW1lcyhzdGFyd2Fyc19tYXRyaXgpIDwtIGMoJ25ld19ob3BlJywgJ2VtcGlyZV9zdHJpa2VzJywgJ3JldHVybl9qZWRpJykKY29sbmFtZXMoc3RhcndhcnNfbWF0cml4KSA8LSBjKCdVUycsICdub24tVVMnKQpzdGFyd2Fyc19tYXRyaXgKYGBgCgojIyBDYWxjdWxhdGluZyB0aGUgd29ybGR3aWRlIGJveCBvZmZpY2UKUGFyYSBjYWxjdWxhciBlbCBpbmdyZXNvIHRvdGFsIHBhcmEgbGFzIHRyZXMgcGVsw61jdWxhcywgZGViZW1vcyBzdW1hciBsYXMgZG9zIGNvbHVtbmFzIChVUywgbm9uLVVTKS4gRW4gUiBjb250YW1vcyBjb24gbGEgZnVuY2nDs24gcm93U3VtcygpLCBxdWUgbm9zIHBlcm1pdGUgb2J0ZW5lciBwYXJhIGNhZGEgZmlsYSBlbCB0b3RhbC4gRXN0YSBmdW5jacOzbiByZXRvcm5hIHVuIG51ZXZvIHZlY3RvciBkb25kZSBjYWRhIGVsZW1lbnRvIGVzIGxhIHN1bWEgZGUgY2FkYSBmaWxhIGRlIG51ZXN0cmEgbWF0cml6LgpgYGB7cn0KI09idGVuZW1vcyBsYXMgZ2FuYW5jaWFzIHRvdGFsZXMgcG9yIHBlbMOtY3VsYQp3b3JsZHdpZGVfdmVjdG9yIDwtIHJvd1N1bXMoc3RhcndhcnNfbWF0cml4KQp3b3JsZHdpZGVfdmVjdG9yCmBgYAoKIyMgQWRkaW5nIGEgY29sdW1uIGZvciB0aGUgV29ybGR3aWRlIGJveCBvZmZpY2UKU2kgYWhvcmEgZGVzZWFtb3MgYWdyZWdhciBlc3RlIHJlc3VsdGFkbyBjb21vIHVuYSBudWV2YSBjb2x1bW5hIGRlIG51ZXN0cmEgbWF0cml6LCBlbiBSIGNvbnRhbW9zIGNvbiBsYSBmdW5jacOzbiBjYmluZCgpLCBsYSBjdWFsIG1lcmdlYSBtYXRyaWNlcyB5L28gdmVjdG9yZXMganVudG9zIHBvciBjb2x1bW5hLgpgYGB7cn0KI0HDsWFkaW1vcyB1bmEgbnVldmEgY29sdW1uYQpzdGFyd2Fyc19tYXRyaXhfYXV4IDwtIGNiaW5kKHN0YXJ3YXJzX21hdHJpeCwgd29ybGR3aWRlX3ZlY3RvcikKc3RhcndhcnNfbWF0cml4X2F1eApgYGAKCiMjIEFkZGluZyBhIHJvdwpSIHRhbWJpw6luIGRpc3BvbmUgZGUgbGEgZnVuY2nDs24gcmJpbmQoKSwgZXN0YSBmdW5jacOzbiBsbyBxdWUgbm9zIHBlcm1pdGUgZXMgYcOxYWRpciB1bmEgbnVldmEgZmlsYSBhIG51ZXN0cmEgbWF0cml6LiBQb3IgZWplbXBsbyBwb2RlbW9zIGNyZWFybm9zIHVuYSBzZWd1bmRhIG1hdHJpeiBkZW5vbWluYWRhIHN0YXJ3YXJzX21hdHJpeDIgcXVlIGluY2x1eWUgb3RyYXMgdHJlcyBwZWzDrWN1bGFzIHkgc3UgcmVjYXVkYWNpw7NuLCB5IGZ1c2lvbmFyIGVzdGFzIGRvcyBtYXRyaWNlcyBlbiB1bmEgc29sYQpgYGB7cn0KI05vcyBjcmVhbW9zIGxhIG1hdHJpeiBzdGFyd2Fyc19tYXRyaXgyCmJveF9vZmZpY2UyIDwtIGMoNDc0LjUsIDU1Mi41LCAzMTAuNywgMzM4LjcsIDM4MC4zLCA0NjguNSkKdmVjdG9yX3Jvd19uYW1lcyA8LSBjKCdUaGUgUGhhbnRvbSBNZW5hY2UnLCAnQXR0YWNrIG9mIHRoZSBDbG9uZXMnLCAnUmV2ZW5nZSBvZiB0aGUgU2l0aCcpCnZlY3Rvcl9jb2xfbmFtZXMgPC0gYygnVVMnLCAnbm9uLVVTJykKc3RhcndhcnNfbWF0cml4MiA8LSBtYXRyaXgoYm94X29mZmljZTIsIGJ5cm93ID0gVFJVRSwgbnJvdyA9IDMsIGRpbW5hbWVzID0gbGlzdCh2ZWN0b3Jfcm93X25hbWVzLCB2ZWN0b3JfY29sX25hbWVzKSkKI05vcyBjcmVhbW9zIG51ZXN0cmEgbnVldmEgbWF0cml6IGhhY2llbmRvIHVzbyBkZSByYmluZCgpCmFsbF93YXJzX21hdHJpeCA8LSByYmluZChzdGFyd2Fyc19tYXRyaXgsIHN0YXJ3YXJzX21hdHJpeDIpCmFsbF93YXJzX21hdHJpeApgYGAKCiMjIFRoZSB0b3RhbCBib3hvZmZpY2UgcmV2ZW51ZSBmb3IgdGhlIGVudGlyZSBzYWdhClIgdGFtYmnDqW4gZGlzcG9uZSBkZSBsYSBmdW5jacOzbiBjb2xTdW1zKCkgcXVlIG5vcyBwZXJtaXRlIG9idGVuZXIgbGEgc3VtYSB0b3RhbCBwb3IgY29sdW1uYXMuIEFzw60gc2kgcG9yIGVqZW1wbG8gZGVzZWFtb3MgY29ub2NlciBsYSByZWNhdWRhY2nDs24gdG90YWwgZGUgbGEgc2FnYSBjb21wbGV0YSB0YW50byBlbiBVUyBjb21vIGVuIG5vbi1VUywgYmFzdGFyw6EgY29uIGhhY2VyIHVzbyBkZSBlc3RhIGZ1bmNpw7NuCmBgYHtyfQojT2J0ZW5lbW9zIGxhIHJlY2F1ZGFjacOzbiB0b3RhbCBlbiBVUyB5IGVuIG5vbl9VUwp0b3RhbF9yZXZlbnVlX3ZlY3RvciA8LSBjb2xTdW1zKGFsbF93YXJzX21hdHJpeCkKdG90YWxfcmV2ZW51ZV92ZWN0b3IKYGBgCgojIyBTZWxlY3Rpb24gb2YgbWF0cml4IGVsZW1lbnRzClNpbWlsYXIgYSBsb3MgdmVjdG9yZXMgcG9kZW1vcyBoYWNlciB1c28gZGUgbG9zIGNvcmNoZXRlcywgcGFyYSBzZWxlY2Npb25hciBlbGVtZW50b3MgZGUgdW5hIG1hdHJpei4gQSBkaWZlcmVuY2lhIGRlIHVuIHZlY3RvciBxdWUgdGllbmUgdW5hIHNvbGEgZGltZW5zacOzbiB1bmEgbWF0cml6IHRpZW5lIGRvcyBkaW1lbnNpb25lcy4gUG9yIGxvIHRhbnRvIHBvZGVtb3MgaGFjZXIgdXNvIGRlIGxhIGNvbWEgcGFyYSBpbmRpY2FyIGxhIGZpbGEgeSBsYSBjb2x1bW5hIGVuIGxhIGN1bGEgc2UgZW5jdWVudHJhIGVsIGVsZW1lbnRvIHF1ZSBkZXNlYW1vcyBzZWxlY2Npb25hci4KYGBge3J9CiNTZWxlY2Npb25hbW9zIGRlIGxhIG1hdHJpeiBhbGxfd2Fyc19tYXRyaXggbGEgcmVjYXVkYWNpw7NuIGVuIFVTIGRlIGxhIHBlbMOtY3VsYSBuZXdfaG9wZQphbGxfd2Fyc19tYXRyaXhbMSwxXQpgYGAKVGFtYmnDqW4gcG9kZW1vcyBoYWNlciB1c28gZGUgbGEgbm90YWNpw7NuIDoKYGBge3J9CiNTZWxlY2Npb25hbW9zIGxhcyBnYW5hbmNpYXMgZW4gbm9uLVVTIGRlIGxhcyBwZWzDrWN1bGFzIG5ld19ob3BlIHkgZW1waXJlX3N0cmlrZXMKYWxsX3dhcnNfbWF0cml4WzE6MiwgMToyXQpgYGAKClNpIHF1ZXJlbW9zIHNlbGVjY2lvbmFyIHRvZG9zIGxvcyBlbGVtZW50b3MgZGUgdW5hIGRldGVybWluYWRhIGZpbGEgbyBkZSB1bmEgZGV0ZXJtaW5hZGEgY29sdW1uYSBwb2RlbW9zIGhhY2VyIHVzbyBkZSBsYSBzaWd1aWVudGUgbm90YWNpw7NuCmBgYHtyfQojU2VsZWNjaW9uYW1vcyBsYXMgZ2FuYW5jaWFzIGRlIGxhIHBlbGljdWxhIG5ld19ob3BlCmFsbF93YXJzX21hdHJpeFsxLF0KCmBgYApgYGB7cn0KI1NlbGV4Y2Npb25hbW9zIHRvZGFzIGxhcyBnYW5hbmNpYXMgZW4gVVMKYWxsX3dhcnNfbWF0cml4WywxXQpgYGAKCiMjIEEgbGl0dGxlIGFyaXRobWV0aWMgd2l0aCBtYXRyaXgKU2ltaWxhciBhIGxvcyB2ZWN0b3JlcyAsIHRlbmVtb3MgbG9zIG9wZXJhZG9yZXMgZXN0w6FuZGFyICgrLCAtLCAqLCAvKSBwYXJhIGxhcyBtYXRyaWNlcy4gU3Vwb25nYW1vcyBxdWUgZW4gcHJvbWVkaW8gbGEgZW50cmFkYSBwYXJhIGNhZGEgdW5hIGRlIGxhcyBwZWxpcyBjdWVzdGEgNyBkb2xhcmVzLiBEZXNlYW1vcyBjb25vY2VyIGVsIG7Dum1lcm8gZGUgcGVyc29uYXMgcXVlIHZpZXJvbiBjYWRhIHVuYSBkZSBsYXMgcGVsw61jdWxhcwpgYGB7cn0KdmlzaXRvcnMgPC0gYWxsX3dhcnNfbWF0cml4LzcKdmlzaXRvcnMKYGBgCgojIyBBIGxpdHRsZSBhcml0aG1ldGljIHdpdGggbWF0cml4IChJSSkKU2kgYmllbiBsYSBvcGVyYWNpw7NuIDJcKm1hdHJpeCBsbyBxdWUgaGFjZSBlcyBtdWx0aXBsaWNhciBjYWRhIHVubyBkZSBsb3MgZWxlbWVudG9zIGRlIG51ZXN0cmEgbWF0cml6IHBvciAyLCBlbCBwcm9kdWN0byBtYXRyaXgxXCptYXRyaXgyIGxvIHF1ZSBoYWNlIGVzIG11bHRpcGxpY2FyIGVudHJlIHPDrSBsb3MgZWxlbWVudG9zIGRlIHVuYSBtYXRyaXouIFBhcmEgcmVhbGl6YXIgZWwgcHJvZHVjdG8gZXN0w6FuZGFyIGVudHJlIG1hdHJpY2VzIGRlYmVtb3MgaGFjZXIgdXNvIGRlbCBvcGVyYWRvciAlKiUuCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiTWF0cmljZXMiCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KCiMjIFdoYXQncyBhIG1hdHJpeApFbiBSLCB1bmEgbWF0cml6IGVzIHVuYSBjb2xlY2Npw7NuIGRlIGVsZW1lbnRvcyBkZWwgbWlzbW8gdGlwbyAobnVtw6lyaWNvcywgc3RyaW5ncywgYm9vbGVhbm9zKSBhZ3J1cGFkb3MgZW4gdW4gbsO6bWVybyBmaWpvIGRlIGZpbGFzIHkgY29sdW1uYXMuIFB1ZXN0byBxdWUgc29sbyB0cmFiYWpvIGNvbiBmaWxhcyB5IGNvbHVtbmFzLCB1bmEgbWF0cml6IHNlIHRyYXRhIGRlIHVuIGVsZW1lbnRvIGJpZGltZW5zaW9uYWwuIEVuIFIgcG9kZW1vcyBoYWNlciB1c28gZGUgbGEgZnVuY2nDs24gbWF0cml4KCkgcGFyYSBjb25zdHJ1aXIgdW5hIG1hdHJpei4KCmBgYHtyfQptYXRyaXgoMTo5LCBieXJvdyA9IFRSVUUsIG5yb3cgPSAzKQpgYGAKCiogRWwgcHJpbWVyIGFyZ3VtZW50byBkZSBsYSBmdW5jacOzbiBlcyB1biBjb25qdW50byBkZSBlbGVtZW50b3MgcXVlIFIgcHVlZGUgYWdydXBhciBlbiBmaWxhcyB5IGNvbHVtbmFzLgoqIEVsIGFyZ3VtZW50byBieXJvdyBwdWVkZSB0b21hciBkb3MgdmFsb3JlcyBwb3NpYmxlczogVFJVRSB5IEZBTFNFLiBTaSB0b21hIGVsIHZhbG9yIFRSVUUgaW5kaWNhIHF1ZSBsYSBtYXRyaXogZXMgcmVsbGVuYSBwb3IgZmlsYXMsIG1pZW50cmFzIHF1ZSBzaSB0b21hciBlbCB2YWxvciBkZSBGQUxTRSBub3MgaW5kaWNhIHF1ZSBsYSBtYXRyaXogZXMgcmVsbGVuYSBwb3IgY29sdW1uYXMuCiogRWwgdGVyY2VyIGFyZ3VtZW50byBucm93IGluZGljYW1vcyBlbCBuw7ptZXJvIGRlIGZpbGFzIHF1ZSBxdWVyZW1vcyBxdWUgdGVuZ2EgbGEgbWF0cml6LgoKIyMgQW5hbHl6aW5nIG1hdHJpY2VzLCB5b3Ugc2hhbGwKQSBjb250aW51YWNpw7NuIHZhbW9zIGEgcHJvY2VkZXIgYSByZWFsaXphciB1biBhbsOhbGlzaXMgZW4gdGFxdWlsbGEgZGUgbGFzIHBlbMOtY3VsYXMgZGUgbGEgc2FnYSBsYSBHdWVycmEgZGUgbGFzIEdhbGF4aWFzLiBQYXJhIGVsbG8gdmFtb3MgYSBwcm9jZWRlciBhIGNyZWFybm9zIHRyZXMgdmVjdG9yZXMgcXVlIGluZGljYW4gbG8gcXVlIHJlY2F1ZGFyb24gY2FkYSB1bmEgZGUgbGFzIHBlbMOtY3VsYXMuIEVzdG9zIHZlY3RvcmVzIHRlbmRyw6FuIGRvcyBjb21wb25lbnRlcyBxdWUgaW5kaWNhcsOhbiBsYSByZWNhdWRhY2nDs24gZW4gdGFxdWlsbGEgZGUgbGFzIHBlbMOtY3VsYXMgZW4gVVNBIHkgZnVlcmEgZGUgVVNBLgoKYGBge3J9CiNOb3MgY3JlYW1vcyBsb3MgdmVjdG9yZXMKbmV3X2hvcGUgPC0gYyg0NjAuOTk4LCAzMTQuNCkKZW1waXJlX3N0cmlrZXMgPC0gYygyOTAuNDc1LCAyNDcuOTAwKQpyZXR1cm5famVkaSA8LSBjKDMwOS4zMDYsIDE2NS44KQojTm9zIGNyZWFtb3MgZWwgdmVjdG9yIGJveF9vZmZpY2UgcXVlIHVubyBsb3Mgb3RybyB0cmVzIGVuIHVuIHNvbG8gdmVjdG9yCmJveF9vZmZpY2UgPC0gYyhuZXdfaG9wZSwgZW1waXJlX3N0cmlrZXMsIHJldHVybl9qZWRpKQojTm9zIGNyZWFtb3MgdW5hIG1hdHJpeiBkZSAzIGZpbGFzIGRvbmRlIGNhZGEgZmlsYSByZXByZXNlbnRhIHVuYSBwZWzDrWN1bGEKc3RhcndhcnNfbWF0cml4IDwtIG1hdHJpeChib3hfb2ZmaWNlLCBieXJvdyA9IFRSVUUsIG5yb3cgPSAzKQpzdGFyd2Fyc19tYXRyaXgKYGBgCgojIyBOYW1pbmcgdGhlIG1hdHJpeApDb24gZWwgZmluIGRlIHRlbmVyIHVuYSBpZGVhIG3DoXMgY2xhcmEgZGUgbG8gcXVlIGFsbWFjZW5hIG51ZXN0cmEgbWF0cml6IGRlY2lkaW1vcyBub21icmFyIGNhZGEgdW5hIGRlIGxhcyBmaWxhcyBjb24gbGFzIHBlbMOtY3VsYXMgcXVlIGNvcnJlc3BvbmRlbiB5IHRhbWJpw6luIGNhZGEgY29sdW1uYSBjb24gc3Ugc2lnbmlmaWNhZG8uIFNpbWlsYXIgYSBsb3MgdmVjdG9yZXMgZW4gUiBjb250YW1vcyBjb24gbGFzIGZ1bmNpb25lcyByb3duYW1lcygpIHkgY29sbmFtZXMoKSBxdWUgbm9zIHBlcm1pdGVuIG5vbWJyYXIgdGFudG8gbGFzIGZpbGFzIGNvbW8gbGFzIGNvbHVtbmFzLgpgYGB7cn0KI05vbWJyYW1vcyBsYXMgZmlsYXMgeSBsYXMgY29sdW1uYXMgZGUgbnVlc3RyYSBtYXRyaXoKcm93bmFtZXMoc3RhcndhcnNfbWF0cml4KSA8LSBjKCduZXdfaG9wZScsICdlbXBpcmVfc3RyaWtlcycsICdyZXR1cm5famVkaScpCmNvbG5hbWVzKHN0YXJ3YXJzX21hdHJpeCkgPC0gYygnVVMnLCAnbm9uLVVTJykKc3RhcndhcnNfbWF0cml4CmBgYAoKIyMgQ2FsY3VsYXRpbmcgdGhlIHdvcmxkd2lkZSBib3ggb2ZmaWNlClBhcmEgY2FsY3VsYXIgZWwgaW5ncmVzbyB0b3RhbCBwYXJhIGxhcyB0cmVzIHBlbMOtY3VsYXMsIGRlYmVtb3Mgc3VtYXIgbGFzIGRvcyBjb2x1bW5hcyAoVVMsIG5vbi1VUykuIEVuIFIgY29udGFtb3MgY29uIGxhIGZ1bmNpw7NuIHJvd1N1bXMoKSwgcXVlIG5vcyBwZXJtaXRlIG9idGVuZXIgcGFyYSBjYWRhIGZpbGEgZWwgdG90YWwuIEVzdGEgZnVuY2nDs24gcmV0b3JuYSB1biBudWV2byB2ZWN0b3IgZG9uZGUgY2FkYSBlbGVtZW50byBlcyBsYSBzdW1hIGRlIGNhZGEgZmlsYSBkZSBudWVzdHJhIG1hdHJpei4KYGBge3J9CiNPYnRlbmVtb3MgbGFzIGdhbmFuY2lhcyB0b3RhbGVzIHBvciBwZWzDrWN1bGEKd29ybGR3aWRlX3ZlY3RvciA8LSByb3dTdW1zKHN0YXJ3YXJzX21hdHJpeCkKd29ybGR3aWRlX3ZlY3RvcgpgYGAKCiMjIEFkZGluZyBhIGNvbHVtbiBmb3IgdGhlIFdvcmxkd2lkZSBib3ggb2ZmaWNlClNpIGFob3JhIGRlc2VhbW9zIGFncmVnYXIgZXN0ZSByZXN1bHRhZG8gY29tbyB1bmEgbnVldmEgY29sdW1uYSBkZSBudWVzdHJhIG1hdHJpeiwgZW4gUiBjb250YW1vcyBjb24gbGEgZnVuY2nDs24gY2JpbmQoKSwgbGEgY3VhbCBtZXJnZWEgbWF0cmljZXMgeS9vIHZlY3RvcmVzIGp1bnRvcyBwb3IgY29sdW1uYS4KYGBge3J9CiNBw7FhZGltb3MgdW5hIG51ZXZhIGNvbHVtbmEKc3RhcndhcnNfbWF0cml4X2F1eCA8LSBjYmluZChzdGFyd2Fyc19tYXRyaXgsIHdvcmxkd2lkZV92ZWN0b3IpCnN0YXJ3YXJzX21hdHJpeF9hdXgKYGBgCgojIyBBZGRpbmcgYSByb3cKUiB0YW1iacOpbiBkaXNwb25lIGRlIGxhIGZ1bmNpw7NuIHJiaW5kKCksIGVzdGEgZnVuY2nDs24gbG8gcXVlIG5vcyBwZXJtaXRlIGVzIGHDsWFkaXIgdW5hIG51ZXZhIGZpbGEgYSBudWVzdHJhIG1hdHJpei4gUG9yIGVqZW1wbG8gcG9kZW1vcyBjcmVhcm5vcyB1bmEgc2VndW5kYSBtYXRyaXogZGVub21pbmFkYSBzdGFyd2Fyc19tYXRyaXgyIHF1ZSBpbmNsdXllIG90cmFzIHRyZXMgcGVsw61jdWxhcyB5IHN1IHJlY2F1ZGFjacOzbiwgeSBmdXNpb25hciBlc3RhcyBkb3MgbWF0cmljZXMgZW4gdW5hIHNvbGEKYGBge3J9CiNOb3MgY3JlYW1vcyBsYSBtYXRyaXogc3RhcndhcnNfbWF0cml4Mgpib3hfb2ZmaWNlMiA8LSBjKDQ3NC41LCA1NTIuNSwgMzEwLjcsIDMzOC43LCAzODAuMywgNDY4LjUpCnZlY3Rvcl9yb3dfbmFtZXMgPC0gYygnVGhlIFBoYW50b20gTWVuYWNlJywgJ0F0dGFjayBvZiB0aGUgQ2xvbmVzJywgJ1JldmVuZ2Ugb2YgdGhlIFNpdGgnKQp2ZWN0b3JfY29sX25hbWVzIDwtIGMoJ1VTJywgJ25vbi1VUycpCnN0YXJ3YXJzX21hdHJpeDIgPC0gbWF0cml4KGJveF9vZmZpY2UyLCBieXJvdyA9IFRSVUUsIG5yb3cgPSAzLCBkaW1uYW1lcyA9IGxpc3QodmVjdG9yX3Jvd19uYW1lcywgdmVjdG9yX2NvbF9uYW1lcykpCiNOb3MgY3JlYW1vcyBudWVzdHJhIG51ZXZhIG1hdHJpeiBoYWNpZW5kbyB1c28gZGUgcmJpbmQoKQphbGxfd2Fyc19tYXRyaXggPC0gcmJpbmQoc3RhcndhcnNfbWF0cml4LCBzdGFyd2Fyc19tYXRyaXgyKQphbGxfd2Fyc19tYXRyaXgKYGBgCgojIyBUaGUgdG90YWwgYm94b2ZmaWNlIHJldmVudWUgZm9yIHRoZSBlbnRpcmUgc2FnYQpSIHRhbWJpw6luIGRpc3BvbmUgZGUgbGEgZnVuY2nDs24gY29sU3VtcygpIHF1ZSBub3MgcGVybWl0ZSBvYnRlbmVyIGxhIHN1bWEgdG90YWwgcG9yIGNvbHVtbmFzLiBBc8OtIHNpIHBvciBlamVtcGxvIGRlc2VhbW9zIGNvbm9jZXIgbGEgcmVjYXVkYWNpw7NuIHRvdGFsIGRlIGxhIHNhZ2EgY29tcGxldGEgdGFudG8gZW4gVVMgY29tbyBlbiBub24tVVMsIGJhc3RhcsOhIGNvbiBoYWNlciB1c28gZGUgZXN0YSBmdW5jacOzbgpgYGB7cn0KI09idGVuZW1vcyBsYSByZWNhdWRhY2nDs24gdG90YWwgZW4gVVMgeSBlbiBub25fVVMKdG90YWxfcmV2ZW51ZV92ZWN0b3IgPC0gY29sU3VtcyhhbGxfd2Fyc19tYXRyaXgpCnRvdGFsX3JldmVudWVfdmVjdG9yCmBgYAoKIyMgU2VsZWN0aW9uIG9mIG1hdHJpeCBlbGVtZW50cwpTaW1pbGFyIGEgbG9zIHZlY3RvcmVzIHBvZGVtb3MgaGFjZXIgdXNvIGRlIGxvcyBjb3JjaGV0ZXMsIHBhcmEgc2VsZWNjaW9uYXIgZWxlbWVudG9zIGRlIHVuYSBtYXRyaXouIEEgZGlmZXJlbmNpYSBkZSB1biB2ZWN0b3IgcXVlIHRpZW5lIHVuYSBzb2xhIGRpbWVuc2nDs24gdW5hIG1hdHJpeiB0aWVuZSBkb3MgZGltZW5zaW9uZXMuIFBvciBsbyB0YW50byBwb2RlbW9zIGhhY2VyIHVzbyBkZSBsYSBjb21hIHBhcmEgaW5kaWNhciBsYSBmaWxhIHkgbGEgY29sdW1uYSBlbiBsYSBjdWxhIHNlIGVuY3VlbnRyYSBlbCBlbGVtZW50byBxdWUgZGVzZWFtb3Mgc2VsZWNjaW9uYXIuCmBgYHtyfQojU2VsZWNjaW9uYW1vcyBkZSBsYSBtYXRyaXogYWxsX3dhcnNfbWF0cml4IGxhIHJlY2F1ZGFjacOzbiBlbiBVUyBkZSBsYSBwZWzDrWN1bGEgbmV3X2hvcGUKYWxsX3dhcnNfbWF0cml4WzEsMV0KYGBgClRhbWJpw6luIHBvZGVtb3MgaGFjZXIgdXNvIGRlIGxhIG5vdGFjacOzbiA6CmBgYHtyfQojU2VsZWNjaW9uYW1vcyBsYXMgZ2FuYW5jaWFzIGVuIG5vbi1VUyBkZSBsYXMgcGVsw61jdWxhcyBuZXdfaG9wZSB5IGVtcGlyZV9zdHJpa2VzCmFsbF93YXJzX21hdHJpeFsxOjIsIDE6Ml0KYGBgCgpTaSBxdWVyZW1vcyBzZWxlY2Npb25hciB0b2RvcyBsb3MgZWxlbWVudG9zIGRlIHVuYSBkZXRlcm1pbmFkYSBmaWxhIG8gZGUgdW5hIGRldGVybWluYWRhIGNvbHVtbmEgcG9kZW1vcyBoYWNlciB1c28gZGUgbGEgc2lndWllbnRlIG5vdGFjacOzbgpgYGB7cn0KI1NlbGVjY2lvbmFtb3MgbGFzIGdhbmFuY2lhcyBkZSBsYSBwZWxpY3VsYSBuZXdfaG9wZQphbGxfd2Fyc19tYXRyaXhbMSxdCgpgYGAKYGBge3J9CiNTZWxleGNjaW9uYW1vcyB0b2RhcyBsYXMgZ2FuYW5jaWFzIGVuIFVTCmFsbF93YXJzX21hdHJpeFssMV0KYGBgCgojIyBBIGxpdHRsZSBhcml0aG1ldGljIHdpdGggbWF0cml4ClNpbWlsYXIgYSBsb3MgdmVjdG9yZXMgLCB0ZW5lbW9zIGxvcyBvcGVyYWRvcmVzIGVzdMOhbmRhciAoKywgLSwgKiwgLykgcGFyYSBsYXMgbWF0cmljZXMuIFN1cG9uZ2Ftb3MgcXVlIGVuIHByb21lZGlvIGxhIGVudHJhZGEgcGFyYSBjYWRhIHVuYSBkZSBsYXMgcGVsaXMgY3Vlc3RhIDcgZG9sYXJlcy4gRGVzZWFtb3MgY29ub2NlciBlbCBuw7ptZXJvIGRlIHBlcnNvbmFzIHF1ZSB2aWVyb24gY2FkYSB1bmEgZGUgbGFzIHBlbMOtY3VsYXMKYGBge3J9CnZpc2l0b3JzIDwtIGFsbF93YXJzX21hdHJpeC83CnZpc2l0b3JzCmBgYAoKIyMgQSBsaXR0bGUgYXJpdGhtZXRpYyB3aXRoIG1hdHJpeCAoSUkpClNpIGJpZW4gbGEgb3BlcmFjacOzbiAyXCptYXRyaXggbG8gcXVlIGhhY2UgZXMgbXVsdGlwbGljYXIgY2FkYSB1bm8gZGUgbG9zIGVsZW1lbnRvcyBkZSBudWVzdHJhIG1hdHJpeiBwb3IgMiwgZWwgcHJvZHVjdG8gbWF0cml4MVwqbWF0cml4MiBsbyBxdWUgaGFjZSBlcyBtdWx0aXBsaWNhciBlbnRyZSBzw60gbG9zIGVsZW1lbnRvcyBkZSB1bmEgbWF0cml6LiBQYXJhIHJlYWxpemFyIGVsIHByb2R1Y3RvIGVzdMOhbmRhciBlbnRyZSBtYXRyaWNlcyBkZWJlbW9zIGhhY2VyIHVzbyBkZWwgb3BlcmFkb3IgJSolLgo=</div>
 
 
 

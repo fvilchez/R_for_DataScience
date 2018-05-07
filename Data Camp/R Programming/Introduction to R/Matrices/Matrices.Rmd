@@ -10,7 +10,7 @@ En R, una matriz es una colección de elementos del mismo tipo (numéricos, stri
 matrix(1:9, byrow = TRUE, nrow = 3)
 ```
 
-* El primer argument de la función es un conjunto de elementos que R puede agrupar en filas y columnas.
+* El primer argumento de la función es un conjunto de elementos que R puede agrupar en filas y columnas.
 * El argumento byrow puede tomar dos valores posibles: TRUE y FALSE. Si toma el valor TRUE indica que la matriz es rellena por filas, mientras que si tomar el valor de FALSE nos indica que la matriz es rellena por columnas.
 * El tercer argumento nrow indicamos el número de filas que queremos que tenga la matriz.
 

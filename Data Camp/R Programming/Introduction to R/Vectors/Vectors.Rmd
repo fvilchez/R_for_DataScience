@@ -110,9 +110,9 @@ mean(select_days)
 Los comparadores lógicos conocidos en R son:
 
 1. <: menor que
-2. >: mayor que
+2. \>: mayor que
 3. <=: menor o igual que
-4. >=: mayor o igual que
+4. \>=: mayor o igual que
 5. !=: distinto que
 6. ==: igual que
 
