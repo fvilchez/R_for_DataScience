@@ -23,7 +23,7 @@ poker_vector <- c(140, -50, 20, -120, 240)
 roulette_vector <- c(-24, -50, 100, -350, 10)
 ```
 
-##Naming a vector
+## Naming a vector
 Como analista de datos es importante tener una visión clara de los datos que se están usando. En el apartado anterior hemos creado dos vectores que indican perdidas y ganancias de distintos días de la semana, pero así a simple vista es complicado saber a que días corresponde cada posición. Para solucionar este problema dispones de la función names().
 ```{r}
 #Nos creamos los vectores
