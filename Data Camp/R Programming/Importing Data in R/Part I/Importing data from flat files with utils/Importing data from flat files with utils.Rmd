@@ -36,3 +36,44 @@ summary(df)
 
 ## read.table
 
+Si estamos tratando con conjunto de datos más exóticos aún, podemos hacer uso de la función **read.table()**. Se trata de la función básica más importante a la cual le podemos pasar una gran cantidad de argumentos. Por defecto el argumento **header** toma el valor de **FALSE** mientras que el argumento **sep** toma el valor de **""**. 
+La función **read.table()** también dispone del argumento **col.names** que nos permite indicar el nombre de las columnas en caso de que estas no vengan dadas, es decir, nos permite proporcionar cabecera a nuestro conjunto de datos.
+
+```{r}
+#Realizamos la carga de datos
+df = read.table("hotdogs.txt",
+                sep = "\t",
+                col.names = c("types", "calories", "sodium"))
+
+#Vemos las primeras observaciones de nuestro conjunto de datos tras hacer la carga
+head(df)
+```
+
+Supongamos que ahora queremos seleccionar el perrito que tiene la menor cantidad de calorías y el perrito que aporta la mayor cantidad de sodio, para ello podemos hacer uso de las funciones **which.min()** y **which.max()** que nos retornan el índice en la que se encuentra el elemento que cumple una determinada condición.
+
+```{r}
+#Seleccionamos el perrito con el menor número de calorías
+low_calories <- df[which.min(df$calories), ]
+low_calories
+```
+
+```{r}
+#Seleccionamos el perrito con un mayor cantidad de sodio
+high_sodium <- df[which.max(df$sodium), ]
+high_sodium
+```
+
+## Column classes
+
+Además de los nombres de las columnas, también podemos especificar el tipo de clase que quremos que sea una determinada variable, para ello disponemos del argumento **colClasses**, que toma como valor un vector de strings, que contiene las clases de cada una de nuestras variables. Esto puede ser realment útil cuando queremos que algunas variables sean leídas como factore y otras queremos que sean leídas como character. Si le asignamos el valor **NULL** a una determinada variable en el vector colClasses, esta variable será ignorada y no será cargada.
+
+```{r}
+#Realizamos la carga del conjunto de datos hotdogs
+hotdogs <- read.delim("hotdogs.txt", header = FALSE,
+                      col.names = c("type", "calories", "sodium"),
+                      colClasses = c("factor", "NULL", "numeric"))
+#Vemos la estructura de los datos cargados
+str(hotdogs)
+```
+
+

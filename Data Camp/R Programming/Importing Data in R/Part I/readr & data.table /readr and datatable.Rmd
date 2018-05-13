@@ -1,0 +1,127 @@
+---
+title: "readr and datatable"
+output: html_notebook
+---
+
+## read_csv
+
+Podemos importar los ficheros CSV haciendo uso de la función **read_csv()**. Esta función asume que la primera fila contiene el nombre de las columnas de nuestro conjunto de datos.
+
+```{r}
+potatoes <- read_csv("potatoes.txt")
+```
+
+## read_tsv
+
+Al igual que como en el caso de la librería **utils** teníamos la función **read.delim()** para leer ficheros separados por tabulador, la librería **readr** también dispone de la función **read_tsv**.
+
+```{r}
+#Nos creamos la cabecera de nuestro conjunto de datos
+properties <- c("area", "temp", "size", "storage", "method",
+                "texture", "flavor", "moistness")
+
+#Cargamos los datos agregando cabeceras
+potatoes <- read_tsv("potatoes.txt", col_names = properties)
+
+#Visualizamos las primeras observaciones
+head(potatoes)
+```
+
+## read_delim
+
+Así como en el caso de la librería **utils** la función principal a la hora hacer la lectura de datos es **read_table()** para el caso de la librería **readr** es **read_delim()**. Esta función toma dos argumentos principales
+
+* **file**: fichero que contiene los datos.
+
+* **delim**: se trata del carácter que separa la información en nuestro conjunto de datos.
+
+```{r}
+#Procedemos a cargar el conjunto de datos potatoes.txt haciendo uso de la función read_delim()
+potatoes <- read_delim("potatoes.txt", delim = "\t", col_names = properties)
+#Vemos las primeras observaciones
+head(potatoes)
+```
+
+## skip and n_max
+
+A traves de estos dos argumentos podemos controlar que parte de nuestros queremos que sean cargardos en R. 
+
+* **skip**: especifica el número de líneas que queremos ignorar antes de comenzar la importación de los datos.
+
+* **n_max**: especifica el número de líneas que queremos importar
+
+Por ejemplo en un fichero con 30 líneas en el que skip = 2 y n_max = 3, lo que hacemos es importar solamente las líneas 3, 4, y 5, es decir, ignoramos las dos primeras y tras esto procedemos a realizar la lectura de las 3 siguientes.
+
+```{r}
+#Procedemos a realizar la importación de datos
+potatoes_fragment <- read_tsv("potatoes.txt", col_names = properties, skip = 6, n_max = 5)
+potatoes_fragment
+
+```
+
+## col_types
+
+También podemos indicar que tipo de dato queremos que sean cada una de nuestras columnas importadas. En este caso para indicar los tipos lo podemos hacer en una única cadena de caracteres ya que:
+
+* **c**: le indicamos que es de tipo character
+
+* **d**: le indicamos que es de tipo double
+
+* **i**: le indicamos que es de tipo integer
+
+* **l**: le indicamos que es de tipo logical
+
+* **_**: en este caso se infiere el tipo de dato.
+
+```{r}
+#Realizamos la carga de datos e indicamos que todas las columnas son de tipo character
+potatoes_str <- read_tsv("potatoes.txt", col_names = properties, col_types = "cccccccc")
+str(potatoes_str)
+```
+
+## col_types with collectors
+
+Otra forma de indicar el tipo de dato que queremos asignar a cada una de nuestras columnas es haciendo uso de los **collectors**. Las funciones collertors pueden ser pasadas a traves de una lista a las funciones del tipo **read_***.
+
+```{r}
+#Hacemos la carga de datos del conjunto de datos hotdogs sin hacer uso de collectors
+hotdogs <- read_tsv("hotdogs.txt",  col_names = c("type", "calories", "sodium"))
+#Realizamos un breve análisis estadístico
+summary(potatoes)
+```
+
+```{r}
+#Hacemos uso de los colectores para cargar los datos indicando el tipo de datos que queremos usar
+fac <- col_factor(levels = c("Beef", "Meat", "Poultry"))
+int <- col_integer()
+
+#Procedemos a realizar la carga de datos haciendo uso de los colectores
+hotdogs <- read_tsv('hotdogs.txt', col_names = c("type", "calories", "sodium"),
+                    col_types = list(fac, int, int))
+#Realizamos un breve análisis estadístico
+summary(hotdogs)
+```
+
+## fread
+
+La función **fread** se trata de una función que pertenece al paquete **data.table** que hace el trabajo de importar datos de una forma similar a **read.table()**. Se trata de una función que es capaz de inferir el tipo de separación de nuestros datos.
+
+```{r}
+#Realizamos la carga de datos con fread
+col_names <- c("area", "temp", "size", "storage", "method", "texture", "flavor", "moistness")
+potatoes <- fread("potatoes.txt", col.names = col_names)
+#Observamos las primeras observaciones
+head(potatoes)
+```
+
+## fread: more advanced use
+
+**fread** dispone de una gran cantidad de argumentos interesantes entre los que se encuentran **drop** y **select**. Estos argumentos nos permiten seleccionar variables que nos interesen o eliminar variables que no nos interesan de nuestro conjunto de datos.
+
+```{r}
+#Realizamos la carga de datos haciendo uso del parámetro select
+pools <- fread("swimming_pools.csv", select = c("Latitude", "Longitude"))
+#Visualizamos las primeras observaciones tras hacer la carga de datos
+head(pools)
+```
+
