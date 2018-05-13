@@ -5,18 +5,17 @@ output: html_notebook
 
 ## What's a matrix
 En R, una matriz es una colección de elementos del mismo tipo (numéricos, strings, booleanos) agrupados en un número fijo de filas y columnas. Puesto que solo trabajo con filas y columnas, una matriz se trata de un elemento bidimensional. En R podemos hacer uso de la función matrix() para construir una matriz.
-
 ```{r}
 matrix(1:9, byrow = TRUE, nrow = 3)
 ```
-
 * El primer argumento de la función es un conjunto de elementos que R puede agrupar en filas y columnas.
+
 * El argumento byrow puede tomar dos valores posibles: TRUE y FALSE. Si toma el valor TRUE indica que la matriz es rellena por filas, mientras que si tomar el valor de FALSE nos indica que la matriz es rellena por columnas.
+
 * El tercer argumento nrow indicamos el número de filas que queremos que tenga la matriz.
 
 ## Analyzing matrices, you shall
 A continuación vamos a proceder a realizar un análisis en taquilla de las películas de la saga la Guerra de las Galaxias. Para ello vamos a proceder a crearnos tres vectores que indican lo que recaudaron cada una de las películas. Estos vectores tendrán dos componentes que indicarán la recaudación en taquilla de las películas en USA y fuera de USA.
-
 ```{r}
 #Nos creamos los vectores
 new_hope <- c(460.998, 314.4)

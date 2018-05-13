@@ -1,0 +1,38 @@
+---
+title: "Importing data from flat files with utils"
+output: html_notebook
+---
+
+## read.csv
+
+EL paquete **utils** se encuentra automáticamente cargado en nuestra sesión de R, lo que nos permite comenzar a cargar archivos haciendo uso de la función **read.csv()**. Esta función tiene como argumento básico el path del fichero (en caso de que el fichero no se encuentre donde estamos ejecutando nuestra archivo R) y en caso de que si sea así basta con indicar el nombre del archivo.
+
+```{r}
+#Cargamos el conjunto de datos haciendo uso de read.csv()
+df = read.csv("swimming_pools.csv")
+#Vemos la estructura de los datos cargados
+str(df)
+```
+
+## stringsAsFactors
+
+**stringsAsFactors** es uno de los argumentos de los que dispone la función **read.csv()**. Este argumento por defecto toma el valor de **TRUE** por lo que por defecto nuestra función convertiŕa las variables de tipo string a factores. Sin embargo, esto solo tiene sentido cuando los string representan variables categóricas. Si indicamos este parámetro como **FALSE** las variables de tipo string serán leídas como **character**.
+
+```{r}
+df = read.csv("swimming_pools.csv", stringsAsFactors = FALSE)
+str(df)
+```
+
+## read.delim
+
+La función **read.csv()** nos permite cargar ficheros en los que sus valores están separados por coma. Sin embargo, existen situaciones en las cuales la separación no vendrá dado por comas, sino que puede venir dada por ejemplo por tabulación **(\\t)**. Para realizar este tipo de carga podemos hacer uso de la función **read.delim()**. Esta función por defecto toma como elemento separador el tabulador y además el parámetro **header** toma por defecto el valor de **TRUE**. El parámetro header nos permite especificar si la primera fila de nuestro conjunto de datos corresponde con el nombre de las variables en esta caso tomará el valor de **TRUE** o bien indicarle que es una observación más, en este caso tomará el valor de **FALSE**.
+
+```{r}
+#Realizamos la carga de nuestro nuevo conjunto de datos
+df = read.delim("hotdogs.txt", header = FALSE)
+#Vemos un resumen de nuestros datos
+summary(df)
+```
+
+## read.table
+
