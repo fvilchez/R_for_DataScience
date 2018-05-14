@@ -1,0 +1,128 @@
+---
+title: "Importing Excel data"
+output: html_notebook
+---
+
+## List the sheets of an Excel file
+
+A la hora de importar datos en formato Excel (xlsx, xls) disponemos de la librería **readxl**. Antes de comenzar a importar datos debemos de conocer el número de hojas que dispone nuestro fichero excel. Para ello contamos con la función **excel_sheets()**. Esta función nos retorna una lista de tipo string con el nombre de las hojas de nuestro fichero excel.
+
+```{r}
+#Vemos el número de hojas de nuestro fichero
+excel_sheets("urbanpop.xlsx")
+```
+Podemos ver  como en este caso nuestro fichero de texto tiene un total de 3 hojas.
+
+## Import an Excel sheet
+
+Una vez tenemos claro el la estructura de nuestro fichero excel podemos proceder a realizar la importación de los datos. Para ello contamos con la función **read_excel()**. Si le pasamos directamente el fichero, la función por defecto lo que hace es importar la primera de las hojas. Esta función también dispone del parámetro **sheet** que nos permite seleccionar la hoja que deseamos importar, se le puede indicar tanto indicando el nombre de la hoja como el índice de dicha hoja.
+
+```{r}
+#Importamos cada una de las hojas
+pop_1 <- read_excel("urbanpop.xlsx", sheet = 1)
+pop_2 <- read_excel("urbanpop.xlsx", sheet = "1967-1974")
+pop_3 <- read_excel("urbanpop.xlsx", sheet = 3)
+
+#Nos creamos una lista con los datos leídos
+list_pop = list(pop_1, pop_2, pop_3)
+
+#Vemos la estructura de nuestros datos
+str(list_pop)
+```
+
+## Reading a workbook
+
+Anteriormente hemos reealizado la lectura de cada una de las hojas de forma individual y finalmente las hemos unido en una lista. Cuando disponemos de ficheros de excel con cientos de hojas esto puede resultar bastante tedioso, es por esto, que una de las mejores opciones a la hora de realizar la lectura de diversas hojas es hacer uso de la función **lapply()**.
+
+```{r}
+#Hacemos la carga haciendo uso de la lapply
+list_pop <- lapply(excel_sheets("urbanpop.xlsx"), read_excel, path = "urbanpop.xlsx")
+
+#Comprobamos que obtenemos los mismos resultados
+str(list_pop)
+```
+
+## The col_names argument
+
+Además de los argumentos **path** y **sheet** existen otros argumentos que pueden ser especificados en la función **read_excel()**. Uno de estos argumentos es **col_names**. Por defecto toma el valor de **TRUE**, es decir, esto indica que la primera fila de cada hoja corresponde con los nombres de nuestras columnas. En caso de que esto no sea cierta podemos poner su valor a **FALSE**. En caso de queramos indicar el nombre de las columnas de forma personalizada le podemos pasar un vector de caracteres de igual longitud que el número de columnas que contiene nuestra hoja.
+
+```{r}
+#Cargamos el conjunto de datos urbanpop_nonames.xlsx indicando el argumento col_names como FALSE
+pop_a <- read_excel("urbanpop_nonames.xlsx", sheet = 1, col_names = FALSE)
+
+#Hacemos un summary
+summary(pop_a)
+```
+
+```{r}
+#Ahora procedemos a cargar indicando el nombre de las columnas
+cols <- c("country", paste0("year_", 1960:1966))
+pop_b <- read_excel("urbanpop_nonames.xlsx", sheet = 1, col_names = cols)
+
+#Hacemos un summary
+summary(pop_b)
+```
+
+## The skip argument
+
+Este argumento nos permite especificar a R que ignore ciertas filas de una hoja antes de realizar la carga de datos. 
+```{r}
+#Cargamos la segunda hoja e ignoramos las 3 primeras filas
+pop_skip <- read_excel("urbanpop_nonames.xlsx", col_names = FALSE, sheet = 2, skip = 3)
+
+#Seleccionamos la primera observación
+pop_skip[1,]
+```
+
+## Import local file with gdata
+
+La librería **gdata** nos permite también importar hojas excel en formato **xls**. Para ello contamos con la función **read.xls**, al igual que en el caso de **read_excel** si le pasamos únicamente como argumento nuestra hoja excel, importará por defecto la primera de las hojas.
+
+```{r}
+#Importamos los datos indicando la hoja a importar
+urban_pop <- read.xls("urbanpop.xls", sheet = "1967-1974")
+
+#Visualizamos las 11 primeras observaciones
+head(urban_pop, n = 11)
+```
+
+## read.xls() wraps around read.table()
+
+La función **read.xls()** funciona en dos pasos:
+
+* En primer lugar convierte nuestro archivo de excel en un archivo csv haciendo uso de Perl.
+
+* En segundo lugar realiza la lectura haciendo uso de la función **read_csv()**.
+
+Esto significa que todos los argumentos que le podemos pasar a **read_csv()** se los podemos pasar también a **read.xls**.
+
+```{r}
+#Nos creamos los nombres de las columnas para la hoja
+cols <- c("country", paste0("year_", 1967:1974))
+
+#Realizamos la carga
+urban_pop <- read.xls("urbanpop.xls", sheet = 2, skip = 50, header = FALSE, stringsAsFactors = FALSE,
+                      col.names = cols)
+
+head(urban_pop)
+```
+
+## Work that Excel data!
+
+```{r}
+#Cargamos cada una de las hojas
+urban_pop1 <- read.xls("urbanpop.xls", sheet = 1, stringsAsFactors = FALSE)
+urban_pop2 <- read.xls("urbanpop.xls", sheet = 2, stringsAsFactors = FALSE)
+urban_pop3 <- read.xls("urbanpop.xls", sheet = 3, stringsAsFactors = FALSE)
+
+#Unimos todo en una lista
+df_urban <- cbind(urban_pop1, urban_pop2[-1], urban_pop3[-1])
+
+#Eliminamos las filas con valores perdidos
+urban_clean <- na.omit(df_urban)
+
+#Hacemos un summary
+summary(urban_clean)
+
+```
+
