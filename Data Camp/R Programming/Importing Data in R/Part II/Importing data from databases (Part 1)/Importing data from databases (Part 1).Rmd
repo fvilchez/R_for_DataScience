@@ -1,0 +1,56 @@
+---
+title: "Importing data from databases (Part 1)"
+output: html_notebook
+---
+## Establish a connection 
+
+El primer paso antes de extraer datos de una tabla SQL es el de crear una conexión. En función del tipo de base de datos a la cual nos deseemos conectar será necesario usar distintos paquetes, para ello necesitamos hacer uso del paquete **DBI**.
+La función **dbConnect()** crea una conexión entre nuestra sesión de R y nuestra base de datos SQL. El primer argumento es indicar el objeto **DBIdriver**, que nos indica como se realiza la conexión y como se mapean los datos entre R y la base de datos. Si nuestro objetivo es conectar con una base de datos MySQL nuestro primer parámetro debería tomar el valor **RMySQL::MySQL()**.
+Si la base de datos MySQL es una base de datos remota alojada en un servidor podemos hacer uso de los siguienes argumentos dentro de la función **dbConnect()**: **dbname**, **host**, **port**, **user** y **password**.
+```{r}
+#Realizamos nuestra conexión con la base de datos
+con <- dbConnect(RMySQL::MySQL(),
+                 dbname = "tweater",
+                 host = "courses.csrrinzqubik.us-east-1.rds.amazonaws.com",
+                 port = 3306,
+                 user = "student",
+                 password = "datacamp")
+```
+
+## List the database tables
+
+Tras conectarnos a nuestra base de datos de forma exitosa, el siguiente paso consiste en saber que tablas contiene nuestra base de datos. Para esto disponemos de la función **dbListTables()**- Como elemento de entrada esta función un elemento de conexión y como nos retorna un vector con los nombres de las tablas.
+
+```{r}
+#Obtenemos un vector con los nombres de las tablas
+tables_names <- dbListTables(con)
+```
+
+## Import users
+
+Para importar estas tablas disponemos de la función **dbReadTable()**. Simplemente le pasamos como argumento nuesto elemento de conexión y el nombre de la tabla que deseamos importar. Esto nos retorna un dataframe.
+
+```{r}
+#Importamos la tabla users
+users_df <- dbReadTable(con, "users")
+users_df
+```
+
+## Import all tables
+
+Si lo que deseamos es importar todas y cada una de las tablas podemos hacer uso de la función **laply()**.
+
+```{r}
+#Importamos todas las tablas
+tables <- lapply(tables_names, dbReadTable, conn = con)
+```
+
+## Disconnect
+
+Una vez hemos finalizado de hacer todo lo que deseamos es recomendable desconectar nuestra conexión con la base de datos. Para ello contamos con la función **dbDisconnect()**, que le pasamos como parámetro nuestro objeto de tipo conexión 
+
+```{r}
+#Realizamos desconexión con nuestra base de datos
+dbDisconnect(con)
+```
+

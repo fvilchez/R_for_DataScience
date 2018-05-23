@@ -1,0 +1,91 @@
+---
+title: "Importing data from databases (Part 2)"
+output: html_notebook
+---
+
+## Query tweater (I)
+
+Como Data Scientist es común que tabajemos con tablas que tienen millones de filas. A la hora de analizar estos datos es posible que solo estemos interesados en analizar una pequeña fracción de estos datos. En esta situación es una buena opción realizar una query a nuestra tabla, de esto forma solo importaremos los datos en R que realmente necesitamos.
+
+La función **dbGetQuery()** nos permite realizar esto. Como primer parámetro le pasamos la conexión a nuestra base de datos. Como segundo parámetro es nuestra SQL query en forma de string. 
+
+```{r}
+library(DBI)
+
+#Realizamos la conexión con la base de datos
+con <- dbConnect(RMySQL::MySQL(),
+                 dbname = "tweater",
+                 host = "courses.csrrinzqubik.us-east-1.rds.amazonaws.com",
+                 port = 3306,
+                 user = "student",
+                 password = "datacamp")
+
+#Seleccionamos  la columna tweet_id de la tabla comment cuyo user_id es 1
+elisabeth <- dbGetQuery(con, "SELECT tweat_id FROM comments WHERE user_id = 1 ")
+elisabeth
+```
+
+## Query tweater (II)
+
+Además de la igualdad podemos hacer uso de los operadores mayor que y menor que.
+```{r}
+#Seleccionamos la columna post de la tabla tweats que cumplen que la fecha es superior a 2015-09-21
+latest <- dbGetQuery(con, "SELECT post FROM tweats WHERE date > '2015-09-21'")
+latest
+```
+
+## Query tweater (III)
+
+También podemos hacer uso de los operadores **AND** y **OR** vistos anteriormente en nuestras consultas SQL.
+
+```{r}
+#Seleccionamos los registros de la columna message de la tabla comments en los que se cumple que tweat_id es 77 y user_id es mayor  #que 4
+specific <- dbGetQuery(con, "SELECT message FROM comments WHERE tweat_id = 77 AND user_id > 4")
+specific
+```
+
+## Query tweater (IV)
+
+Existen funciones SQL específicas para usar dentro de una consulta SQL. Por ejemplo la función **CHAR_LENGTH()** retorna el número de carácter de un string.
+
+```{r}
+#Seleccinamos los registros de las columnas id y name de la tabla users donde el número de caracteres de la variables name es
+#estrictamente menor que 5
+short <- dbGetQuery(con, "SELECT id, name FROM users WHERE CHAR_LENGTH(name) < 5")
+short
+```
+
+## Join the query madness!
+
+Las consultas SQL no solo pueden hacer uso de **SELECT**, **FROM** y **WHERE**. También es muy utilizado el **JOIN** y específicamente el **INNER JOIN**.
+
+```{r}
+dbGetQuery(con, "SELECT name, post FROM users INNER JOIN tweats on users.id = user_id WHERE date > '2015-09-19'")
+```
+
+## Send - Fetch - Clear
+
+Hasta ahora hemos hecho uso de la función **dbGetQuery()**. Esta es una función virtual del paquete **DBI**, que es actualmente implementado por el paquete **RMySQL**. Detrás del resultado de esta función se realizan los siguientes pasos:
+
+* Se manda una query específica a través de la función **dbSendQuery()**.
+
+* Obtenemos un resultaddos al ejecutar esta en la base de datos mediante **dbFetch()**
+
+* Se limpia el resultado mediante la función **dbClearResult()**
+
+A continuación vamos a proceder a no usar **dbGetQuery()**, y si ejecutar todo paso a paso. Esto puede resultar tedioso pero nos permite obtener resultados de consultas por trozos en lugar de todo de una sola vez.
+
+```{r}
+#Mandamos la query a la base de datos
+res <- dbSendQuery(con, "SELECT * FROM comments WHERE user_id > 4")
+
+#Hacemos uso de dbFtech
+dbFetch(res, n = 2)
+
+#Limpiamos res
+dbClearResult(res)
+
+#FInalmente desconectamos la base de datos
+dbDisconnect(con)
+```
+
