@@ -1,0 +1,115 @@
+---
+title: "Importing data from the web (Part 1)"
+output: html_notebook
+---
+
+## Import flat files from the web
+
+Hasta ahora hemos visto funciones del paquete **utils** para importar ficheros de datos, tales como **read.csv()** o **read.delim()**. Estas son funciones que son capaces de importar de forma automática ficheros desde la web a través de una URL.
+
+```{r}
+#Importamos readr
+library(readr)
+
+#Cargamos los datos desde la url_csv
+url_csv <- "http://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/swimming_pools.csv"
+pools <- read_csv(url_csv)
+
+#Cargamos los datos desde url_delim
+url_delim <- "http://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/potatoes.txt"
+potatoes <- read_tsv(url_delim)
+
+#Mostramos los resultados
+pools
+potatoes
+```
+
+## Secure importing
+
+Las URL's que empiezan por HTTPS son las llamadas webs seguras, estas son más recomendables que las HTTP.
+
+```{r}
+#Cargamos los datos con read.csv a partir de url_csv
+url_csv <- "https://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/swimming_pools.csv"
+pools1 <- read.csv(url_csv, header = TRUE)
+
+#Cargamos los datos con read_csv() a partir de url_csv
+pools2 <- read_csv(url_csv)
+
+#Mostramos los resultados
+pools1
+pools2
+```
+
+## Downloading any file, secure or not
+
+Haciendo uso de la función **download.file()** podemos descargar cualquier tipo de fichero desde la web, haciendo uso de HTTP y HTTPS: imágenes, ficheros ejecutables, incluso ficheros de tipo RData. Un fichero RData se trata de una forma eficiente de almacenar datos.
+
+Podemos cargar datos de ficheros de tipo **RData** haciendo uso de la función **load()**, pero esta función no acepta un string de tipo URL como argumento. 
+
+```{r}
+#URL donde queremos descargar nuestro fichero RData
+url_rdata <- "https://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/wine.RData"
+
+#Descargamos el fichero a nuestro directorio de trabajo
+download.file(url_rdata, destfile = "wine_local.RData")
+
+#Cargamos los datos en nuestro espacio de trabajo 
+load("wine_local.RData")
+
+#Hacemos summary
+summary(wine)
+```
+
+## HTTP? httr! (I)
+
+Descargar un fichero de internet significa hacer un request de tipo **GET** y recibir como respuesta el fichero. Todo lo que hemos visto hasta ahora hace uso de este **GET** para obtener los ficheros. 
+
+El paquete **httr** dispone de la función, **GET()** para ejecutar este GET request. El resultado es un objeto de tipo respuesta, que nos proporciona un fácil acceso al código, tipo de contenido y por supuesto el contenido actual.
+
+Podemos extraer el contenido de esta request haciendo uso de la función **content()**. Existen tres formas de recuperar este contenido: como un objeti tipo fila, como un vector de caracteres, o como un objeto R, tal como una lista. Si no le indicamos a **content()** como recuperar el contenido a través del argumento **as**, hará lo mejor para averiguar que tipo es el más apropiado según el tipo de contenido.
+
+```{r}
+#Cargamos la librería
+library(httr)
+
+#Indicamos la URL
+url <- "http://www.example.com/"
+
+#Hacemos un GET
+resp <- GET(url)
+
+#Mostramos el contenido de resp
+resp
+
+#Extraemos el contenido con content
+raw_data <- content(resp, as = "raw")
+
+#Vemos las primeras observaciones
+head(raw_data)
+```
+
+## HTTP? httr! (II)
+
+El contenido web no se limita solo a página HTMLy ficheros almacenados en servidores remotos. Existen otros muchos tipo de datos. Una muy común son los ficheros de tipo JSON. Este formato de fichero es muy usado como respuesta en las API'S.
+
+```{r}
+#URL de acceso
+url <- "http://www.omdbapi.com/?apikey=ff21610b&t=Annie+Hall&y=&plot=short&r=json"
+
+#Hacemos el GET
+resp <- GET(url)
+
+#Mostramos la respuesta
+resp
+
+#Mostramos el contenido de resp en formato texto y sin indicar formato
+content(resp, as = "text")
+content(resp)
+
+```
+
+Podemos ver como por defecto el contenido a la respuesta de un fichero JSON se retorna como una lista algo que es muy conveniente.
+
+
+

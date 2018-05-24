@@ -1,0 +1,139 @@
+---
+title: "Importing data from the web (Part 2)"
+output: html_notebook
+---
+## From JSON to R
+
+En su configuración más simple, la función **fromJSON()** puede convertir strings de tipo character que representan datos JSON en una estructura tipo lista en R.
+
+
+```{r}
+#Cargamos la librería
+library(jsonlite)
+
+#Cargamos un fichero de tipo JSON
+wine_json <- '{"name":"Chateau Migraine", "year":1997, "alcohol_pct":12.4, "color":"red", "awarded":false}'
+
+#Pasamos a tipo lista
+wine <- fromJSON(wine_json)
+
+#Mostramos la estructura del fichero 
+str(wine)
+```
+
+## Quandl API
+
+La función **fromJSON()** también trabaja de forma adecuada si le pasamos como parámetro la URL del fichero que contiene la información del JSON.
+
+```{r}
+#URL para obtener la info 
+quandl_url <- "https://www.quandl.com/api/v3/datasets/WIKI/FB/data.json?auth_token=i83asDsiWUUyfoypkgMz"
+
+#Obtenemos la info
+quandl_data <- fromJSON(quandl_url)
+
+#Vemos la estructura de nuestra info
+str(quandl_data)
+```
+
+## OMDb API
+
+La forma de interactuar con una API es bastante sencilla, una vez sabemos la forma de realizar el request. Simplemente debemos de hacer uso de la función **GET()** y tras esto extraer el contenido con la función **content()**, la cual forma parte del paquete **httr**, este paquete hace uso de **jsonlite** por detrás para importar JSON en R.
+
+Sin embargo, hemos visto que la función **fromJSON()** funciona bien pasándole directamente la URL.
+
+```{r}
+#Definimos las URLs
+url_sw4 <- "http://www.omdbapi.com/?apikey=ff21610b&i=tt0076759&r=json"
+url_sw3 <- "http://www.omdbapi.com/?apikey=ff21610b&i=tt0121766&r=json"
+
+#Hacemos uso de fromJSON para extraer todo
+sw4 <- fromJSON(url_sw4)
+sw3 <- fromJSON(url_sw3)
+
+#Extraemos la component Title de cada JSON
+sw4$Title
+sw3$Title
+
+#Vemos si sw4 se lanzo antes que sw3
+sw4$Year > sw3$Year
+```
+
+## JSON practice (1)
+Los objetos JSON se basan en dos estructuras: objetos y arrays.
+
+```{r}
+#Convertir el objeto JSON en un vector ordenado de forma ascendente
+json1 <- '[1, 2, 4, 6]'
+fromJSON(json1)
+
+#Adaptamos el json2 
+json2 <- '{"a": [1, 2, 3], "b": [4, 5, 6]}'
+fromJSON(json2)
+```
+
+## JSON practice (2)
+
+```{r}
+#Generamos una matriz 2x2
+json1 <- '[[1, 2], [3, 4]]'
+fromJSON(json1)
+
+#Generamos dataframe
+json2 <- '[{"a": 1, "b": 2}, {"a": 3, "b": 4}, {"a":5, "b":6}]'
+fromJSON(json2)
+```
+
+## toJSON()
+
+Además de usar la función **fromJSON()** para convertir de JSON a R, podemos hacer uso la función **toJSON()** para convertir datos en R a JSON. En su estado más básico, le pasamos un objeto para convertirlo a JSON. El resultado es un objeto R de clase **json**, el cuál es básicamente un character de tipo string que representa al JSON.
+
+```{r}
+#URL para exportar los datos
+url_csv <- "http://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/water.csv"
+
+#Lectura de datos
+water <- read.csv(url_csv, stringsAsFactors = FALSE)
+
+#Convertimos a tipo JSON
+water_json <- toJSON(water)
+
+#Vemos el resultado
+water_json
+```
+
+## Minify and prettify
+
+Un archivo JSON puede estar en varios formatos, los siguientes JSON son los mismos pero en formatos diferentes
+
+```{r}
+#Mini
+json_mini <- '{"a":1,"b":2,"c":{"x":5,"y":6}}'
+
+#Pretty
+json_pretty <- '{
+  "a": 1,
+  "b": 2,
+  "c": {
+    "x": 5,
+    "y": 6
+  }
+}'
+```
+
+El formato estándar de la función **toJSON()** retorna la versión minified. Podemos cambiar esto poniendo el argumento **pretty** dentro de la función **toJSON()** a **TRUE**. También podemos hacer uso de las funciones **minify()** y **prettyfy()**.
+
+```{r}
+#Convertimos mtcars a tipo pretty
+mtcars_pretty <- toJSON(mtcars, pretty = TRUE)
+
+#Vemos el resultado
+mtcars_pretty
+
+#Ahora convertimos a minify
+mtcars_mini <- minify(mtcars_pretty)
+
+#Vemos el resultado
+mtcars_mini
+```
+
