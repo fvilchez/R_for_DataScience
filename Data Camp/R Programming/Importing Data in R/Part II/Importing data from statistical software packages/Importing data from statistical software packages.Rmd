@@ -1,0 +1,150 @@
+---
+title: "Importing data from statistical software packages"
+output: html_notebook
+---
+
+## Import SAS data with haven
+
+**haven** es un paquete que es extremadamente sencillo de usar para importar datos de tres tipos de software: SAS, STATA y SPSS. Dependiendo del tipo de software haremos uso de distintas funciones
+
+* SAS: **read_sas()**
+
+* STATA: **read_dta()** (o **read_stata()** los cuales tienen un función idéntica)
+
+* SPSS: **read_sav()** o **read_por()** dependiendo del tipo de fichero
+
+Todas esta funciones toman un único argumento: el path de tu fichero en local. Incluso si le pasamos una URL, **haven** descargará de forma automática el fichero y lo importará.
+
+```{r}
+#Importamos librería haven
+library(haven)
+
+#Importamos el fichero sales.sas7bdat
+sales <- read_sas("sales.sas7bdat")
+
+#Mostramos la estructura de sales
+str(sales)
+```
+
+## Import STATA data with haven
+
+Cuando inspeccionamos el resultado de **read_dta()**, podemos notar que la primera columna es importada como  un vector de clase **labelled**, esto es una estructura común en R cuando importamos de otros entornos estadísticos. En lugar de continuar trabajando con este tipo de dato, es mejor cambiar estos datos a una clase estándar de R. Para convertir una variable de tipo **labelled** a factor, necesitamos la función **as_factor()**
+
+```{r}
+#Importamos el fichero sugar desde la URL
+sugar <- read_dta("http://assets.datacamp.com/production/course_1478/datasets/trade.dta")
+
+#Mostramos la estructura de sugar
+str(sugar)
+
+#Convertimos los valores de la columna Date a tipo date
+sugar$Date <- as.Date(as_factor(sugar$Date))
+
+#Volvemos a mostrar la estructura de sugar
+str(sugar)
+```
+
+## Import SPSS data with haven
+
+El paquete **haven** también nos permite importar ficheros desde SPSS. Dependiendo del tipo de fichero haremos uso de **read_sav()** para los ficheros **.sav** o **read_por()** para los ficheros **.por**.
+
+```{r}
+#Importamos el fichero 
+traits <- read_sav("person.sav")
+
+#Hacemos un summary
+summary(traits)
+
+#Hacemos una selección de aquellas personas que tienen una puntuación superior a 40 en las  #variables Extroversion y Agreeableness
+subset(traits, Extroversion > 40 & Agreeableness > 40)
+```
+
+## Factorize, round two
+
+Cuando importamos desde ficheros SPSS, es posible que algunas de las variables importadas sean de tipo **labelled**. Esto es debido a que trata de mantener la información de los ficheros originales.
+
+```{r}
+#Importamos los datos
+work <- read_sav("http://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/employee.sav")
+
+#Hacemos un summary de work$GENDER
+summary(work$GENDER)
+
+#Convertimos a factor
+work$GENDER <- as_factor(work$GENDER)
+
+#Hacemos un summary
+summary(work$GENDER)
+```
+
+## Import STATA data with foreign (I)
+
+El paquete **foreign** nos ofrece la función **read.dta()** para importar ficheros STATA. Le podemos pasar o bien el path o bien la URL.
+
+```{r}
+#Cargamos librería
+library(foreign)
+
+#Exportamos los datos
+florida <- read.dta("florida.dta")
+
+#Mostamos las últimas observaciones
+tail(florida)
+```
+
+## Import STATA data with foreign (II)
+
+Los datos pueden ser muy diversos, desde vectores de caracteres a variables categóricas, fechas etc. Para estos la función **read.dta()** dispone de argumentos adicionales.
+
+Los argumentos que son usados con más frecuencia son **convert.dates**, **convert.factors**, **missing.type** y **convert.underscore**
+
+```{r}
+#Realizamos la primera lectura sin pasar ningún parámetro
+edu_equal_1 <- read.dta("edequality.dta")
+str(edu_equal_1)
+```
+
+```{r}
+#Realizamos la lectura con la variable convert.factors igual a FALSE
+edu_equal_2 <- read.dta("edequality.dta", convert.factors = FALSE)
+str(edu_equal_2)
+```
+
+```{r}
+#Volvemos hacer la lectura con convert.underscore = TRUE
+edu_equal_3 <- read.dta("edequality.dta", convert.underscore = TRUE)
+str(edu_equal_3)
+```
+
+## Import SPSS data with foreign (I)
+
+El paquete **foreign** también dispone de la función **read.spss()** para leer ficheros de datos SPSS. 
+
+```{r}
+#Importamos los datos
+demo <- read.spss("international.sav", to.data.frame = TRUE)
+
+#Hacemos un boxplot de la variable gdp
+boxplot(demo$gdp)
+```
+
+## Import SPSS data with foreign (II)
+
+En el ejercicio anterior hicimos uso del argumento **to.data.frame** en la función **read.spsss()**, pero existen muchos otros argumentos como por ejemplo **use.value.labels**. Con esta variable indicamos si una variable de labelled debe ser pasada a tipo factor. Por defecto el valor es TRUE lo que nos indica que todas las variables de tipo labelled serán convertidas a tipo factor.
+
+```{r}
+#Importamos international.sav como tipo dataframe
+demo_1 <- read.spss("international.sav", to.data.frame = TRUE)
+
+#Mostramos la cabecera
+head(demo_1)
+```
+
+```{r}
+#Importamos como dataframe pero dejamos las columnas labelled de tipo labelled
+demo_2 <- read.spss("international.sav", to.data.frame = TRUE, use.value.labels = FALSE)
+
+#Mostramos la cabecera de los datos
+head(demo_2)
+```
+
