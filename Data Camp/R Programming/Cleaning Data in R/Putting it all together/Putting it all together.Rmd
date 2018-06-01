@@ -1,0 +1,170 @@
+---
+title: "Putting it all together"
+output: html_notebook
+---
+
+## Get a feel for the data
+
+Antes de bucear en nuestros datos, debemos comprender antes su estructura básica. Para ello debemos de hacer uso de funciones como **class()**, **dim()** y **names()**.
+
+```{r}
+#Hacemos lectura de los datos
+weather <- readRDS("weather.rds")
+
+#Verificamos que tipo es weather
+class(weather)
+
+#Vemos su dimensión
+dim(weather)
+
+#Comprobamos los nombres de sus columnas
+names(weather)
+```
+
+## Summarize the data
+
+El siguiente paso es ver un resumen de los datos de forma que nos podamos hacer una idea rápida ante que tipos de variables nos estamos enfrentando y ver una descripción estadística básica de cada variable. Para esto podemos hacer uso de **str()** o **glimpse()** y de la función **summary()**
+
+```{r}
+library(dplyr)
+
+#Vemos la estructura de nuestros datos
+glimpse(weather)
+
+#Hacemos un resumen estadístico básico
+summary(weather)
+```
+
+## Take a closer look
+
+Una vez hemos analizado la estructura de nuestros datos, una buena idea es la de visualizar estos, puesto que no es buena idea visualizar el dataset completo, podemos hacer uso de las funciones **head()** y **tail()**, para ver una muestra de nuestro dataset.
+
+```{r}
+#Vemos las 7 primeras observaciones de nuestro dataset
+head(weather, n = 7)
+
+#Vemos las últimas 5 observaciones de nuestro dataset
+tail(weather, n = 5)
+```
+
+## Column names are values
+
+En nuestro conjunto de datos weather las variables x1-x31 representan días del mes, esto sugiere que podríamos crearnos una columna que fuese day y le asignase su correspondiente temperatura. Para ello podemos hacer uso de la función **gather()**, de la librería **tidyr**.
+
+```{r}
+library(tidyr)
+
+#Hacemos uso de gather
+weather2 <- gather(weather, day, value, X1:X31, na.rm = TRUE)
+
+#Vemos las 5 primeras observaciones
+head(weather2, n = 5)
+```
+
+## Values are variable names
+
+Podemos ver como los valores de la variable measure debería de tratarse de nombres de variables. Para esto podemos hacer uso de la función **spread()**.
+
+```{r}
+#En primer lugar eliminamos la columna de indexación
+weather2 <- weather2[,-1]
+
+#Hacemos uso de la función spread
+weather3 <- spread(weather2, measure, value)
+
+#Vemos las 5 primeras observaciones
+head(weather3)
+```
+
+## Clean up dates
+
+```{r}
+library(stringr)
+library(lubridate)
+
+#Limpiamos los días de la semana
+weather3$day <- str_replace(weather3$day, "X", "")
+
+#Unimos las columnas day, year y month
+weather4 <- unite(weather3, date, year, month, day, sep = "-")
+
+#Pasamos a tipo date
+weather4$date <- ymd(weather4$date)
+
+#Hacemos uso de select para reordenar las columnas de una forma más adecuada
+weather5 <- select(weather4, date, Events, CloudCover:WindDirDegrees)
+
+#Vemos las 5 primeras observaciones
+head(weather5)
+```
+
+## A closer look at column types
+
+Para poder realizar un buen análisis es muy importante tener las variables bien codificadas, para ello podemos hacer uso de funciones que nos permiten coercionar variables. Debemos tener muy claro que existen determinadas coerciones que no son posibles de realizar. En la variable **PrecipitationIn** se hizo uso de la letra "T" para hacer referencia a una medida tan sumamente pequeña que era complicada de medir con precisión.
+
+```{r}
+#Vemos la estructura de datos de weather5
+glimpse(weather5)
+
+#Cambiamos el valor de T por 0 en la variable PrecipitationIn 
+weather5$PrecipitationIn <- str_replace(weather5$PrecipitationIn, "T", "0")
+
+#Aplicamos la conversión a tipo numeríco a las columnas que corresponden
+weather6 <- mutate_each(weather5, funs(as.numeric), CloudCover:WindDirDegrees)
+
+#Vemos la estructura de weather6
+glimpse(weather6)
+```
+
+## Find missing values
+
+Antes de decidir eliminar los valores perdidos es muy importante tener claro en que variables aparecen y en que cantidad. 
+
+```{r}
+#Vemos el número de valores perdidos que dispone nuestro dataset
+sum(is.na(weather6))
+
+#Hacemos uso de la función summary para ver donde están
+summary(weather6)
+
+#También podemos ver los índices en los que se encuentran los valores perdidos
+ind <- which(is.na(weather6$Max.Gust.SpeedMPH))
+
+#Finalmente podemos extraer dichas observaciones
+weather6[ind,]
+```
+
+## An obvious error
+
+Además de conocer los valores perdidos podemos estar interesados en conocer los valores extremos de nuestros datos. Para ello podemos hacer uso de la función **summary()**, si miramos la variable **Max.Humidity** toma como valor máximo 1000, este valor esta realmente desviado de la media. Esto tras consultar con un experto nos dice que fue un errror y realmente ese valor es 100.
+
+```{r}
+#Encontramos el índice
+ind <- which(weather6$Max.Humidity == 1000)
+
+#Reemplazamos
+weather6$Max.Humidity[ind] <- 100
+```
+
+## Another obvious error
+
+Otro error es que podemos ver como la variable **Mean.VisibilityMiles** toma como valor mínimo -1, este valor debería ser realmente 10.
+
+```{r}
+#Encontramos el índice del error
+ind <- which(weather6$Mean.VisibilityMiles == -1)
+
+#Reemplazamos 
+weather6$Mean.VisibilityMiles[ind] <- 10
+```
+
+## Check other extreme values
+
+Los histogramas son una buena idea a la hora de encontrar valores extremos
+
+```{r}
+hist(weather6$MeanDew.PointF)
+hist(weather6$Min.TemperatureF)
+hist(weather6$Mean.TemperatureF)
+```
+
