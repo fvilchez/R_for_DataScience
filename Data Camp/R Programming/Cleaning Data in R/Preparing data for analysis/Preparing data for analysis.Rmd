@@ -1,0 +1,153 @@
+---
+title: "Preparing data for analysis"
+output: html_notebook
+---
+
+## Types of variables in R
+
+Como cualquier otro lenguaje de programación R es capaz de almacenar datos en diferentes formatos. La función **class()** nos retorna el tipo de dato de un objeto determinado. 
+
+```{r}
+#Hacemos uso de la función class para un string
+class("true")
+#Hacemos uso de la función para un objeto numeríco
+class(8970)
+#Hacemos uso de class para un objeto tipo lógico
+class(TRUE)
+#Hacemos uso de class para un objeto de tipo factor
+class(as.factor("Orgiva"))
+```
+
+## Common type conversions
+
+En determinadas ocasiones es necesario cambiar o coercionar el tipo de dato algún objeto. Solo determinadas coerciones están permitidas, por ejemplo, si tratamos de pasar un string como "gato" a tipo numérico esto nos dará un error. Sin embargo, existen determinadas coerciones que son bastante intuitivas, es decir, as.numeric(TRUE) se coerciona como 1. 
+
+```{r}
+#Cargamos los datos
+students <- read.csv("students_with_dates.csv")
+#Vamos las estructura del dataframe 
+str(students)
+#Coercionamos la variable grades a tipo character
+students$Grades <- as.character(students$Grades)
+#Coercinamos la variable Medu a tipo factor
+students$Medu <- as.factor(students$Medu)
+#Coercianamos Fedu a tipo factor
+students$Fedu <- as.factor(students$Fedu)
+#Observamos los cambios
+str(students)
+```
+
+## Working with dates
+
+Las fechas pueden ser cambiadas para trabajar en cualquier lenguaje de programación, en R gracias al paquete **lubridate** trabajar con ellas es más sencillo. Este paquete combina las letras **y**, **m**, **d**, **h**, **m**, **s**. El orden de estas letras debe de machear con el orden de lectura de fecha, además no todas las combinaciones son válidas. 
+
+```{r}
+library(lubridate)
+
+#Hacemos uso del paquete lubridate con una determinada fecha
+dmy("17 sep 2015")
+
+#Volvemos a hacer uso del paquete lubridate
+mdy_hm("July 15, 2016 12:56")
+
+#Parseamos la columna dob a tipo fecha
+students$dob <- ymd(students$dob)
+
+#Parseamos la columna nurse_visit
+students$nurse_visit <- ymd_hms(students$nurse_visit)
+
+#Vemos los cambios
+str(students)
+```
+
+## Trimming and padding strings
+
+Cuando estamos en el proceso de limpieza de datos, una de las tareas comúnes es el de eliminar espacios en blanco o el de rellenar. La función **str_trim()** dentro del paquete **stringr**, nos permite eliminar los espacios en blanco al principio y al final de un string. También es posible que estemos en una situación en la que deseamos agregar un determinado valor a un string, por ejemplo, supongamos que estamos tratando los ID de una empresa, los ID de dicha empresa tiene un máximo de 7 dígitos, sin embargo, existen ID's que tienen menos dígitos, nos puede interesar agregar estos valores faltantes con ceros, de forma que todos los ID's tendrán un total de 7 dígitos, para esto disponemos de la función **str_pad()**. Esta función contiene los argumentos **width** mediante el cual le indicamos del tamaño que queremos que sea el string, el argumento **side** mediante el cual indicamos donde queremos agregar, y el argumento **pad** con que valor queremos agregar.
+
+```{r}
+#Hacemos uso de la función str_trim
+str_trim(c(" Granada ", "Madrid   ", "  Barcelona"))
+
+#Hacemos uso de la función str_pad
+str_pad(c("23485W", "8823453Q", "994Z"), width = 9, side = "left", pad = "0")
+```
+
+## Upper and lower case
+
+También el paquete **stringr** dispone de la funciones **toupper()**  y **tolower()** que nos permiten pasar a mayúscula y minúscula respectivamente.
+
+```{r}
+#Hacemos uso de la función toupper
+toupper(c("hola", "adios"))
+
+#Hacemos uso de la función tolower
+tolower(c("HOLA", "ADIOS"))
+```
+
+## Finding and replacing strings
+
+El paquete **stringr** proporciona dos funciones que son muy útiles a la hora de detectar y reemplazar strings: **str_detect()**y **str_replace()**.  El primer argumento para estas dos funciones es el string de interés, como segundo argumento toman el patrón de interés, para el caso de **str_detect()** será aquello que estamos buscando y para el caso de **str_replace()** será aquello queremos reemplazar. La función **str_replace()** tiene un tercer argumento que es por lo que queremos sustituir.
+
+```{r}
+#Intentamos detectar el número 97 en la variable dob del dataframe students
+str_detect(students$dob, "97")
+
+#Hacemos uso de replace
+students$sex <- str_replace(students$sex, "F", "Female")
+students$sex <- str_replace(students$sex, "M", "Male")
+
+#Vemos los cambios 
+head(students)
+```
+
+## Finding missing values
+
+En R los valores perdidos son representado por **NA**, aunque dependiendo del fichero en el cual hagamos la extracción de los datos los valores perdidos pueden ser representados de forma alternativa. Si todos los valores perdidos son codificados como **NA**, la función **is.na()** nos ayuda a encontrar estos valores. También podemos hacer uso de las funciones **summary()** y **table()**. También podemos hacer uso de la función **any()** combinada con la función **is.na()** nos retorna el valor de **TRUE** en caso de que exista algún valor perdido y **FALSE** en caso de que no exista ninguno
+
+```{r}
+#Cargamos datos
+social_df <- read.csv("social.csv")
+
+#Hacemos uso de la función is.na
+is.na(social_df)
+
+#Hacemos uso de la función any
+any(is.na(social_df))
+
+#Hacemos uso de summary
+summary(social_df)
+
+#Hacemos uso de la función table
+table(social_df$status)
+```
+
+## Dealing with missing values
+
+Tratar los valores perdidos es algo bastante complejo, puede que estemos simplemente interesados en eliminar todos los valores perdidos, o quizás esto no sea una opción viable, ya que podría suceder que una variable importante contenga una cantidad considerable de valores perdidos. La función **complete.cases()** se trata de una función que nos permite ver que filas no contienen valores perdidos, esta función lo que hace es retornar un vector con aquellas filas que no contienen valores perdidos. La función **na.omit()** lo que hace es eliminar aquellas filas que contienen uno o más valores perdidos.
+
+```{r}
+#Reemplazamos los valores vacío por valores NA
+social_df$status[social_df$status == ""] <- NA
+
+#Hacemos uso de la función complete cases
+complete.cases(social_df)
+
+#Hacemos uso de la función na.omit
+na.omit(social_df)
+```
+
+## Dealing with outliers and obvious errors
+
+Cuando tratamos valores extraños en nuestros datos, debemos decidir de si se tratan de valores erroneos que podemos eliminar o por el contrario se tratan de valores que realmente nos aportan información. La función **summary()** puede ser de gran ayuda para detectar estos valores extremos, ya que nos aporta información estadística de cada variable (máximo, mínimo etc). Por otro lado los histogramas también son útiles ya que nos muestran donde se concentran los valores de una determinada variable. Finalmente los gráficos de tipo boxpplot también son bastante útiles.
+
+```{r}
+#Hacemos uso de la función summary
+summary(students)
+
+#Hacemos uso del histograma en la variable absences
+hist(students$absences, right = FALSE)
+
+#Hacemos uso de la función boxplot
+boxplot(students$absences)
+```
+

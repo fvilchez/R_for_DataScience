@@ -1,0 +1,71 @@
+---
+title: "Introduction and exploring raw data"
+output: html_notebook
+---
+
+## Getting a feel for your data
+
+Cuando tenemos por primera vez en nuestras manos un conjunto de datos, lo primero que debemos de hacer es comprender su estructura. Existen una gran cantidad de funciones en R que nos proporcionan información respecto a los datos. Podemos hacer uso de la función **class()** para chequear la clase de cualquier objeto en R. La función **dim()** nos permite conocer la dimensión de nuestro objeto y la función **names()** para el caso de dataframes nos retorna los nombres de las columnas
+
+```{r}
+bmi <- read.csv("bmi_clean.csv")
+
+#Vemos que clase de variable es bmi
+class(bmi)
+
+#Vemos las dimensiones de bmi
+dim(bmi)
+
+#Vemos los nombres de las columnas
+names(bmi)
+```
+
+
+## Viewing the structure of your data
+
+Para ver la estructura de nuestro conjunto de datos podemos hacer uso de la función **str()**, esta función además de retornar la dimensión nos retorna el tipo de datos que es cada columna y nos muestra las primeras observaciones de cada columna.  Sin embargo, el paquete **dplyr** dispone de la función **glimpse()** que se trata de una alternativa más limpia a **str()**.
+Podemos hacer uso de la función **summary()** para tener una mejor idea de como están distribuidos nuestros datos, esto nos puede revelar inusuales valores extremos, valores perdidos no esperados, etc. Para las variables de tipo character o factor, la función **summary()** nos revela el número de apariciones de cada uno de los valores.
+
+```{r}
+#Hacemos uso de la función str con nuestros datos
+str(bmi)
+
+#Hacemos uso de la función glimpse
+library(dplyr)
+glimpse(bmi)
+
+#Hacemos un summary
+summary(bmi)
+```
+
+## Looking at your data
+
+La forma más básica de visualizar nuestros datos es mostrando estos por pantalla. Sin embargo cuando estamos tratando con conjuntos de datos grandes no es recomendable mostrar el dataset completo. Es por esto que R dispone de las funciones **head()** y **tail()**. La función **head()** por defecto nos permite mostrar las 6 primeras observaciones de nuestro conjunto de datos, dispone del parámetro **n** a partir del cual podemos ajustar el número de observaciones que deseamos ver. Por otro lado, la función **tail()** nos permite observar por defecto las últimas 6 observaciones de nuestro conjunto de datos, al igual que **head()** dispone del parámetro **n** que nos permite ajustar el número de observaciones.
+
+```{r}
+#Hacemos uso de la función head()
+head(bmi)
+
+#Hacemos uso de head() con n= 10
+head(bmi, n= 10)
+
+#Hacemos uso de tail
+tail(bmi)
+
+#Hacemos uso de tail con n= 8
+tail(bmi, n= 8)
+```
+
+## Visualizing your data
+
+Existe una gran variedad de formas a la hora de visualizar nuestros datos. Los histogramas y los scatter plots son dos tipos de visualizaciones que nos pueden ayudar a detectar valores extremos o sospechosos.
+El histograma se puede crear a partir de la función **hist()**, que toma como argumento principal un vector, por otro lado, los gráficos de tipo scatter puede ser creados a partir de la función **plot()** que toma como argumento principal dos vectores.
+
+```{r}
+#Nos creamos un histograma para el año 2008
+hist(bmi$Y2008)
+
+#Hacemos un scatter con el bmi de 1980 y 2008
+plot(bmi$Y1980, bmi$Y2008)
+```
+

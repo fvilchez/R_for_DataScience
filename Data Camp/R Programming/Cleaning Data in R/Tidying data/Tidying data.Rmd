@@ -1,0 +1,87 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+## Gathering columns into key-value pairs
+
+La función más importante de la librería **tidyr()** es **gather()**. Esta función debería ser usada cuando tienes columnas que no son variables y queremos compactarlas en parejas clave-valor. Es decir, lo que hace la función **gather()** es que los conjuntos de datos anchos sean largos. Esta función toma como argumento principal el dataframe sobre el cual queremos operar, el nombre de la columna que queremos usar como clave, el nombre de la nueva columna que queremos usar como valor, y las columnas a las cuales no le queremos aplicar la transformación.
+
+```{r}
+#Cargamos libraría
+library(tidyr)
+#Cargamos datos
+bmi <- read.csv("bmi_clean.csv")
+#Vemos la cabecera de los datos antes de aplicar la función gather
+head(bmi)
+#Aplicamos la función gather
+bmi_gather <- gather(bmi, year, bmi_value, -Country)
+#Vemos la cabecera tras aplicar la función gather
+head(bmi_gather)
+```
+
+## Spreading key-value pairs into columns
+
+La función opuesta a **gather()** es la función **spread()**, la cual tema parejas clave valor y los separa en múltiples columnas. Esta función es útil cuando los valores de una columan deberían ser realmente nombres de una columna. Esto puede hacer que un conjunto de datos sea más compacto y más fácil de leer. El efecto es que los conjunto de datos de largos pasan a ser conjuntos de datos anchos. Los parámetros principales son el dataframe sobre el cual queremos aplicar la transformación, la columna que usaremos como nombres de columnas y la columna que usaremos como valores.
+
+```{r}
+#Hacemos uso de la función spread
+bmi_spread <- spread(bmi_gather, year, bmi_value)
+#Mostramos las primeras observaciones
+head(bmi_spread)
+```
+
+## Separating columns
+
+La función **separate()** permite separar una columna en múltiples columnas. A menos que le digamos lo contrario intentará separar a partir de cualquier carácter que no sea número o letra.  Podemos especificar el separador a partir del argumento **sep**. El principal argumento es el dataframe sobre el cual queremos realizar la transformación, seguido de la columna sobre la cual queremos realizar la transformación, tras esto un vector de strings que contienen los nombres de las nuevas columnas y si es necesario el separador por el cual queremos realizar la separación.
+
+```{r}
+#Cargamos los datos
+bmi_cc <- read.csv("bmi_cc.csv")
+#Vemos las primeras observaciones de nuestro dataset
+head(bmi_cc)
+#Hacemos la separación de la columna Country
+bmi_sep <- separate(bmi_cc, col = Country, into = c("Country", "ISO"), sep = "/")
+#Mostramos las primeras observaciones
+head(bmi_sep)
+```
+
+## Uniting columns
+
+Igual que podemos separar una columna en múltiples columnas, también podemos unir múltiples columnas en una sola columna, para ello disponemos de la función **unite()**. Por defecto las columnas serán unidas por **_**, pero podemos cambiar esto indicando mediante el argumento **sep** por que carácter deseamos unir. Como primer argumento recibe el dataframe sobre el cual queremos efectuar la transformación, seguido del nombre de la nueva columna y finalmente agregamos los nombres de las columnas que deseamos unir.
+
+```{r}
+#Hacemos uso de la función unite
+bmi_unite <- unite(bmi_sep, Country/ISO, Country, ISO, sep = "/")
+#Vemos el resultado mostrando solamente las primeras observaciones
+head(bmi_unite)
+```
+
+## Column headers are values, not variable names
+
+Existen situaciones en las cuales los nombres de las columnas, realmente podrían agruparse en una única columna. Esto ocurre a menudo cuando trabajamos con medidas de datos repetidos, en esta situación la función **gather()** nos puede ayudar.
+
+```{r}
+#Cargamos los datos
+census <- read.csv("census-retail.csv")
+#Vemos las primeras observaciones de los datos cargados
+head(census)
+#Creamos dos nuevas columnas month y amount
+census2 <- gather(census, month, amount, -YEAR)
+#Hacemos uso de la función arrange del paquete dplyr
+census2 <- arrange(census2, YEAR)
+#Vemos las primeras observaciones
+head(census2)
+```
+
+## Variables are stored in both rows and columns
+
+En determinadas ocasiones nos encontraremos con situaciones en las que las variables están almacenadas en filas y columnas. En estas situaciones las función **spread()** nos puede ser realmente útil. 
+
+```{r}
+#Hacemos uso de spread
+census_spread <- spread(census2, month, amount)
+#Vemos las primeras observaciones 
+head(census_spread)
+```
+
