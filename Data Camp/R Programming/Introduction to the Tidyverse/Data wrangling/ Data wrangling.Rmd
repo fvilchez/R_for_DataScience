@@ -1,0 +1,70 @@
+---
+title: "Data wrangling"
+output: html_notebook
+---
+
+## Filtering for one year
+
+**filter()** nos permite extraer observaciones particulares basadas en una condición. 
+ 
+
+```{r}
+#Cargamos librerías
+library(gapminder)
+library(dplyr)
+
+#Filtramos el conjunto de datos gapminder para el año 1957
+gapminder %>% filter(year == 1957)
+```
+
+## Filtering for one country and one year
+
+Dentro de **filter()** podemos hacer uso de múltiples condiciones, para ello debemos separar estas condiciones por una coma.
+
+```{r}
+#Filtramos el conjunto de datos gapmider para China y el año 2002
+gapminder %>% filter(country == "China", year == 2002)
+```
+
+## Arranging observations by life expectancy
+
+Podemos hacer uso de **arrange** para ordenar nuestras observaciones en orden ascendente o descendente en función de una variable en particular.
+
+```{r}
+#Ordenamos nuestro conjunto de datos de forma ascendente por la variable lifeExp
+gapminder %>% arrange(lifeExp)
+
+#Ordenamos nuestro conjunto de datos de forma descendente por la variable lifeExp
+gapminder %>% arrange(desc(lifeExp))
+```
+
+## Filtering and arranging
+
+El operador **%>%** nos permite combinar múltiples operaciones. Así podemos combinar **filter()** con **arrange()**.
+
+```{r}
+#Filtramos nuestro conjunto de datos por el año 1957 y ordenamos de forma descendente por población
+gapminder %>% filter(year == 1957) %>% arrange(desc(pop))
+```
+
+## Using mutate to change or create a column
+
+Podemos hacer uso de **mutate()** para modificar o crear una nueva columna en nuestro conjunto de datos. Supongamos que queremos conocer la esperanza de vida en meses en lugar de años.
+
+```{r}
+#Hacemos uso de mutate para modificar la columna lifeExp
+gapminder %>% mutate(lifeExp = lifeExp * 12)
+
+#Hacemos uso de mutate para generar una nuevo columna lifeExpMonths
+gapminder %>% mutate(lifeExpMonths = lifeExp * 12)
+```
+
+## Combining filter, mutate, and arrange
+
+A continuación queremos conocer los países con la esperanza de vida más grande en el año 2007
+
+```{r}
+gapminder %>% filter(year == 2007) %>% mutate(lifeExpMonths = lifeExp * 12) %>% arrange(desc(lifeExpMonths))
+```
+
+

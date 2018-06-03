@@ -1,0 +1,104 @@
+---
+title: "Grouping and summarizing"
+output: html_notebook
+---
+
+## Summarizing the median life expectancy
+
+Si deseamos conocer la esperanza de vida promedio o la població total en un conjunto de observaciones, podemos hacer uso de la funciones **mean()** y **sum()** junto con **summarize()**. Por otro lado podemos también hacer uso de la función **median()** ya que esta función es robusta a **outliers**.
+
+```{r}
+library(dplyr)
+library(gapminder)
+
+#A continuación vamos a proceder a encontran la mediana de la esperanza de vida de nuestro conjunto de datos
+gapminder %>% summarize(medianlifeExp = median(lifeExp))
+```
+
+## Summarizing the median life expectancy in 1957
+
+También podemos combinar **summarize()** con **filter()** para encontrar la mediana de un año en concreto.
+
+```{r}
+#Filtramos para el año 1957 y aplicamos summarize para calcular la mediana de la esperanza de vida para dicho año
+gapminder %>% filter(year == 1957) %>% summarize(medianLifeExp = median(lifeExp))
+```
+
+## Summarizing multiple variables in 1957
+
+Mediante **summarize()** podemos resumir múltiples variables de forma simultánea. 
+
+```{r}
+#Filtramos para el año 1957 y aplicamos summarize para calcula la mediana de la esperanza de vida y el máximo de la renta per 
+#capita para dicho año
+gapminder %>% filter(year == 1957) %>% summarize(medianLifeExp = median(lifeExp), maxGDP = max(gdpPercap))
+```
+
+## Summarizing by year
+
+Hasta ahora hemos visto como resumir la información para un año concreto, sin embargo, si deseamos conocer dicha información para cada uno de los años podemos hacer uso de **group_by**.
+
+```{r}
+#Calculamos la mediana de la esperanza de vida y el máximo de la renta per capita para cada año 
+gapminder %>% group_by(year) %>% summarize(medianLifeExp = median(lifeExp), maxGDP = max(gdpPercap))
+```
+
+## Summarizing by continent
+
+También podemos combinar **filter()** y **group_by()** para por ejemplo encontrar la mediana de la esperanza de vida y el máximo de la renta per capita para cada continente en el año 1957.
+
+```{r}
+#Obtenemos la mediana de la esperanza de vida y el máximo de la renta per capita para cada continente en el año 1957
+gapminder %>% filter(year == 1957) %>% group_by(continent) %>% summarize(medianLifeExp = median(lifeExp), maxGDP = max(gdpPercap))
+```
+
+## Summarizing by continent and year
+
+Podemos agrupar por múltiples variables, por ejemplo, podemos agrupar de una sola tacada por año y continente.
+
+```{r}
+#Agrupamos de una sola tacada por año y continente y calculamos la mediana de la esperanza de vida y el máximo de la renta per
+#capita
+gapminder %>% group_by(year, continent) %>% summarize(medianLifeExp = median(lifeExp), maxGdpPercap = max(gdpPercap))
+```
+
+## Visualizing median life expectancy over time
+
+A continuación vamos a proceder a visualizar los datos sumarizados. En este caso vamos a proceder a representar como ha evolucionado la esperanza de vida a lo largo de los años.
+
+```{r}
+library(ggplot2)
+
+#Nos creamos nuestro conjunto de datos
+by_year <- gapminder %>% group_by(year) %>% summarize(medianLifeExp = median(lifeExp), maxGDP = max(gdpPercap))
+
+#Nos creamos el scatter plot
+ggplot(by_year, aes(x = year, y = medianLifeExp)) + geom_point() + expand_limits(y = 0)
+```
+
+
+## Visualizing median GDP per capita per continent over time
+
+Nuestro objetivo ahora es ver como ha evolucionado la media de la renta per capita de cada uno de los continentes a lo largo del tiempo
+
+```{r}
+#Nos creamos nuestro conjunto de datos
+by_year_continent <- gapminder %>% group_by(continent, year) %>% summarize(medianGdpPercap = median(gdpPercap))
+
+#Hacemos el grafo 
+ggplot(by_year_continent, aes(x = year, y = medianGdpPercap, color = continent)) + geom_point() + expand_limits(y = 0)
+
+```
+
+## Comparing median life expectancy and median GDP per continent in 2007
+
+A continuación vamos a comparar para cada continente la relación entre la mediana de la renta per capita y la mediana de la esperanza de vida para el año 2007
+
+```{r}
+#Nos creamos el dataset
+by_continent_2007 <- gapminder %>% filter(year == 2007) %>% group_by(continent) %>% summarize(medianLifeExp = median(lifeExp), medianGdpPercap = median(gdpPercap))
+
+#Hacemos el grafo 
+ggplot(by_continent_2007, aes(x = medianGdpPercap, y = medianLifeExp, color = continent)) + geom_point()
+```
+

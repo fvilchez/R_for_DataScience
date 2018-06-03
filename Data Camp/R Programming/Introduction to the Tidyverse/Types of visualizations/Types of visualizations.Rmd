@@ -1,0 +1,94 @@
+---
+title: "Types of visualizations"
+output: html_notebook
+---
+## Visualizing median GDP per capita over time
+
+A la hora de detectar tendencias a lo largo del tiempo, lo mejor es hacer uso de los gráficos de línea o line plots. A continuación vamos a representar como ha evolucionado la mediana de la renta per capita a lo largo de los años.
+
+```{r}
+library(gapminder)
+library(dplyr)
+library(ggplot2)
+
+#Nos creamos nuestro conjunto de datos
+by_year <- gapminder %>% group_by(year) %>% summarize(medianGdpPercap = median(gdpPercap))
+
+#Nos creamos el grafo 
+ggplot(by_year, aes(x = year, y = medianGdpPercap)) + geom_line() + expand_limits(y = 0)
+```
+
+## Visualizing median GDP per capita by continent over time
+
+A continuación veremos como ha evolucionado la renta per capita a lo largo del tiempo para cada continente.
+
+```{r}
+#Nos creamos el dataset
+by_year_continent <- gapminder %>% group_by(continent, year) %>% summarize(medianGdpPercap = median(gdpPercap))
+
+#Hacemos el grafo 
+ggplot(by_year_continent, aes(x = year, y = medianGdpPercap, color = continent)) + geom_line() + expand_limits(y = 0)
+```
+
+## Visualizing median GDP per capita by continent
+
+Los gráficos de barras o bar plots, se tratan de gráficos que son realmente útiles cuando queremos realizar un resúmenes estadísticos. Por ejemplo, podemos querer ver la media de la renta per capita para cada continente, para el año 2007
+
+```{r}
+#Nos creamos el dataset
+by_continent <- gapminder %>% filter(year == 2007) %>% group_by(continent) %>% summarize(medianGdpPercap = median(gdpPercap))
+
+#Nos creamos el grafo 
+ggplot(by_continent, aes(x = continent, y = medianGdpPercap)) + geom_col()
+```
+
+## Visualizing GDP per capita by country in Oceania
+
+Ahora supongamos que queremos visualizar la renta per capita para un determinado año pero solo en Oceanía.
+
+```{r}
+#Nos creamos el dataset
+oceania_2007 <- gapminder %>% filter(year == 2007, continent == "Oceania")
+
+#Creamos el grafo 
+ggplot(oceania_2007, aes(x = country, y = gdpPercap)) + geom_col()
+```
+
+## Visualizing population
+
+Los histogramas se tratan de gráficos que nos permiten observar las distribuciones de una variable numérica. A continuación veremos como se destribuye la pobación de nuestro conjunto de datos a lo largo del año 1952.
+
+```{r}
+#Nos creamos nuestro datset
+gapminder_1952 <- gapminder %>% filter(year == 1952)
+
+#Nos creamos el grafo 
+ggplot(gapminder_1952, aes(x = pop)) + geom_histogram()
+```
+
+## Visualizing population with x-axis on a log scale
+
+Podemos ver como existen determinados países que tienen un población muy superior al resto, esto da lugar a que nuestro histograma no quede muy claro. Para solucionar esto podemos poner nuetro eje X en escala logarítmica.
+
+```{r}
+ggplot(gapminder_1952, aes(x = pop)) + scale_x_log10() + geom_histogram(bins = 30)
+```
+
+## Comparing GDP per capita across continents
+
+Los gráficos de caja o box plots, se tratan de gráficos que son realmente útiles para comparar distribuciones entre diferentes grupos. A continuación vamos a proceder a ver la distribución de la renta per capita entre los distintos continentes
+
+```{r}
+ggplot(gapminder_1952, aes (x = continent, y = gdpPercap)) + scale_y_log10() + geom_boxplot()
+```
+
+## Adding a title to your graph
+
+Podemos agregar títulos a nuestro gráficos haciendo uso de **ggtitle()**.
+
+```{r}
+ggplot(gapminder_1952, aes(x = continent, y = gdpPercap)) +
+  geom_boxplot() +
+  scale_y_log10()+ ggtitle("Comparing GDP per capita across continents")
+```
+

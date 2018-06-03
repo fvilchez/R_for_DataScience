@@ -1,0 +1,93 @@
+---
+title: "Data visualization"
+output: html_notebook
+---
+
+## Variable assignment
+
+En primer lugar vamos a proceder a crearnos un nuevo conjunto de datos que contiene información del conjunto de datos gapminder filtrado por el año 1952.
+
+```{r}
+#Cargamos librerías
+library(dplyr)
+library(gapminder)
+library(ggplot2)
+
+#Ahora procedemos a crearnos nuestro conjunto de datos
+gapminder_1952 <- gapminder %>% filter(year == 1952)
+```
+
+## Comparing population and GDP per capita
+
+A continuación vamos a proceder a hacer uso del paquete ggplot2 para proceder a visualizar si existe alguna relación entre la población y la renta per capita de un país. Para ello vamos a proceder a hacer un grafo de tipo scatter plot
+
+```{r}
+#Hahcemos el grafo
+ggplot(gapminder_1952, aes(x = pop, y = gdpPercap)) + geom_point()
+```
+
+## Comparing population and life expectancy
+
+A continuación vamos a proceder a crearnos un scatter plot para intentar ver si existe algún tipo de relación entre la esperanza de vida y la población.
+
+```{r}
+#Nos creamos el scatter
+ggplot(gapminder_1952, aes(x = pop, y = lifeExp)) + geom_point()
+```
+
+## Putting the x-axis on a log scale
+
+Anteriormente hemos creado un gráfico de tipo scatter donde en el eje x tenemos la pobalción de países y en el eje y la esperanza de vida. Puesto que la población se distribuye en distintos órdene de magnitud, ya que algunos países tienen mucha más población que otros, es una buena idea poner ele eje x en escala logarítmica.
+
+```{r}
+#Hacemos un scatter de población vs esperanza de vida con el eje x en escala logarítmica
+ggplot(gapminder_1952, aes(x = pop, y = lifeExp)) + geom_point() + scale_x_log10()
+```
+
+Ahora es posible ver de una forma más clara que no existe correlación alguna entra la población de un país y su esperanza de vida.
+
+
+## Putting the x- and y- axes on a log scale
+
+Si queremos por ejemplo hacer un scatter plot con la población en el eje X y la renta per capita en el eje Y, en este caso ambas magnitudes tienen una distribución muy desigual, por lo que es mejor poner ambas en escala logarítmica.
+
+```{r}
+ggplot(gapminder_1952, aes(x = pop, y = gdpPercap)) + geom_point() + scale_x_log10() + scale_y_log10()
+```
+
+## Adding color to a scatter plot
+
+El parámetro **aes()** dispone del argumento **color** que nos permite agregar color a nuestro gráfico. Por ejemplo, si tenemos una variable de tipo categórica, entonces nos agregará un color para cada categoría.
+
+```{r}
+#Nos creamos un gráfico de tipo scatter entre la población y la esperanza de vida identificando cada continente por un color
+ggplot(gapminder_1952, aes(x = pop, y = lifeExp, color = continent)) + geom_point() + scale_x_log10()
+```
+
+## Adding size and color to a plot
+
+También disponemos del argumento **size** dentro del parámetro **aes()** que nos permite asignar a cada punto un tamaño en función de alguna variable de interés.
+
+```{r}
+#Nos creamos un gráfico de tipo scatter entre la población y la esperanza de vida identificando cada continente por un color y el 
+#tamaño de cada punto por la renta per capita
+ggplot(gapminder_1952, aes(x = pop, y = lifeExp, color = continent, size = gdpPercap)) + geom_point() + scale_x_log10()
+```
+
+## Creating a subgraph for each continent
+
+La librería **ggplot2** nos permite crear subplots, en función de los distintos valores que toma una variable categórica, para ello disponemos de **facet_wrap()**.
+
+```{r}
+#Nos creamos un scatter plot por continente
+ggplot(gapminder_1952, aes(x = pop, y = lifeExp)) + geom_point() + scale_x_log10() + facet_wrap(~ continent)
+```
+
+## Faceting by year
+
+A continuación vamos a proceder a realizar un gráfico por año, donde representaremos si existe alguna relación entre la renta per capita de un país y la esperanza de vida.
+
+```{r}
+ggplot(gapminder, aes(x = gdpPercap, y = lifeExp, color = continent, size = pop)) + geom_point() + scale_x_log10() + facet_wrap(~ year)
+```
+
