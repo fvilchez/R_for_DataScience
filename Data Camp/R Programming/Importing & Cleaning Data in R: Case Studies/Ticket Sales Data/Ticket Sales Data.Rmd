@@ -1,0 +1,145 @@
+---
+title: "Ticket Sales Data"
+output: html_notebook
+---
+## Importing the data
+
+En primer lugar vamos a proceder a cargar los datos del fichero **sales.csv**, de forma que usaremos la función **read.csv()** con el argumento **stringsAsFactors** como **FALSE**
+
+```{r}
+sales <- read.csv("sales.csv", stringsAsFactors = FALSE)
+```
+
+## Examining the data
+
+El primer paso una vez tenemos los datos cargados es el de inspeccionar dichos datos. Para ello podemos hacer uso de las funciones:
+
+* **dim()**: para conocer la dimensión de nuestros datos.
+
+* **head()**: para ver las 6 primeras observaciones.
+
+* **names()**: para conocer los nombres de las columnas de nuestros datos.
+
+```{r}
+#Obtenemos la dimensión de nuestros datos
+dim(sales)
+
+#Obtenemos los nombres de las columnas
+names(sales)
+
+#Observamos las 6 primeras observaciones
+head(sales)
+```
+
+## Summarizing the data
+
+EL siguiente paso es el de conocer mejor la estructura de nuestros datos. Para ello podemos hacer uso de las funciones **summary()** y **str()** del paquete **utils**. El paquete **dplyr** dispone de la función **glimpse()** que se trata de una alternativa a la función **str()**.
+
+```{r}
+#Hacemos uso de la función str para ver la estructura de nuestros datos
+str(sales)
+
+#Hacemos uso de la función summary para ver un resumen estadístico de nuestros datos
+summary(sales)
+
+#Cargamos el paquete dplyr y hacemos uso de glimpse
+library(dplyr)
+glimpse(sales)
+```
+
+## Removing redundant info
+
+Podemos ver que la columna X de nuestro conjunto de datos se trata de una columna replicada que lo único que hace indicar es el número de fila. Las funciones **ncol()** y **nrow()** nos retorna las columnas y las filas de un dataframe. A la hora de eliminar una fila o una columan determinada basta con usar el signo negativo.
+
+```{r}
+#Eliminamos la primera columna de nuestro conjunto de datos sales
+sales2 <- sales[,-1]
+```
+
+## Information not worth keeping
+
+En nuestro conjunto de datos existe una gran cantidad de información que no merece la pena. En este caso, por ejemplo las cuatro primeras columnas parecen que no son de mucha utilidad ya que no aportan información relevante. Las últimas quince columnas parece que no nos van aportar mucha información ya que en este caso contiene una gran cantidad de valores perdidos. Una forma sencilla de mantener la información importante es crearnos un vector que contenga los índices de las columnas que deseamos usar.
+
+```{r}
+#Nos creamos un vector con los índices de las columnas que deseamos mantener
+keep <- c(5:30)
+
+#Nos quedamos con dichas columnas
+sales3 <- sales2[,keep]
+```
+
+## Separating columns
+
+Algunas de las columnas de nuestro conjunto de datos contienen información que debería ser separada en múltiples columnas. Para ello podemos hacer uso de las función **separate()**, que se encuentra en el paquete **tidyr**.
+
+```{r}
+#Cargamos el paquete 
+library(tidyr)
+
+#Hacemos uso de separate para separar la columna event_date_time
+sales4 <- separate(sales3, event_date_time, c("event_time", "event_date"), sep = " ")
+
+#Hacemos uso de la función separate para separar la columna sales_ord_create_dttm
+sales5 <- separate(sales4, sales_ord_create_dttm, c("ord_create_dt", "ord_create_time"), sep = " ")
+```
+
+## Dealing with warnings
+
+Podemos como en caso anterior la función separate nos ha dado un warning, esto se debe a que existen columnas con valores faltantes y por lo tanto van a ser rellenadas con NA, para ver que pinta tenían estas observaciones vamos a proceder a mostrarlas.
+
+```{r}
+#Nos creamos un vector con los índices de interés
+issues <- c(2516, 3863, 4082, 4183)
+
+#Accedemos a dichas observaciones
+sales3$sales_ord_create_dttm[issues]
+
+#Accedemos a una observación normal 
+sales3$sales_ord_create_dttm[2517]
+```
+
+## Identifying dates
+
+Algunas de nuestras columnas contienen fechas de eventos. En estos momentos están almacenadas como strings. Esto puede estar correcto si lo único que deseamos es encontrar la fecha asociada a un evento, pero si deseamos comparar fechas o realizar operaciones matemáticas sobre estas fechas, necesitamos pasarla a formato tipo **Date**. Podemos observar que todas las columnas que deben ser de tipo fecha tienen asociado en su nombre el string **_dt**, por lo tanto para saber que columnas son podemos hacer uso de la función **str_detect()** de la librería **stringr**. Finalmente podemos hacer uso del paquete **lubridate** para pasar a tipo **Date** estas columnas.
+
+```{r}
+library(stringr)
+library(lubridate)
+
+#Detectamos las columnas que son de tipo date
+cols_date <- str_detect(names(sales5), "dt")
+
+#Transformamos estas columnas a tipo Date
+sales5[,cols_date] <- lapply(sales5[, cols_date], ymd)
+```
+
+## More warnings!
+
+Una vez más podemos ver que han fallado algunas fechas a la hora de ser parseada, esto puede ser debido a que sus valores eran NaN, sin embargo resulta una buena práctica comprobar si estamos en lo cierto. Para ello vamos a proceder a crearnos un vector que nos indicará para cada columna los índices en los que se producen los valores perdidos.
+
+```{r}
+#Nos creamos una lista con TRUE FALSE para cada elemento de las columnas fechas en función de si es NaN o no
+missing <- lapply(sales5[, cols_date], is.na)
+
+#Nos creamos un vector que nos indica el número de valores perdidos de caga columna
+num_missing <- sapply(missing, sum)
+
+#Mostramos el resultado
+num_missing
+
+```
+
+En este caso podemos ver que estabamos en lo cierto, estamos ante valores perdidos. La forma de proceder a partir de ahora depende de lo que requiera nuestro análisis.
+
+
+## Combining columns
+
+Finalmente vamos hacer uso de la función **unite()** de la librería **tidyr** para combinar las columnas **venue_city** y **venue_state** en una sola columna. Separando los valores por una coma y un espacio.
+
+```{r}
+#Hacemos uso de la función unite()
+sales6 <- unite(sales5, venue_city_state, venue_city, venue_state, sep = ", ")
+
+#Vemos las 6 primeras observaciones de sales6
+head(sales6)
+```
