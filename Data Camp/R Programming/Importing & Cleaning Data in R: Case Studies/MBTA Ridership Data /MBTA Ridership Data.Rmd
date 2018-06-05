@@ -1,0 +1,96 @@
+---
+title: "MBTA Ridership Data"
+output: html_notebook
+---
+
+## Using readxl
+
+Para cargar información de nuestro conjunto de datos excel, vamos hacer uso de la librería **readxl** y de la función **read_excel()**
+En nuestro caso debemos saltar la primera fila de nuestro fichero ya que este no nos aporta ningún tipo de información.
+```{r}
+#Cargamos la librería
+library(readxl)
+
+#Cargamos los datos saltando la primera observación
+mbta <- read_excel("mbta.xlsx", skip = 1)
+```
+
+## Removing unnecessary rows and columns
+
+```{r}
+#Eliminas las filas 1,7 y 11 
+mbta2 <- mbta[-c(1, 7, 11),]
+
+#Eliminamos la primera columna
+mbta3 <- mbta2[,-1]
+```
+
+## Observations are stored in columns
+
+```{r}
+#Cargamos el paquete tidyr
+library(tidyr)
+
+#Aplicamos la función gather
+mbta4 <- gather(mbta3, month, thou_riders, -mode)
+
+#Vemos las 6 primeras observaciones
+head(mbta4)
+```
+
+## Type conversions
+
+Convertimos a tipo numérica la variable thou_riders.
+
+```{r}
+#Hacemos uso de la función as.numeric para realizar la conversión
+mbta4$thou_riders <- as.numeric(mbta4$thou_riders)
+```
+
+## Variables are store in both rows and columns
+
+```{r}
+#Hacemos uso de spread
+mbta5 <- spread(mbta4, mode, thou_riders)
+
+#Vemos las primeras observaciones
+head(mbta5)
+```
+
+## Separating columns
+
+```{mbr}
+#Hacemos uso de la función separate para separar month en year y month
+mbta6 <- separate(mbta5, month, c("year", "month"))
+
+#Vemos las primeras observaciones
+head(mbta6)
+```
+
+## Do your values seem reasonable?
+
+A la hora de detectar outliers existen diversas técnicas
+
+```{r}
+#Hacemos un summary para ver si encontramos valores extraños
+summary(mbta6)
+
+#Nos creamos un histograma de la columna Boat
+hist(mbta6$Boat)
+```
+
+## Dealing with entry error
+
+Si vemos el histograma de nuestro conjunto de datos podemos ver como la media del viaje en barco es alrededor de 4000 personas al mes, sin embargo, un mes esto salta a cuarenta mil personas, todo hace indicar que aquí se produjo un error y ese 40000 es un 4000, vamos a proceder a realizar este cambio.
+
+```{r}
+#Encontramos la fila en la que se encuentra dicho valor
+row_outlier <- which(mbta6$Boat > 30)
+
+#Cambiamos el valor
+mbta6$Boat[row_outlier] <- 4
+
+#Mostramos el histograma
+hist(mbta6$Boat)
+```
+
