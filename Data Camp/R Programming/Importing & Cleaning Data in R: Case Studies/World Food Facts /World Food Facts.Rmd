@@ -1,0 +1,122 @@
+---
+title: "World Food Facts"
+output: html_notebook
+---
+
+## Importing the data
+
+El objetivo de este ejercicio es analizar la cantidad de azúcar en diferentes productos. Para comenzar vamos a proceder a cargar los datos pero en este caso en lugar de hacer uso de la función **read.csv()** vamos hacer uso de la función **fread()** del paquete **data.table**. Los datos serán almacenados en el formato datatble, pero sin embargo, para poder trabajar igual que con un dataframe podemos convertirlos a tipo dataframe.
+
+```{r}
+#Cargamos el paquete
+library(data.table)
+
+#Hacemos la lectura de los datos haciendo uso de la función fread
+dt_food <- fread("food.csv")
+
+#Pasamos de tipo datable a tipo dataframe
+df_food <- data.frame(dt_food)
+```
+
+## Examining the data
+
+Como es usual lo primero que debemos de hacer cuando nos llega un nuevo conjunto de datos a nuestro poder, ver que pinta tienen estos datos.
+
+```{r}
+#Vemos las primeras observaciones de los datos
+head(df_food)
+
+#Vemos la estructura de los datos
+str(df_food)
+
+#Hacemos un summary de los datos
+summary(df_food)
+```
+
+## Inspecting variables
+
+En este caso las funciones **summary()** y **str()** debido a la gran cantidad de variables que disponemos no son del todo las más adecuadas para ver como están estructurados nuestros datos. El paquete **dplyr** dispone de la función **glimpse()** que nos retorna casi la misma información que **str()** pero en un formato más adecuado
+
+```{r}
+#Cargamos dplyr
+library(dplyr)
+
+#Hacemos uso de la función glimpse
+glimpse(df_food)
+```
+
+## Removing duplicate info
+
+Tenemos una gran cantidad de información duplicada, es por esto que vamos a proceder a eliminar todas esas variables que no nos aportan ningún tipo de información.
+
+```{r}
+#Nos creamos el vector de las columnas duplicadas
+duplicates <- c(4, 6, 11, 13, 15, 17, 18, 20, 22, 
+                24, 25, 28, 32, 34, 36, 38, 40, 
+                44, 46, 48, 51, 54, 65, 158)
+
+#Eliminamos las columnas duplicadas
+df_food2 <- df_food[,-duplicates]
+```
+
+## Removing useless info
+
+Además de información duplicada, nuestro conjunto de datos contiene columnas que no son de utilidad. Por ejemplo, las primeras columnas contienen códigos de productos, además existen algunas columnas que su descripción no deja claro que tipo de información contiene, todas estas columnas deben de ser eliminadas.
+
+```{r}
+#Definimos un vector con las columnas que no aportan ningún tipo de información
+useless <- c(1, 2, 3, 32:41)
+
+#Eliminamos dichas columnas
+df_food3 <- df_food2[,-useless]
+```
+
+## Finding columns
+
+A continución vamos a proceder a seleccionar aquellas columnas que en su nombre llevan "100g" que son aquellas columnas que nos indican la cantidad de azúcar por cada cien gramos de ciertos productos.
+
+```{r}
+#Cargamos la librería
+library(stringr)
+
+#Obtenemos los índices de las columnas que contienen las palabra 100g
+indices <- str_detect(names(df_food3), "100g")
+
+summary(df_food3[,indices])
+```
+
+## Replacing missing values
+
+Podemos ver en el summary que el número de NA es bastante elevado la variables "sugars_100g". Debemos de cambiar estos valores que son NA por cero y tras esto representar un histograma.
+
+```{r}
+#Detectamos donde están los ceros
+missing <- is.na(df_food3$sugars_100g)
+
+#Cambiamos los NA por ceros
+df_food3$sugars_100g[missing] <- 0
+
+#Representamos el histograma con breaks = 100
+hist(df_food3$sugars_100g, breaks = 100)
+
+#Eliminamos los ceros
+df_food4 <- df_food3[df_food3$sugars_100g > 0 ,]
+
+#Representamos le histograma
+hist(df_food4$sugars_100g, breaks = 100)
+
+```
+
+
+## Dealing with messy data
+
+Finalmente nuestro objetivo es conocer cuantos de estos alimentos vienen en un contenido de plástico. Sin embargo la variable que nos indica esto, se encuentra en varios idiomas. Sin embargo la raíz de la palabra es la misma para los idiomas en los que aparece, en este caso la raíz es "plasti".
+
+```{r}
+#Encontramos las palabras que contienen "plasti"
+plastic <- str_detect(df_food3$packaging, "plasti")
+
+#Vemos el número de alimentos que cumplen que vienen embasados en plástico
+sum(plastic)
+```
+
